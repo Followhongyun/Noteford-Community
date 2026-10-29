@@ -13,7 +13,8 @@ function packWindows() {
     {cwd: root, windowsHide: true, stdio: 'inherit'});
 }
 
-module.exports = async () => {
+module.exports = async context => {
+  require('./check-release-version.cjs').check(undefined, context?.packager?.appInfo?.version);
   require('./private-data-policy.cjs').check(path.resolve(__dirname, '../..'));
   if (process.platform === 'darwin') {
     require('./mac-pack.cjs').prepareMacPack(path.resolve(__dirname, '../..'));

@@ -287,7 +287,7 @@ function CommunityUpdates() {
   return <section className="settings-group" aria-label="应用更新">
     <div className="settings-group-heading"><h2>应用更新</h2></div>
     <SettingRow title={`Noteford 开源版 ${state?.version || ''}`} description={error || (state ? labels[state.status] : '正在读取…')}>
-      <button className="secondary" disabled={busy} onClick={() => void act()}>{state?.status === 'ready' ? '退出并安装' : '检查更新'}</button>
+      <button className="settings-button" disabled={busy} onClick={() => void act()}>{state?.status === 'ready' ? '退出并安装' : '检查更新'}</button>
     </SettingRow>
   </section>
 }

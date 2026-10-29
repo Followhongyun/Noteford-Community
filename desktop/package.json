@@ -1,6 +1,6 @@
 {
   "name": "noteford-community",
-  "version": "0.1.5-community.2",
+  "version": "0.1.1",
   "private": true,
   "engines": {
     "node": ">=22.19.0"
@@ -19,7 +19,8 @@
     "start": "electron .",
     "smoke": "npm run build && electron . --smoke",
     "typecheck": "tsc --noEmit",
-    "icon:check": "node scripts/check-icons.cjs"
+    "icon:check": "node scripts/check-icons.cjs",
+    "prebuild": "node scripts/check-release-version.cjs"
   },
   "dependencies": {
     "electron-updater": "6.8.9",

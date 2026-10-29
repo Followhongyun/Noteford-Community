@@ -12,7 +12,7 @@ Noteford 是一款本地微信资料阅读应用：在授权后读取本机资�
 
 ## 下载安装
 
-在 [GitHub Releases](https://github.com/Followhongyun/Noteford-Community/releases/latest) 下载 `Noteford-0.1.5-community.2-macOS.dmg`，打开后将「Noteford 开源版」拖入 Applications，再从 Applications 启动。
+在 [GitHub Releases](https://github.com/Followhongyun/Noteford-Community/releases/latest) 下载 `Noteford-0.1.1-macOS.dmg`，打开后将「Noteford 开源版」拖入 Applications，再从 Applications 启动。
 
 支持 Apple 芯片 Mac（M1 及后续），最低 macOS 13；此安装包不支持 Intel Mac。首次连接微信时按应用提示授权并扫码。安装包自带运行时，使用应用不需要安装 Node.js 或 Python；AI Skill 需在支持本机命令的客户端中安装并完成首次授权。
 
@@ -22,7 +22,7 @@ npx skills add Followhongyun/Noteford-Community --skill noteford-community
 
 将上述命令交给本机 AI 并明确要求“安装并连接”。最新版 Skill 会指导 Codex 注册独立的 `noteford-community` MCP，再验证授权读取；仅在终端运行安装命令只安装 Skill 文件。已经安装 Skill 的用户重新运行上述命令更新即可，无需重装 Mac 应用。其他客户端按自身官方 MCP 配置方式接入。
 
-从本版起支持 GitHub 自动更新：启动后检查并下载，正常退出后安装。第一版须手动安装本次 DMG 一次。详细步骤、运行环境和首次授权见 [安装与 AI 接入说明](docs/INSTALL.md)。
+从本版起支持 GitHub 自动更新：启动后检查并下载，正常退出后安装。历史 community 版本须手动安装本次 0.1.1。详细步骤、运行环境和首次授权见 [安装与 AI 接入说明](docs/INSTALL.md)。
 
 ## 开发与构建
 
@@ -45,3 +45,5 @@ Mac 打包入口准备独立 Python 环境，冻结服务并收集许可材料�
 原创程序源码采用 [AGPL-3.0-only](LICENSE)。第三方组件保留各自许可证和声明。商业使用与再分发按适用许可证进行；会员服务不构成对开源许可证权利的额外限制。
 
 Noteford 与腾讯没有官方关联。只能处理本人有权访问的资料；应用不向微信发送消息。历史实验路径及兼容性限制见相应文档，不保证所有微信版本、媒体格式或云端历史资源可用。
+
+开源版在维护者确认发布第一篇 X 推广前固定为 0.1.1；同号修订不触发自动更新。之后的更高正式版本继续通过 GitHub 自动更新。
