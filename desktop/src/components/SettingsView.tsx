@@ -175,7 +175,7 @@ export default function SettingsView(props: SettingsViewProps) {
           <div className={`settings-feedback${syncError ? ' settings-error' : ''}`} role={syncError ? 'alert' : 'status'}>{syncNotice}</div>
           <SettingRow title="同步状态">
             <div className="settings-sync-times">
-              <span>最近完整同步：{formatTime(sync?.last_success_at)}</span>
+              <span>最近触发同步：{formatTime(sync?.last_triggered_at)}</span>
               <span>下次同步：{sync?.next_at ? formatTime(sync.next_at) : '等待调度'}</span>
             </div>
             {mac && sync?.error === 'source_permission_required' && <button className="settings-button" disabled={permissionBusy} onClick={() => void restoreReadPermission()}>{permissionBusy ? '正在打开…' : '恢复读取权限'}</button>}

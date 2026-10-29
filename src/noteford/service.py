@@ -10,6 +10,7 @@ import sys
 import threading
 import time
 from datetime import date, datetime, timedelta, timezone
+from contextlib import nullcontext
 from http import HTTPStatus
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
@@ -612,6 +613,9 @@ class LocalApi:
             return finished
 
         try:
+            on_started = getattr(self, '_on_refresh_started', None)
+            if on_started is not None:
+                on_started(trigger)
             self.sync_state.update(
                 state='running', started_at=started_at, error=None,
                 stage='catalog', stage_started_at=started_at,
@@ -761,6 +765,18 @@ class MultiLibraryApi:
         if self._automatic_thread:
             self._automatic_thread.join(timeout=2)
 
+    def _reset_sync_schedule(self, trigger: str) -> None:
+        """All accepted sync starts share one countdown, regardless of caller."""
+        with getattr(self, '_lock', nullcontext()):
+            interval = self.settings()['sync_interval_seconds']
+            wall, monotonic = time.time(), time.monotonic()
+            self._periodic_round_started_wall = wall
+            self._periodic_round_started_monotonic = monotonic
+            self._periodic_last_started = wall
+            self._periodic_next_at = wall + interval
+            self._periodic_deadline_monotonic = monotonic + interval
+            self._periodic_trigger = trigger
+
     def start_periodic_refresh(self) -> None:
         if self._periodic_thread and self._periodic_thread.is_alive():
             return
@@ -796,16 +812,7 @@ class MultiLibraryApi:
                     retry('settings_unavailable')
                     continue
 
-                round_started_wall = time.time()
-                round_started_monotonic = time.monotonic()
-                deadline_wall = round_started_wall + interval
-                deadline_monotonic = round_started_monotonic + interval
-                self._periodic_round_started_wall = round_started_wall
-                self._periodic_round_started_monotonic = round_started_monotonic
-                self._periodic_deadline_monotonic = deadline_monotonic
-                self._periodic_last_started = round_started_wall
-                self._periodic_next_at = deadline_wall
-                self._periodic_trigger = trigger
+                self._reset_sync_schedule(trigger)
                 self._periodic_round_running = True
                 try:
                     records = self._active_records()
@@ -852,10 +859,11 @@ class MultiLibraryApi:
                         retry_delay = min(30.0, retry_delay * 2)
                         continue
                     retry_delay = 1.0
-                    deadline_wall = round_started_wall + interval
-                    deadline_monotonic = round_started_monotonic + interval
-                    self._periodic_next_at = deadline_wall
-                    self._periodic_deadline_monotonic = deadline_monotonic
+                    with getattr(self, '_lock', nullcontext()):
+                        deadline_wall = self._periodic_round_started_wall + interval
+                        deadline_monotonic = self._periodic_round_started_monotonic + interval
+                        self._periodic_next_at = deadline_wall
+                        self._periodic_deadline_monotonic = deadline_monotonic
                     wall_remaining = deadline_wall - time.time()
                     monotonic_remaining = deadline_monotonic - time.monotonic()
                     if wall_remaining <= 0 or monotonic_remaining <= 0:
@@ -1057,6 +1065,7 @@ class MultiLibraryApi:
             if core is None:
                 core = LocalApi(self._context_config(record.id))
                 core._automatic_wake = self._automatic_wake
+                core._on_refresh_started = self._reset_sync_schedule
                 self._cores[record.id] = core
             return core
 
@@ -1266,6 +1275,8 @@ class MultiLibraryApi:
             interval_seconds = None
         payload['sync']['interval_minutes'] = interval_minutes
         payload['sync']['interval_seconds'] = interval_seconds
+        last_triggered = getattr(self, '_periodic_last_started', None)
+        payload['sync']['last_triggered_at'] = _unix_iso(last_triggered) if last_triggered is not None else None
         next_at = getattr(self, '_periodic_next_at', None)
         payload['sync']['next_at'] = (
             _unix_iso(next_at)

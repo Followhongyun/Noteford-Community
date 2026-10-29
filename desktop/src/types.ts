@@ -26,7 +26,7 @@ export interface LibraryCandidate {
 export interface AppStatus {
   wechat_login?: {state: 'active' | 'not_running' | 'unknown'; reason: string; checked_at: string | null; network_online: null}
   sync?: {
-    state: string; error?: string | null; last_success_at?: string | null; next_at?: string | null
+    state: string; error?: string | null; last_success_at?: string | null; last_triggered_at?: string | null; next_at?: string | null
     scheduler_running?: boolean; interval_minutes?: number; interval_seconds?: number; scheduler_error?: string | null
     stage?: string; failed_conversations?: number; started_at?: string | null
     recent_receipts?: {trigger: string; started_at: string; finished_at: string; duration_seconds: number; outcome: string; failed_conversations: number}[]

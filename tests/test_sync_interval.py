@@ -255,3 +255,59 @@ def test_seconds_http_route_requires_auth_and_preserves_invalid_input(tmp_path):
         server.shutdown()
         server.server_close()
         thread.join(timeout=3)
+
+
+@pytest.mark.parametrize('trigger', ['manual', 'ai_request'])
+def test_external_sync_restarts_countdown_without_old_timer_overwrite(tmp_path, monkeypatch, trigger):
+    import noteford.service as module
+    api = make_api(tmp_path)
+    clock = [0.0]
+    starts = []
+    class Stop:
+        stopped = False
+        def clear(self): self.stopped = False
+        def is_set(self): return self.stopped
+        def wait(self, seconds):
+            clock[0] += seconds
+            if clock[0] == 120:
+                api._reset_sync_schedule(trigger)
+                assert api._periodic_next_at == 420
+                assert api._periodic_last_started == 120
+            if clock[0] > 500: raise AssertionError('scheduler failed to run')
+            return self.stopped
+    api._periodic_stop = Stop()
+    api._periodic_thread = None
+    api.registry = SimpleNamespace(list=lambda: [SimpleNamespace(id='sample')])
+    def refresh(**kwargs):
+        starts.append(clock[0])
+        if len(starts) == 2: api._periodic_stop.stopped = True
+        return {'ok': False}
+    api._core = lambda _: SimpleNamespace(refresh=refresh)
+    class Thread:
+        def __init__(self, target, **kwargs): self.target = target
+        def is_alive(self): return True
+        def start(self): self.target()
+    monkeypatch.setattr(module.time, 'time', lambda: clock[0])
+    monkeypatch.setattr(module.time, 'monotonic', lambda: clock[0])
+    monkeypatch.setattr(module.threading, 'Thread', Thread)
+    api.start_periodic_refresh()
+    assert starts == [0, 420]
+    assert api._periodic_next_at == 720
+
+
+@pytest.mark.parametrize('trigger', ['manual', 'ai_request', 'interval'])
+def test_every_accepted_core_refresh_notifies_schedule_even_if_sync_fails(tmp_path, monkeypatch, trigger):
+    import noteford.service as module
+    core = module.LocalApi({'project_root': str(tmp_path), 'index_path': str(tmp_path/'index.db'), 'wechat_root': str(tmp_path/'wechat'), 'account': 'synthetic', 'candidates_path': str(tmp_path/'keys.json')})
+    starts = []
+    core._on_refresh_started = starts.append
+    def fail(**kwargs): raise FileNotFoundError('synthetic')
+    monkeypatch.setattr(module, '_refresh_library', fail)
+    with pytest.raises(FileNotFoundError): core.refresh(trigger=trigger)
+    assert starts == [trigger]
+    assert not core.refresh_lock.locked()
+    core.refresh_lock.acquire()
+    try:
+        assert core.refresh(trigger=trigger)['error'] == 'refresh_busy'
+        assert starts == [trigger]
+    finally: core.refresh_lock.release()
