@@ -1,6 +1,6 @@
 {
   "name": "noteford-community",
-  "version": "0.1.5-community.1",
+  "version": "0.1.5-community.2",
   "private": true,
   "engines": {
     "node": ">=22.19.0"
@@ -22,10 +22,11 @@
     "icon:check": "node scripts/check-icons.cjs"
   },
   "dependencies": {
+    "electron-updater": "6.8.9",
+    "lazy-val": "file:vendor/noteford-lazy-1.0.6.tgz",
     "lucide-react": "^1.48.0",
     "react": "^19.3.0",
-    "react-dom": "^19.3.0",
-    "lazy-val": "file:vendor/noteford-lazy-1.0.6.tgz"
+    "react-dom": "^19.3.0"
   },
   "build": {
     "appId": "com.followhongyun.noteford.community",
@@ -63,6 +64,10 @@
           "**/*",
           "!scripts/noteford.ps1"
         ]
+      },
+      {
+        "from": "../docs/INSTALL.md",
+        "to": "INSTALL.md"
       }
     ],
     "win": {
@@ -157,8 +162,19 @@
             "**/*.py",
             "!winmem.py"
           ]
+        },
+        {
+          "from": "app-update.yml",
+          "to": "app-update.yml"
         }
-      ]
+      ],
+      "publish": {
+        "provider": "github",
+        "owner": "Followhongyun",
+        "repo": "Noteford-Community",
+        "releaseType": "release",
+        "channel": "latest"
+      }
     },
     "nsis": {
       "oneClick": false,

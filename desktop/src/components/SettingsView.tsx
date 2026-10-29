@@ -6,7 +6,7 @@ import Avatar from './Avatar'
 import McpConnections from './McpConnections'
 import { useEffect, useState, type ReactNode } from 'react'
 
-import type { AppStatus, LibrarySummary } from '../types'
+import type { AppStatus, LibrarySummary, UpdateState } from '../types'
 
 interface SettingsViewProps {
   parseStickers: boolean | null
@@ -235,6 +235,8 @@ export default function SettingsView(props: SettingsViewProps) {
 
         <McpConnections key={library?.id || 'none'} library={library} />
 
+        {mac && <CommunityUpdates />}
+
         <section className="settings-group community-about" aria-labelledby="settings-updates-title">
           <div>
             <h2 id="settings-updates-title">关于 Noteford 开源版</h2>
@@ -263,4 +265,29 @@ function CommunityContact() {
       <img src={wechatCard} alt="洪云YUN 微信名片，扫码添加好友" width="1036" height="1320" />
     </div>
   </div>
+}
+
+function CommunityUpdates() {
+  const [state, setState] = useState<UpdateState | null>(null)
+  const [error, setError] = useState('')
+  useEffect(() => {
+    let alive = true
+    const accept = (value: UpdateState) => { if (alive) setState(value) }
+    const unsubscribe = window.noteford.onUpdateState(accept)
+    window.noteford.updateStatus().then(accept).catch(() => { if (alive) setError('无法读取更新状态') })
+    return () => { alive = false; unsubscribe() }
+  }, [])
+  const labels = {idle: '自动从 GitHub 检查更新', unavailable: '开发运行时不检查更新', checking: '正在检查 GitHub…', current: '已是最新版本', downloading: `正在下载 ${state?.availableVersion || ''}（${state?.progress || 0}%）`, preparing: '正在验证并准备安装…', ready: '更新已就绪，退出应用后安装；再次打开即可使用新版', error: state?.error || '检查失败，稍后会自动重试'}
+  const busy = !state || ['unavailable', 'checking', 'downloading', 'preparing'].includes(state.status)
+  async function act() {
+    setError('')
+    try { if (state?.status === 'ready') await window.noteford.installUpdate(); else setState(await window.noteford.checkForUpdates()) }
+    catch { setError('操作失败，请稍后重试') }
+  }
+  return <section className="settings-group" aria-label="应用更新">
+    <div className="settings-group-heading"><h2>应用更新</h2></div>
+    <SettingRow title={`Noteford 开源版 ${state?.version || ''}`} description={error || (state ? labels[state.status] : '正在读取…')}>
+      <button className="secondary" disabled={busy} onClick={() => void act()}>{state?.status === 'ready' ? '退出并安装' : '检查更新'}</button>
+    </SettingRow>
+  </section>
 }

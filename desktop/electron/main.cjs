@@ -1599,11 +1599,25 @@ async function createWindow() {
   }
 }
 
+let appUpdates;
+function startAppUpdates() {
+  const {autoUpdater} = require('electron-updater');
+  appUpdates = require('./app-updates.cjs').createAppUpdates({
+    updater: autoUpdater, nativeUpdater: require('electron').autoUpdater, app,
+    enabled: app.isPackaged && !isSmoke && process.platform === 'darwin',
+    changed: state => { if (mainWindow && !mainWindow.isDestroyed()) mainWindow.webContents.send('noteford:update-state', state); },
+  });
+  ipcMain.handle('noteford:update-status', event => { assertMainRenderer(event); return appUpdates.snapshot(); });
+  ipcMain.handle('noteford:update-check', event => { assertMainRenderer(event); void appUpdates.check(); return appUpdates.snapshot(); });
+  ipcMain.handle('noteford:update-install', event => { assertMainRenderer(event); appUpdates.install(); });
+  appUpdates.start();
+}
+
 const ownsInstance = isSmoke || app.requestSingleInstanceLock();
 if (!ownsInstance) app.quit();
 else {
   workspaces = new LocalWorkspace(installationRoot);
-  app.whenReady().then(createWindow).catch(error => {
+  app.whenReady().then(async () => { startAppUpdates(); await createWindow(); }).catch(error => {
   console.error(error);
   if (!isSmoke) {
     dialog.showErrorBox(`${productName} 启动失败`, '本地读取服务未能启动。请检查应用数据目录的访问权限，然后重新启动应用。');
@@ -1624,6 +1638,7 @@ if (isLocalLive) process.on('message', message => {
 
 app.on('before-quit', () => {
   quitting = true;
+  appUpdates?.stop();
   workspaces?.lock();
   serviceRecovery.stop();
   unpublishMcpDiscovery?.();

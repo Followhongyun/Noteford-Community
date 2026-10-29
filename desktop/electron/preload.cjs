@@ -9,6 +9,14 @@ const invokeScoped = async (channel,...args) => {
 };
 const api = {
   platform: process.platform,
+  updateStatus: () => ipcRenderer.invoke('noteford:update-status'),
+  checkForUpdates: () => ipcRenderer.invoke('noteford:update-check'),
+  installUpdate: () => ipcRenderer.invoke('noteford:update-install'),
+  onUpdateState: callback => {
+    const listener = (_event, state) => callback(state);
+    ipcRenderer.on('noteford:update-state', listener);
+    return () => ipcRenderer.removeListener('noteford:update-state', listener);
+  },
   ...(process.platform === 'darwin' ? {nativeCorners: input => ipcRenderer.invoke('noteford:native-corners', input)} : {}),
   hostProfile: () => invokeScoped('noteford:host-profile'),
   permissionGuide: () => invokeScoped('noteford:permission-guide'),

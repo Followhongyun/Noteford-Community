@@ -1,0 +1,5 @@
+provider: github
+owner: Followhongyun
+repo: Noteford-Community
+channel: latest
+updaterCacheDirName: noteford-community-updater

@@ -270,10 +270,22 @@ export interface MacAccountsSnapshot {
   capture: AutoCaptureSnapshot
 }
 
+export interface UpdateState {
+  status: 'idle' | 'unavailable' | 'checking' | 'current' | 'downloading' | 'preparing' | 'ready' | 'error'
+  version: string
+  availableVersion: string | null
+  progress: number
+  error: string | null
+}
+
 declare global {
   interface Window {
     noteford: {
       platform: string
+      updateStatus(): Promise<UpdateState>
+      checkForUpdates(): Promise<UpdateState>
+      installUpdate(): Promise<void>
+      onUpdateState(callback: (state: UpdateState) => void): () => void
       nativeCorners?(input: {width: number; height: number; radius: number; scale: number; stroke: number; corners: number}): Promise<{outer: string; stroke: string | null; renderer: 'macos-continuous'} | null>
       hostProfile(): Promise<{
         platform: string
