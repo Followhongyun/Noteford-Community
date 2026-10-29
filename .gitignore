@@ -1,0 +1,42 @@
+__pycache__/
+.pytest_cache/
+src/*.egg-info/
+.venv/
+config.local.json
+/secrets/
+/data/
+/libraries/
+desktop/node_modules/
+desktop/dist/
+desktop/.vite/
+.pytest-tmp/
+build/
+.venv-build/
+/work/
+
+# UI review screenshots may contain private chat content
+.impeccable/
+# Platform engine downloaded by .cursor/skills/impeccable/scripts/impeccable
+.cursor/skills/impeccable/scripts/bin/
+# remote MCP encrypted store/key (runtime)
+*.store
+mcp_remote.key
+
+# Local inference inputs, outputs and weights never belong in source control.
+/local-model/private/
+/local-model/results/
+/local-model/models/
+/local-model/adapters/
+/local-model/cache/
+*.safetensors
+*.gguf
+.env
+.env.local
+/.product-workspace.json
+/product-accounts/
+
+# Private daily data and external-history aliases
+/[Dd][Aa][Tt][Aa]/
+/Archive/
+/应用
+/源码

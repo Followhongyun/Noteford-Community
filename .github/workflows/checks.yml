@@ -1,0 +1,46 @@
+name: Checks
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: desktop/package-lock.json
+      - name: Check repository layout and private paths
+        run: node Scripts/check-private-data.cjs
+      - name: Test repository protection
+        run: node --test Scripts/check-private-data.test.cjs
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install Python dependencies
+        run: |
+          python -m venv .venv
+          if ($LASTEXITCODE -ne 0) { throw 'Virtual environment creation failed' }
+          .\.venv\Scripts\python.exe -I Scripts/bootstrap-build-pip.py
+          if ($LASTEXITCODE -ne 0) { throw 'Build pip security bootstrap failed' }
+          .\.venv\Scripts\python.exe -m pip install -e . pytest
+      - name: Test Python core
+        run: .\.venv\Scripts\python.exe -m pytest -q
+      - name: Install desktop dependencies
+        working-directory: desktop
+        run: node scripts/install-dependencies.cjs
+      - name: Test desktop integration and recovery
+        run: node --test tests/*.test.cjs desktop/tests/*.test.cjs
+      - name: Build desktop renderer
+        working-directory: desktop
+        run: npm run build

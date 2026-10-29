@@ -1,0 +1,201 @@
+{
+  "name": "noteford-desktop",
+  "version": "0.1.5",
+  "private": true,
+  "engines": {
+    "node": ">=22.19.0"
+  },
+  "author": "Followhongyun",
+  "description": "Noteford desktop application",
+  "notefordMacSigningTeamId": "QD3H9VHB23",
+  "main": "electron/main.cjs",
+  "scripts": {
+    "dev:mac": "node scripts/local-live.cjs",
+    "dev": "concurrently -k \"vite --host 127.0.0.1 --strictPort\" \"wait-on http://127.0.0.1:5173 && electron . --dev\"",
+    "build:renderer": "vite build",
+    "build": "npm run typecheck && npm run build:renderer",
+    "package:win": "node --require ./scripts/node-trust.cjs node_modules/electron-builder/cli.js --win nsis --x64 --publish never",
+    "package:mac": "node --require ./scripts/node-trust.cjs node_modules/electron-builder/cli.js --mac dmg zip --arm64 --publish never",
+    "start": "electron .",
+    "smoke": "npm run build && electron . --smoke",
+    "typecheck": "tsc --noEmit",
+    "icon:check": "node scripts/check-icons.cjs"
+  },
+  "dependencies": {
+    "electron-updater": "6.8.9",
+    "lucide-react": "^1.48.0",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
+    "lazy-val": "file:vendor/noteford-lazy-1.0.6.tgz"
+  },
+  "build": {
+    "appId": "com.followhongyun.noteford",
+    "productName": "Noteford",
+    "directories": {
+      "output": "../build/release"
+    },
+    "files": [
+      "electron/**/*",
+      "mcp-plugin/**/*",
+      "dist/**/*",
+      "assets/**/*",
+      "licenses/**/*",
+      "package.json",
+      "!**/*.ico",
+      "!**/*.ps1"
+    ],
+    "extraResources": [
+      {
+        "from": "../build/service/noteford-service",
+        "to": "service"
+      },
+      {
+        "from": "../NOTICE.md",
+        "to": "NOTICE.md"
+      },
+      {
+        "from": "../docs/DATA-AND-SECURITY.md",
+        "to": "privacy.md"
+      },
+      {
+        "from": "mcp-plugin/skills/noteford",
+        "to": "skills/noteford",
+        "filter": [
+          "**/*",
+          "!scripts/noteford.ps1"
+        ]
+      }
+    ],
+    "win": {
+      "target": "nsis",
+      "icon": "assets/noteford.ico",
+      "files": [
+        "!**/node_modules/koffi/**",
+        {
+          "filter": [
+            "**/*.ico",
+            "**/*.ps1"
+          ]
+        }
+      ],
+      "extraResources": [
+        {
+          "from": "../build/third-party-licenses",
+          "to": "third-party-licenses"
+        },
+        {
+          "from": "assets/noteford.ico",
+          "to": "noteford-book-v1.ico"
+        },
+        {
+          "from": "mcp-plugin/skills/noteford/scripts/noteford.ps1",
+          "to": "skills/noteford/scripts/noteford.ps1"
+        }
+      ]
+    },
+    "mac": {
+      "files": [
+        {
+          "from": "../build/third-party-licenses",
+          "to": "licenses/runtime",
+          "filter": [
+            "**/*"
+          ]
+        }
+      ],
+      "publish": {
+        "provider": "generic",
+        "url": "https://followhongyun.com/updates/noteford/macos/",
+        "useMultipleRangeRequest": false
+      },
+      "identity": null,
+      "target": [
+        {
+          "target": "dmg",
+          "arch": [
+            "arm64"
+          ]
+        },
+        {
+          "target": "zip",
+          "arch": [
+            "arm64"
+          ]
+        }
+      ],
+      "icon": "assets/noteford.icns",
+      "category": "public.app-category.productivity",
+      "hardenedRuntime": true,
+      "gatekeeperAssess": false,
+      "entitlements": "entitlements.mac.plist",
+      "entitlementsInherit": "entitlements.mac.plist",
+      "asarUnpack": [
+        "node_modules/koffi/**/*"
+      ],
+      "extendInfo": {
+        "NSAppleEventsUsageDescription": "Noteford 用这项权限确认本机状态，并在准备资料时退出微信。只会在你点击授权后询问。",
+        "NSDocumentsFolderUsageDescription": "Noteford 只在你手动选择资料目录时读取该文件夹。",
+        "NSDesktopFolderUsageDescription": "Noteford 只在你手动选择资料目录时读取该文件夹。",
+        "NSDownloadsFolderUsageDescription": "Noteford 只在你手动选择资料目录时读取该文件夹。",
+        "NSRemovableVolumesUsageDescription": "Noteford 只在你手动选择资料目录时读取该磁盘。"
+      },
+      "extraResources": [
+        {
+          "from": "mcp-plugin/cli/noteford-ai",
+          "to": "cli/noteford-ai"
+        },
+        {
+          "from": "assets/notefordTemplate.png",
+          "to": "notefordTemplate.png"
+        },
+        {
+          "from": "assets/notefordTemplate@2x.png",
+          "to": "notefordTemplate@2x.png"
+        },
+        {
+          "from": "assets/noteford-mac.png",
+          "to": "noteford-mac.png"
+        },
+        {
+          "from": "../src/noteford",
+          "to": "noteford-src/noteford",
+          "filter": [
+            "**/*.py",
+            "!winmem.py"
+          ]
+        }
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "license": "../packaging/DISTRIBUTION-TERMS.txt",
+      "allowElevation": false,
+      "perMachine": false,
+      "packElevateHelper": false
+    },
+    "publish": {
+      "provider": "github",
+      "owner": "Followhongyun",
+      "repo": "WeChatLocal-Updates",
+      "releaseType": "release"
+    },
+    "afterPack": "scripts/verify-third-party-licenses.cjs",
+    "beforePack": "scripts/collect-third-party-licenses.cjs"
+  },
+  "devDependencies": {
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vitejs/plugin-react": "^6.1.1",
+    "concurrently": "^10.0.5",
+    "electron": "44.9.1",
+    "electron-builder": "^26.15.3",
+    "typescript": "^7.0.2",
+    "vite": "^8.1.0",
+    "wait-on": "^9.1.0"
+  },
+  "optionalDependencies": {
+    "koffi": "^2.14.1"
+  },
+  "license": "AGPL-3.0-only"
+}

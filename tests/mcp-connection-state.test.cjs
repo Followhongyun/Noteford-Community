@@ -1,0 +1,27 @@
+const test = require('node:test');
+const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const os = require('node:os');
+const path = require('node:path');
+const { createMcpConnectionState } = require('../desktop/electron/mcp-connection-state.cjs');
+test('disconnect/reconnect preserves grants, isolates accounts and changes generation every time', t => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'noteford-reconnect-'));
+  t.after(() => fs.rmSync(root, { recursive: true, force: true }));
+  const a = createMcpConnectionState({ runtimeRoot: path.join(root, 'a') });
+  const b = createMcpConnectionState({ runtimeRoot: path.join(root, 'b') });
+  fs.mkdirSync(path.join(root, 'a/data'), { recursive: true });
+  const grant = path.join(root, 'a/data/mac_ai_access.json');
+  fs.writeFileSync(grant, '{"keep":"original grant"}');
+  assert.deepEqual(a.configure({ action: 'disconnect' }), { enabled: false });
+  assert.equal(b.status().enabled, true);
+  const file = path.join(root, 'a/data/mcp_connection.json');
+  const generation = () => JSON.parse(fs.readFileSync(file)).generation;
+  const before = generation();
+  assert.equal(a.configure({ action: 'reconnect' }).enabled, true);
+  assert.notEqual(generation(), before);
+  const second = generation(); a.configure({ action: 'reconnect' });
+  assert.notEqual(generation(), second);
+  assert.equal(fs.readFileSync(grant, 'utf8'), '{"keep":"original grant"}');
+  fs.writeFileSync(file, 'null'); assert.equal(a.status().enabled, false);
+  assert.throws(() => a.configure({ action: 'delete' }));
+});

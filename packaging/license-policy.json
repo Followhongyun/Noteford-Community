@@ -1,0 +1,447 @@
+{
+  "npm:argparse@2.0.1": {
+    "license": "Python-2.0",
+    "notices": {
+      "npm/argparse/LICENSE": "de4d1f2d2ad5ad0cfd1657a106476b31cb5db5ef9d1ff842b237c0c81f0c8a23"
+    },
+    "scope": "Version, metadata and notice hashes recorded; unresolved obligations tracked separately in license-review.json"
+  },
+  "npm:builder-util-runtime@9.7.0": {
+    "license": "MIT",
+    "notices": {
+      "npm/builder-util-runtime/LICENSE": "bed8d0ab3e6031817f775a641ff37313b0f5591bc8ba0ed79b978dafbd4231ce"
+    },
+    "scope": "Version, metadata and notice hashes recorded; unresolved obligations tracked separately in license-review.json"
+  },
+  "npm:debug@4.4.3": {
+    "license": "MIT",
+    "notices": {
+      "npm/debug/LICENSE": "3a61c6c96caf5c1d9b623fb9b04c822b783dfcb78aa7e49c76a3f643e6ed7f95"
+    },
+    "scope": "Version, metadata and notice hashes recorded; unresolved obligations tracked separately in license-review.json"
+  },
+  "npm:electron-updater@6.8.9": {
+    "license": "MIT",
+    "notices": {
+      "npm/electron-updater/LICENSE": "bed8d0ab3e6031817f775a641ff37313b0f5591bc8ba0ed79b978dafbd4231ce"
+    },
+    "scope": "Version, metadata and notice hashes recorded; unresolved obligations tracked separately in license-review.json"
+  },
+  "npm:semver@7.7.4": {
+    "license": "ISC",
+    "notices": {
+      "npm/electron-updater/_nested_semver/LICENSE": "4ec3d4c66cd87f5c8d8ad911b10f99bf27cb00cdfcff82621956e379186b016b"
+    },
+    "scope": "Version, metadata and notice hashes recorded; unresolved obligations tracked separately in license-review.json"
+  },
+  "npm:fs-extra@10.1.0": {
+    "license": "MIT",
+    "notices": {
+      "npm/fs-extra/LICENSE": "1e76029602ae9b21cc4e612db2496d92febed882ba13ba745f8b3309e85f9d39"
+    },
+    "scope": "Version, metadata and notice hashes recorded; unresolved obligations tracked separately in license-review.json"
+  },
+  "npm:graceful-fs@4.2.11": {
+    "license": "ISC",
+    "notices": {
+      "npm/graceful-fs/LICENSE": "f65c5d9f22a317b2a10803bd1868461ce6499c2ed7217bc80c0cc772a748789c"
+    },
+    "scope": "Version, metadata and notice hashes recorded; unresolved obligations tracked separately in license-review.json"
+  },
+  "npm:js-yaml@4.3.2": {
+    "license": "MIT",
+    "notices": {
+      "npm/js-yaml/LICENSE": "a07bc24468b9654ce76a547d47a2db282d07733b715db4c73a98bd63961f9550"
+    },
+    "scope": "Version, metadata and notice hashes recorded; unresolved obligations tracked separately in license-review.json"
+  },
+  "npm:jsonfile@6.2.1": {
+    "license": "MIT",
+    "notices": {
+      "npm/jsonfile/LICENSE": "a9801fb52ba22ef808682a094da8a7a480584b7ed0dfd0d888ab543616335031"
+    },
+    "scope": "Version, metadata and notice hashes recorded; unresolved obligations tracked separately in license-review.json"
+  },
+  "npm:lazy-val@1.0.5": {
+    "license": "MIT",
+    "notices": {},
+    "scope": "Version, metadata and notice hashes recorded; unresolved obligations tracked separately in license-review.json"
+  },
+  "npm:lodash.escaperegexp@4.1.2": {
+    "license": "MIT",
+    "notices": {
+      "npm/lodash.escaperegexp/LICENSE": "ffd8b33b354585f4ce119f19c53728281e48a97b074491eb6bf6d5c5ff305272"
+    },
+    "scope": "Version, metadata and notice hashes recorded; unresolved obligations tracked separately in license-review.json"
+  },
+  "npm:lodash.isequal@4.5.0": {
+    "license": "MIT",
+    "notices": {
+      "npm/lodash.isequal/LICENSE": "e159c6d48c989185448658f276375bfb2300362ec6d4ae5525a2d49c4bcb947d"
+    },
+    "scope": "Version, metadata and notice hashes recorded; unresolved obligations tracked separately in license-review.json"
+  },
+  "npm:lucide-react@1.48.0": {
+    "license": "ISC",
+    "notices": {
+      "npm/lucide-react/LICENSE": "b495047bd93a9b06913511076f504daba17d5bbeb3e0650f3bb53a4220329c57"
+    },
+    "scope": "Version, metadata and notice hashes recorded; unresolved obligations tracked separately in license-review.json"
+  },
+  "npm:ms@2.1.3": {
+    "license": "MIT",
+    "notices": {
+      "npm/ms/license.md": "1662fae9b5314d11cf51284e2dcd1f006a354f7343f08712a730fcff9a359801"
+    },
+    "scope": "Version, metadata and notice hashes recorded; unresolved obligations tracked separately in license-review.json"
+  },
+  "npm:react@19.3.0": {
+    "license": "MIT",
+    "notices": {
+      "npm/react/LICENSE": "da6d3703ed11cbe42bd212c725957c98da23cbff1998c05fa4b3d976d1a58e93"
+    },
+    "scope": "Version, metadata and notice hashes recorded; unresolved obligations tracked separately in license-review.json"
+  },
+  "npm:react-dom@19.3.0": {
+    "license": "MIT",
+    "notices": {
+      "npm/react-dom/LICENSE": "da6d3703ed11cbe42bd212c725957c98da23cbff1998c05fa4b3d976d1a58e93"
+    },
+    "scope": "Version, metadata and notice hashes recorded; unresolved obligations tracked separately in license-review.json"
+  },
+  "npm:sax@1.6.1": {
+    "license": "BlueOak-1.0.0",
+    "notices": {
+      "npm/sax/LICENSE.md": "8a1af140fdfbf5afd3df27f7e662f989c5b963a300020dfafce42033cae9e004"
+    },
+    "scope": "Version, metadata and notice hashes recorded; unresolved obligations tracked separately in license-review.json"
+  },
+  "npm:scheduler@0.28.0": {
+    "license": "MIT",
+    "notices": {
+      "npm/scheduler/LICENSE": "da6d3703ed11cbe42bd212c725957c98da23cbff1998c05fa4b3d976d1a58e93"
+    },
+    "scope": "Version, metadata and notice hashes recorded; unresolved obligations tracked separately in license-review.json"
+  },
+  "npm:tiny-typed-emitter@2.1.0": {
+    "license": "MIT",
+    "notices": {
+      "npm/tiny-typed-emitter/LICENSE": "4b3faf884ee71eec3df920b66c98fc6618af28e824cf3a32ef3d8774048cc76d"
+    },
+    "scope": "Version, metadata and notice hashes recorded; unresolved obligations tracked separately in license-review.json"
+  },
+  "npm:universalify@2.0.1": {
+    "license": "MIT",
+    "notices": {
+      "npm/universalify/LICENSE": "3fda5977c0904e226190b4e21d64340c1731e2142d6fe5f3dee0090a216b8b63"
+    },
+    "scope": "Version, metadata and notice hashes recorded; unresolved obligations tracked separately in license-review.json"
+  },
+  "python:annotated-types@0.8.0": {
+    "license": "MIT",
+    "notices": {
+      "python/annotated-types/annotated_types-0.8.0.dist-info/licenses/LICENSE": "fe1049884b1a0d9342901e88e07f32925d24b3121d9972b6a6805fb9824b095d"
+    },
+    "scope": "Version, metadata and notice hashes recorded; unresolved obligations tracked separately in license-review.json"
+  },
+  "python:anyio@4.15.1": {
+    "license": "MIT",
+    "notices": {
+      "python/anyio/anyio-4.15.1.dist-info/licenses/LICENSE": "5361ac9dc58f2ef5fd2e9b09c68297c17f04950909bbc8023bdb82eacf22c2b0"
+    },
+    "scope": "Version, metadata and notice hashes recorded; unresolved obligations tracked separately in license-review.json"
+  },
+  "python:attrs@26.1.0": {
+    "license": "MIT",
+    "notices": {
+      "python/attrs/attrs-26.1.0.dist-info/licenses/LICENSE": "882115c95dfc2af1eeb6714f8ec6d5cbcabf667caff8729f42420da63f714e9f"
+    },
+    "scope": "Version, metadata and notice hashes recorded; unresolved obligations tracked separately in license-review.json"
+  },
+  "python:cffi@2.1.1": {
+    "license": "MIT-0",
+    "notices": {
+      "python/cffi/cffi-2.1.1.dist-info/licenses/LICENSE": "5ba24ddc57067f9249add644c3afc41a5d6dc37e23433ef759d95df370b0af63"
+    },
+    "scope": "Version, metadata and notice hashes recorded; unresolved obligations tracked separately in license-review.json"
+  },
+  "python:click@8.5.0": {
+    "license": "BSD-3-Clause",
+    "notices": {
+      "python/click/click-8.5.0.dist-info/licenses/LICENSE.txt": "9a8ad106a394e853bfe21f42f4e72d592819a22805d991b5f3275029292b658d"
+    },
+    "scope": "Version, metadata and notice hashes recorded; unresolved obligations tracked separately in license-review.json"
+  },
+  "python:cryptography@46.0.3": {
+    "license": "Apache-2.0 OR BSD-3-Clause",
+    "notices": {
+      "python/cryptography/cryptography-46.0.3.dist-info/licenses/LICENSE": "3e0c7c091a948b82533ba98fd7cbb40432d6f1a9acbf85f5922d2f99a93ae6bb",
+      "python/cryptography/cryptography-46.0.3.dist-info/licenses/LICENSE.APACHE": "aac73b3148f6d1d7111dbca32099f68d26c644c6813ae1e4f05f6579aa2663fe",
+      "python/cryptography/cryptography-46.0.3.dist-info/licenses/LICENSE.BSD": "602c4c7482de6479dd2e9793cda275e5e63d773dacd1eca689232ab7008fb4fb"
+    },
+    "scope": "Version, metadata and notice hashes recorded; unresolved obligations tracked separately in license-review.json"
+  },
+  "python:h11@0.16.0": {
+    "license": "MIT",
+    "notices": {
+      "python/h11/h11-0.16.0.dist-info/licenses/LICENSE.txt": "37db5bb85926db28a427a25867f10b1232003aea1be69ccb851138adb8e6f361"
+    },
+    "scope": "Version, metadata and notice hashes recorded; unresolved obligations tracked separately in license-review.json"
+  },
+  "python:httpcore2@2.13.1": {
+    "license": "BSD-3-Clause",
+    "notices": {
+      "python/httpcore2/httpcore2-2.13.1.dist-info/licenses/LICENSE.md": "c4df125c807b0613501e943a5c92496dd11d2c16604ce396097a8dde396304d9"
+    },
+    "scope": "Version, metadata and notice hashes recorded; unresolved obligations tracked separately in license-review.json"
+  },
+  "python:httpx2@2.13.1": {
+    "license": "BSD-3-Clause",
+    "notices": {
+      "python/httpx2/httpx2-2.13.1.dist-info/licenses/LICENSE.md": "7e7d6dbaf7fe160d39fd6e84fd02c33cab96bcbea34d36998d545bceb4a19c30"
+    },
+    "scope": "Version, metadata and notice hashes recorded; unresolved obligations tracked separately in license-review.json"
+  },
+  "python:idna@3.20": {
+    "license": "BSD-3-Clause",
+    "notices": {
+      "python/idna/idna-3.20.dist-info/licenses/LICENSE.md": "1a9a4f0e3d479a27240ddd59a9137a66ab4a0f9dfdc8ca6188cc0bfd85187f04"
+    },
+    "scope": "Version, metadata and notice hashes recorded; unresolved obligations tracked separately in license-review.json"
+  },
+  "python:jsonschema@4.26.0": {
+    "license": "MIT",
+    "notices": {
+      "python/jsonschema/jsonschema-4.26.0.dist-info/licenses/COPYING": "4f92a015a13c4d1a040bef018aa13430b4f1bc73b41b16bb846c346766de7439"
+    },
+    "scope": "Version, metadata and notice hashes recorded; unresolved obligations tracked separately in license-review.json"
+  },
+  "python:jsonschema-specifications@2025.9.1": {
+    "license": "MIT",
+    "notices": {
+      "python/jsonschema-specifications/jsonschema_specifications-2025.9.1.dist-info/licenses/COPYING": "42dcd63495f87b4eb7c7757afa379bb55a53f94afd7a5f657d9adf57236e515c"
+    },
+    "scope": "Version, metadata and notice hashes recorded; unresolved obligations tracked separately in license-review.json"
+  },
+  "python:mcp@2.2.0": {
+    "license": "MIT",
+    "notices": {
+      "python/mcp/mcp-2.2.0.dist-info/licenses/LICENSE": "5e13dbbc1d120fc2a03cecde7c91424ae2d7de11b63d58ded2f4431e261ee50d"
+    },
+    "scope": "Version, metadata and notice hashes recorded; unresolved obligations tracked separately in license-review.json"
+  },
+  "python:mcp-types@2.2.0": {
+    "license": "MIT",
+    "notices": {
+      "python/mcp-types/mcp_types-2.2.0.dist-info/licenses/LICENSE": "5e13dbbc1d120fc2a03cecde7c91424ae2d7de11b63d58ded2f4431e261ee50d"
+    },
+    "scope": "Version, metadata and notice hashes recorded; unresolved obligations tracked separately in license-review.json"
+  },
+  "python:opentelemetry-api@1.45.0": {
+    "license": "Apache-2.0",
+    "notices": {
+      "python/opentelemetry-api/opentelemetry_api-1.45.0.dist-info/licenses/LICENSE": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+    },
+    "scope": "Version, metadata and notice hashes recorded; unresolved obligations tracked separately in license-review.json"
+  },
+  "python:packaging@26.3": {
+    "license": "Apache-2.0 OR BSD-2-Clause",
+    "notices": {
+      "python/packaging/packaging-26.3.dist-info/licenses/LICENSE": "cad1ef5bd340d73e074ba614d26f7deaca5c7940c3d8c34852e65c4909686c48",
+      "python/packaging/packaging-26.3.dist-info/licenses/LICENSE.APACHE": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594",
+      "python/packaging/packaging-26.3.dist-info/licenses/LICENSE.BSD": "b70e7e9b742f1cc6f948b34c16aa39ffece94196364bc88ff0d2180f0028fac5"
+    },
+    "scope": "Version, metadata and notice hashes recorded; unresolved obligations tracked separately in license-review.json"
+  },
+  "python:psutil@7.2.2": {
+    "license": "BSD-3-Clause",
+    "notices": {
+      "python/psutil/psutil-7.2.2.dist-info/LICENSE": "c7adc4d5d1337a548b967421f1fbe258b93033a0417708fd6f4e38f8ecbceb80"
+    },
+    "scope": "Version, metadata and notice hashes recorded; unresolved obligations tracked separately in license-review.json"
+  },
+  "python:pydantic@2.13.5": {
+    "license": "MIT",
+    "notices": {
+      "python/pydantic/pydantic-2.13.5.dist-info/licenses/LICENSE": "a9e186f3ca16b5eef84318e7a701721351a00cb7b8ae3a4394b67b49e3529ef3"
+    },
+    "scope": "Version, metadata and notice hashes recorded; unresolved obligations tracked separately in license-review.json"
+  },
+  "python:pydantic_core@2.46.5": {
+    "license": "MIT",
+    "notices": {
+      "python/pydantic_core/pydantic_core-2.46.5.dist-info/licenses/LICENSE": "fbe7f615f18d135c07000e5a86325db27f42c7729699ef166ac1f7a3f4586bf4"
+    },
+    "scope": "Version, metadata and notice hashes recorded; unresolved obligations tracked separately in license-review.json"
+  },
+  "python:Pygments@2.21.0": {
+    "license": "BSD-2-Clause",
+    "notices": {
+      "python/Pygments/pygments-2.21.0.dist-info/licenses/LICENSE": "a9d66f1d526df02e29dce73436d34e56e8632f46c275bbdffc70569e882f9f17"
+    },
+    "scope": "Version, metadata and notice hashes recorded; unresolved obligations tracked separately in license-review.json"
+  },
+  "python:pyinstaller@6.18.0": {
+    "license": "GPLv2-or-later with a special exception which allows to use PyInstaller to build and distribute non-free programs (including commercial ones)",
+    "notices": {
+      "python/pyinstaller/pyinstaller-6.18.0.dist-info/licenses/COPYING.txt": "dcf75fdb959db1e3b41c0f8505069d2ece781b5ec6b3d0a4d30975cfc6580245"
+    },
+    "scope": "Version, metadata and notice hashes recorded; unresolved obligations tracked separately in license-review.json"
+  },
+  "python:pyinstaller-hooks-contrib@2026.7": {
+    "license": "See included license text",
+    "notices": {
+      "python/pyinstaller-hooks-contrib/pyinstaller_hooks_contrib-2026.7.dist-info/licenses/LICENSE": "91d0baaff00773038e72c0a1fc9d5d2d38706b7a2b9c04f34296608f931b9cd0"
+    },
+    "scope": "Version, metadata and notice hashes recorded; unresolved obligations tracked separately in license-review.json"
+  },
+  "python:pytest@9.1.1": {
+    "license": "MIT",
+    "notices": {
+      "python/pytest/pytest-9.1.1.dist-info/licenses/LICENSE": "ca836a5f9ecca3b2f350230faa20a48fb8b145653b5568d784862df864706b9b"
+    },
+    "scope": "Version, metadata and notice hashes recorded; unresolved obligations tracked separately in license-review.json"
+  },
+  "python:python-multipart@0.0.32": {
+    "license": "Apache-2.0",
+    "notices": {
+      "python/python-multipart/python_multipart-0.0.32.dist-info/licenses/LICENSE.txt": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+    },
+    "scope": "Version, metadata and notice hashes recorded; unresolved obligations tracked separately in license-review.json"
+  },
+  "python:pywin32@312": {
+    "license": "PSF",
+    "notices": {
+      "python/pywin32/win32/License.txt": "a74d826efb242db087b850348e20abbfd591b51e2081f2048735290913872924"
+    },
+    "scope": "Version, metadata and notice hashes recorded; unresolved obligations tracked separately in license-review.json"
+  },
+  "python:referencing@0.37.0": {
+    "license": "MIT",
+    "notices": {
+      "python/referencing/referencing-0.37.0.dist-info/licenses/COPYING": "42dcd63495f87b4eb7c7757afa379bb55a53f94afd7a5f657d9adf57236e515c"
+    },
+    "scope": "Version, metadata and notice hashes recorded; unresolved obligations tracked separately in license-review.json"
+  },
+  "python:rpds-py@2026.6.3": {
+    "license": "MIT",
+    "notices": {
+      "python/rpds-py/rpds_py-2026.6.3.dist-info/licenses/LICENSE": "8bcb72c82ea8ae74802293c41d93ad7d51434001b0ae45a603a5af0f507aee0a"
+    },
+    "scope": "Version, metadata and notice hashes recorded; unresolved obligations tracked separately in license-review.json"
+  },
+  "python:setuptools@84.0.0": {
+    "license": "MIT",
+    "notices": {
+      "python/setuptools/setuptools-84.0.0.dist-info/licenses/LICENSE": "86da0f01aeae46348a3c3d465195dc1ceccde79f79e87769a64b8da04b2a4741",
+      "python/setuptools/setuptools/_vendor/autocommand-2.2.2.dist-info/LICENSE": "ade78d04982d69972d444a8e14a94f87a2334dd3855cc80348ea8e240aa0df2d",
+      "python/setuptools/setuptools/_vendor/backports.tarfile-1.2.0.dist-info/LICENSE": "86da0f01aeae46348a3c3d465195dc1ceccde79f79e87769a64b8da04b2a4741",
+      "python/setuptools/setuptools/_vendor/importlib_metadata-8.7.1.dist-info/licenses/LICENSE": "458502e12d97bbf64438606a20044aa85eb05fb0a8a807bb35dbec253fd1fc04",
+      "python/setuptools/setuptools/_vendor/jaraco.text-4.0.0.dist-info/LICENSE": "86da0f01aeae46348a3c3d465195dc1ceccde79f79e87769a64b8da04b2a4741",
+      "python/setuptools/setuptools/_vendor/jaraco_context-6.1.0.dist-info/licenses/LICENSE": "9755a18519666e5f0f4cae3daad3d7012bcae48a600b31237d75e9fe134e6683",
+      "python/setuptools/setuptools/_vendor/jaraco_functools-4.4.0.dist-info/licenses/LICENSE": "5a57cb4db85e2a2dd88c290628908add57e3451449e0a9a71fdfb38776fd759d",
+      "python/setuptools/setuptools/_vendor/more_itertools-10.8.0.dist-info/licenses/LICENSE": "09f1c8c9e941af3e584d59641ea9b87d83c0cb0fd007eb5ef391a7e2643c1a46",
+      "python/setuptools/setuptools/_vendor/packaging-26.0.dist-info/licenses/LICENSE": "cad1ef5bd340d73e074ba614d26f7deaca5c7940c3d8c34852e65c4909686c48",
+      "python/setuptools/setuptools/_vendor/packaging-26.0.dist-info/licenses/LICENSE.APACHE": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594",
+      "python/setuptools/setuptools/_vendor/packaging-26.0.dist-info/licenses/LICENSE.BSD": "b70e7e9b742f1cc6f948b34c16aa39ffece94196364bc88ff0d2180f0028fac5",
+      "python/setuptools/setuptools/_vendor/platformdirs-4.4.0.dist-info/licenses/LICENSE": "29e0fd62e929850e86eb28c3fdccf0cefdf4fa94879011cffb3d0d4bed6d4db6",
+      "python/setuptools/setuptools/_vendor/tomli-2.4.0.dist-info/licenses/LICENSE": "b80816b0d530b8accb4c2211783790984a6e3b61922c2b5ee92f3372ab2742fe",
+      "python/setuptools/setuptools/_vendor/wheel-0.46.3.dist-info/licenses/LICENSE.txt": "30c23618679108f3e8ea1d2a658c7ca417bdfc891c98ef1a89fa4ff0c9828654",
+      "python/setuptools/setuptools/_vendor/zipp-3.23.0.dist-info/licenses/LICENSE": "5a57cb4db85e2a2dd88c290628908add57e3451449e0a9a71fdfb38776fd759d",
+      "python/setuptools/setuptools/config/NOTICE": "2dddf08818297a3b89d43d95ff659d8da85741108c9136dfa3a4d856c0623bd8",
+      "python/setuptools/setuptools/config/_validate_pyproject/NOTICE": "09c9bcea95ca086f8bc5bed174e40bc835b297d40fb5f86bbbb570fe0a5581a7"
+    },
+    "scope": "Version, metadata and notice hashes recorded; unresolved obligations tracked separately in license-review.json"
+  },
+  "python:sse-starlette@3.4.11": {
+    "license": "BSD-3-Clause",
+    "notices": {
+      "python/sse-starlette/sse_starlette-3.4.11.dist-info/licenses/LICENSE": "80af6bfccbebd2c14d4aab96695cab9950e177190cc80f5ef819e99996883e8e"
+    },
+    "scope": "Version, metadata and notice hashes recorded; unresolved obligations tracked separately in license-review.json"
+  },
+  "python:starlette@1.7.0": {
+    "license": "BSD-3-Clause",
+    "notices": {
+      "python/starlette/starlette-1.7.0.dist-info/licenses/LICENSE.md": "dcb95677a02240243187e964f941847d19b17821cf99e5afae684fab328c19bf"
+    },
+    "scope": "Version, metadata and notice hashes recorded; unresolved obligations tracked separately in license-review.json"
+  },
+  "python:truststore@0.10.4": {
+    "license": "MIT",
+    "notices": {
+      "python/truststore/truststore-0.10.4.dist-info/licenses/LICENSE": "33be7b7e8fa4fd19b1760e1a8ed8a668bdab852c91b692dd41424bcb725a9fca"
+    },
+    "scope": "Version, metadata and notice hashes recorded; unresolved obligations tracked separately in license-review.json"
+  },
+  "python:typing-inspection@0.4.4": {
+    "license": "MIT",
+    "notices": {
+      "python/typing-inspection/typing_inspection-0.4.4.dist-info/licenses/LICENSE": "804b59b25f2c31bd278f9202a19ae49a3945aa2664387e2d0a128c7cacc61ec3"
+    },
+    "scope": "Version, metadata and notice hashes recorded; unresolved obligations tracked separately in license-review.json"
+  },
+  "python:typing_extensions@4.16.0": {
+    "license": "PSF-2.0",
+    "notices": {
+      "python/typing_extensions/typing_extensions-4.16.0.dist-info/licenses/LICENSE": "3b2f81fe21d181c499c59a256c8e1968455d6689d269aa85373bfb6af41da3bf"
+    },
+    "scope": "Version, metadata and notice hashes recorded; unresolved obligations tracked separately in license-review.json"
+  },
+  "python:uvicorn@0.54.0": {
+    "license": "BSD-3-Clause",
+    "notices": {
+      "python/uvicorn/uvicorn-0.54.0.dist-info/licenses/LICENSE.md": "efe1acf3e62fb99c288b0ec73e5a773b7268ef4320fe757ea994214e4b63c371"
+    },
+    "scope": "Version, metadata and notice hashes recorded; unresolved obligations tracked separately in license-review.json"
+  },
+  "python:zstandard@0.25.0": {
+    "license": "BSD-3-Clause",
+    "notices": {
+      "python/zstandard/zstandard-0.25.0.dist-info/licenses/LICENSE": "c15b28f8866500bd3d607c739e87710aa5c47627aa30a0573948414564ff1da2"
+    },
+    "scope": "Version, metadata and notice hashes recorded; unresolved obligations tracked separately in license-review.json"
+  },
+  "npm:@noteford/lazy@1.0.6": {
+    "license": "MIT",
+    "notices": {
+      "npm/lazy-val/LICENSE": "a58c30fdb20e683bba7bfb07e2dd3957dcb1697c0a56394070e2ea3c7e78153a"
+    }
+  },
+  "python:opentelemetry-api@1.45.1": {
+    "license": "Apache-2.0",
+    "notices": {
+      "python/opentelemetry-api/opentelemetry_api-1.45.1.dist-info/licenses/LICENSE": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+    }
+  },
+  "python:pydantic@2.14.0": {
+    "license": "MIT",
+    "notices": {
+      "python/pydantic/pydantic-2.14.0.dist-info/licenses/LICENSE": "a9e186f3ca16b5eef84318e7a701721351a00cb7b8ae3a4394b67b49e3529ef3"
+    }
+  },
+  "python:pydantic_core@2.50.0": {
+    "license": "MIT",
+    "notices": {
+      "python/pydantic_core/pydantic_core-2.50.0.dist-info/licenses/LICENSE": "fbe7f615f18d135c07000e5a86325db27f42c7729699ef166ac1f7a3f4586bf4"
+    }
+  },
+  "python:pyinstaller-hooks-contrib@2026.8": {
+    "license": "See included license text",
+    "notices": {
+      "python/pyinstaller-hooks-contrib/pyinstaller_hooks_contrib-2026.8.dist-info/licenses/LICENSE": "91d0baaff00773038e72c0a1fc9d5d2d38706b7a2b9c04f34296608f931b9cd0"
+    }
+  },
+  "python:rpds-py@2026.9.1": {
+    "license": "MIT",
+    "notices": {
+      "python/rpds-py/rpds_py-2026.9.1.dist-info/licenses/LICENSE": "8bcb72c82ea8ae74802293c41d93ad7d51434001b0ae45a603a5af0f507aee0a"
+    }
+  },
+  "python:sse-starlette@3.5.0": {
+    "license": "BSD-3-Clause",
+    "notices": {
+      "python/sse-starlette/sse_starlette-3.5.0.dist-info/licenses/LICENSE": "80af6bfccbebd2c14d4aab96695cab9950e177190cc80f5ef819e99996883e8e"
+    }
+  }
+}

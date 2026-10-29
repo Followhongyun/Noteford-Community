@@ -1,0 +1,8 @@
+{
+  "version": "44.4.3",
+  "archive_sha256": "790a355b684d5c7cc8dc3cdd8c4cca7c4b2d054685427c7554a956879a82e70b",
+  "ffmpeg_sha256": "6c6bca4e7d14df5429fc0392d2613662b5a585133681e285dbaeefe4f90fcad3",
+  "electron_sha256": "bf0fe749904ca9f713ccfb2427c519fa39d0bbd0337ba411ba08785802e8d548",
+  "dynamic_ffmpeg_import": true,
+  "source": "https://github.com/electron/electron/releases/download/v44.4.3/SHASUMS256.txt"
+}

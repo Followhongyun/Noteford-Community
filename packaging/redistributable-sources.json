@@ -1,0 +1,41 @@
+{
+  "electron_version": "44.9.1",
+  "chromium_version": "152.0.7977.167",
+  "files": [
+    {
+      "file": "ffmpeg-2b68d2babae73714846961fb0ee47e3b3d2e39a9.tar.gz",
+      "url": "https://chromium.googlesource.com/chromium/third_party/ffmpeg/+archive/2b68d2babae73714846961fb0ee47e3b3d2e39a9.tar.gz",
+      "sha256": "ac4c64aa6df406733d330f0bd8a117d07e7dc02183ed01ca8cd111a76828e3d2"
+    },
+    {
+      "file": "electron-v44.9.1.tar.gz",
+      "url": "https://codeload.github.com/electron/electron/tar.gz/refs/tags/v44.9.1",
+      "sha256": "ce2f596fd3702186a5cca0192088fb9ddc14a926c2a4d37664b1caea56a36dcd"
+    },
+    {
+      "file": "opus-chromium-152.0.7977.167.tar.gz",
+      "url": "https://chromium.googlesource.com/chromium/src/+archive/152.0.7977.167/third_party/opus.tar.gz",
+      "sha256": "cff42491a5ee4bd4c84d6a0731f19952dae3d191422e9d68529ea565f00931da"
+    },
+    {
+      "file": "stdutils-1.14.tar.gz",
+      "url": "https://codeload.github.com/lordmulder/stdutils/tar.gz/refs/tags/1.14",
+      "sha256": "4fb469e7e962ddf9cc83bc22fcca71d34009ae5ff6efdaef37591b771ef8f0ca"
+    },
+    {
+      "file": "Nsis7z_19.00.7z",
+      "url": "https://nsis.sourceforge.io/mediawiki/images/6/69/Nsis7z_19.00.7z",
+      "sha256": "6f2f3730049926f40442ee0c8b7d3e3dee7ace544d82467ff8059ea3f4201c58"
+    },
+    {
+      "file": "7z1900-src.7z",
+      "url": "https://www.7-zip.org/a/7z1900-src.7z",
+      "sha256": "9ba70a5e8485cf9061b30a2a84fe741de5aeb8dd271aab8889da0e9b3bf1868e"
+    },
+    {
+      "file": "UAC.zip",
+      "url": "https://nsis.sourceforge.io/mediawiki/images/8/8f/UAC.zip",
+      "sha256": "20e3192af5598568887c16d88de59a52c2ce4a26e42c5fb8bee8105dcbbd1760"
+    }
+  ]
+}

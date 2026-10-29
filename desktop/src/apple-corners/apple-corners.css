@@ -1,0 +1,26 @@
+/* All authored radii are the source of truth. Border-image paints the exact
+   cached macOS continuous / fallback G3 contour without adding DOM wrappers, changing borders' layout
+   widths, or clipping focus rings / overflowing menus. The native background
+   is retained as a CSS value (including hover transitions), but only paints
+   behind text, underneath the G3 border-image fill. */
+[data-apple-corners] {
+  background-clip: text !important;
+  -webkit-background-clip: text !important;
+  border-image-source: var(--apple-corner-paint) !important;
+  border-image-slice: 0 fill !important;
+  border-image-width: 0 !important;
+  border-image-outset: 0 !important;
+  border-image-repeat: stretch !important;
+}
+
+/* Only surfaces that already clip content get a contour mask. Native shadows
+   retain their original CSS rendering and parameters; we do not claim those
+   shadows have undergone a G3 contour migration. */
+[data-apple-clip] {
+  border-radius: 0 !important;
+  mask-image: var(--apple-corner-mask);
+  mask-repeat: no-repeat;
+  mask-size: 100% 100%;
+  mask-origin: border-box;
+  mask-clip: border-box;
+}

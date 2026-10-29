@@ -1,0 +1,8 @@
+{
+  "name": "@noteford/lazy",
+  "version": "1.0.6",
+  "private": true,
+  "main": "index.cjs",
+  "license": "MIT",
+  "description": "Noteford independent lazy-value adapter for electron-updater"
+}

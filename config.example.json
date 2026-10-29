@@ -1,0 +1,9 @@
+{
+  "wechat_roots": [],
+  "voice_decoder_path": null,
+  "parse_stickers": true,
+  "auto_refresh_interval_seconds": 300,
+  "signal_refresh_overlap_seconds": 3600,
+  "overlap_local_ids": 200,
+  "allow_memory_rescan": true
+}

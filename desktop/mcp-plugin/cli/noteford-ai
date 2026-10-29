@@ -1,0 +1,39 @@
+#!/bin/sh
+# Public macOS AI entry. Both transports use the app's read-only MCP service.
+# exec preserves the actual caller identity for native pairing.
+set -eu
+
+action=${1:-help}
+case "$action" in
+  help|-h|--help)
+    cat <<'HELP'
+Noteford AI (macOS)
+
+  noteford-ai connect --client-name <AI product>
+  noteford-ai tools   --client-name <AI product>
+  noteford-ai call    --client-name <AI product> --tool <tool>
+  noteford-ai mcp     --client-name <AI product>
+
+call reads one JSON object from stdin and returns an MCP result as JSON.
+Check isError and structuredContent; exit status alone does not prove success.
+mcp serves standard MCP over stdio; use tools/list and tools/call.
+Enable local AI direct reading in Noteford once, or approve individual clients.
+No Skill or Python install needed.
+Open Noteford first. Set NOTEFORD_APP_PATH only for a different app location.
+HELP
+    exit 0 ;;
+  connect|tools|call|mcp) shift ;;
+  *) printf '%s\n' '{"ok":false,"error":"unknown_action"}' >&2; exit 2 ;;
+esac
+
+app_path=${NOTEFORD_APP_PATH:-/Applications/Noteford.app}
+service="$app_path/Contents/Resources/service/noteford-service"
+if [ ! -x "$service" ]; then
+  printf '%s\n' '{"ok":false,"error":"app_missing","message":"请安装 Noteford，或用 NOTEFORD_APP_PATH 指定应用位置。"}' >&2
+  exit 2
+fi
+
+if [ "$action" = mcp ]; then
+  exec "$service" --mcp-auto "$@"
+fi
+exec "$service" --mcp-skill --action "$action" "$@"

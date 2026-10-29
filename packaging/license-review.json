@@ -1,0 +1,30 @@
+{
+  "review_date": "2026-10-11",
+  "scope": "Copyright-license distribution review of the pinned Windows x64 application. Does not determine codec patents, platform terms, user data rights or general legal compliance.",
+  "unresolved": [],
+  "external_not_bundled": [
+    "Local D:/ffmpeg build 2024-04-07 uses --enable-gpl --enable-version3 and is invoked as an external process; not included by current package configuration. Do not bundle it without corresponding-source and license compliance.",
+    "SILK external decoder was researched but is not included. No commercial-clearance claim is made for Skype SILK SDK.",
+    "Laya was used historically; it is absent from current source, requirements-build and frozen-service dependency analysis. No model weights are included by the current package configuration."
+  ],
+  "source_reference_review": "Compared current Python source with local wechatauto-replica, wx-cli and WeChatBridge: no exact normalized 10-line matches. This is a limited similarity check, not proof of independent authorship. Preserve reference licenses and provenance in NOTICE.md. PadChat-SDK public field documentation was researched; no SDK runtime dependency identified.",
+  "native_review": "Version-matched cryptography 46.0.3, pydantic_core 2.50.0 and rpds-py 2026.9.1 locks collected, retaining previous notices as a conservative superset of 176 Rust crates. Non-Windows r-efi/wit-bindgen-rt exclusion unchanged. All reviewed license expressions provide permissive choices; retain Unicode companion notices.",
+  "resolved": [
+    {
+      "item": "lazy-val",
+      "resolution": "Replaced by independently implemented @noteford/lazy 1.0.6, locally packed under MIT. Root file dependency satisfies consumers. Real updater configuration reload and rollout ID integration tested; afterPack verifies packaged identity/source and excludes upstream implementation."
+    },
+    {
+      "item": "Electron FFmpeg LGPL",
+      "resolution": "Official ZIP checksum and unchanged DLL verified. PE imports confirm dynamically loaded ffmpeg.dll. Version-matched FFmpeg/Electron source, Chrome/win/x64 config with GPL/NONFREE/VERSION3=0, sole macOS patch, complete notices, rebuild/replacement instructions and explicit LGPL reverse-engineering rights included. Installer preserves independently replaceable DLL; afterPack pins reviewed original binary, not user runtime."
+    },
+    {
+      "item": "Microsoft runtime",
+      "resolution": "Original Python Windows license retained. DISTRIBUTION-TERMS.txt requires notice preservation, Microsoft-only platforms, no misleading trademarks or unlawful software and downstream agreement; applies Microsoft-specific restrictions only to that code and preserves LGPL rights. NSIS license page requires acceptance; silent deployers must obtain end-user agreement."
+    },
+    {
+      "item": "Installer components",
+      "resolution": "NSIS COPYING and unmodified UAC zlib license retained. StdUtils 1.14 source, LGPL and proprietary-installer clarification included. Actual Nsis7z 19.00 DLL byte-matches official source/binary bundle; full matching 7-Zip source/license included. WinShell has unclear freeware redistribution text: remove ten optional shell-history/unpin/shortcut-AppUserModelID calls, retain normal shortcut deletion. Exclude untraced elevate.exe; restrict installer to current user (allowElevation=false, perMachine=false, packElevateHelper=false)."
+    }
+  ]
+}

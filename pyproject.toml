@@ -1,0 +1,20 @@
+[project]
+license = "AGPL-3.0-only"
+name = "noteford"
+version = "0.1.5"
+description = "Read-only Windows WeChat 4.x database snapshot and offline decryption toolkit."
+requires-python = ">=3.11"
+dependencies = [
+  "cryptography>=42",
+  "mcp==2.2.0",
+  "psutil>=5.9",
+  "zstandard>=0.23",
+  "truststore==0.10.4",
+  "certifi==2026.10.19; sys_platform != 'darwin'",
+]
+
+[project.scripts]
+noteford = "noteford.cli:main"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

@@ -1,0 +1,10 @@
+ 'use strict';
+const fs=require('node:fs'),path=require('node:path');
+const {spawn}=require('node:child_process');
+const desktop=path.resolve(__dirname,'..');
+const {cache}=require('./source-runtime.cjs').sourceLayout(desktop);
+fs.mkdirSync(cache,{recursive:true});
+const output=fs.openSync(path.join(cache,'startup.log'),'a');
+const child=spawn(process.execPath,[path.join(__dirname,'local-live.cjs')],{cwd:desktop,detached:true,stdio:['ignore',output,output]});
+child.on('error',error=>fs.appendFileSync(path.join(cache,'startup.log'),error.message+'\n'));
+child.unref();fs.closeSync(output);
