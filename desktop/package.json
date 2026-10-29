@@ -185,5 +185,8 @@
   "optionalDependencies": {
     "koffi": "^2.14.1"
   },
-  "license": "AGPL-3.0-only"
+  "license": "AGPL-3.0-only",
+  "overrides": {
+    "duplexer2": "0.1.4"
+  }
 }
