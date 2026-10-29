@@ -26,7 +26,7 @@ if (-not (Test-Path -LiteralPath (Join-Path $desktopRoot 'node_modules\.bin\elec
     throw "Desktop dependencies are missing. Run node scripts/install-dependencies.cjs in $desktopRoot."
 }
 
-$listener = Get-NetTCPConnection -LocalPort 5173 -State Listen -ErrorAction SilentlyContinue |
+$listener = Get-NetTCPConnection -LocalPort 5187 -State Listen -ErrorAction SilentlyContinue |
     Where-Object { $_.LocalAddress -eq '127.0.0.1' } |
     Select-Object -First 1
 if ($listener) {
@@ -52,7 +52,7 @@ if ($listener) {
         return
     }
 
-    throw "Port 5173 is in use and no running Noteford Dev window was found. Process ID: $($listener.OwningProcess)."
+    throw "Port 5187 is in use and no running Noteford Dev window was found. Process ID: $($listener.OwningProcess)."
 }
 
 $env:NOTEFORD_PYTHON = $pythonPath

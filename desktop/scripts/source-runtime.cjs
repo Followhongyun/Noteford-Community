@@ -4,7 +4,7 @@ const {createHash,randomUUID}=require('node:crypto');
 const {execFileSync}=require('node:child_process');
 function sourceLayout(desktop,platform=process.platform,home=os.homedir()){
   const project=path.dirname(desktop);
-  const cache=path.join(home,'Library','Caches','Noteford','Source',createHash('sha256').update(project).digest('hex').slice(0,12));
+  const cache=path.join(home,'Library','Caches','Noteford Community','Source',createHash('sha256').update(project).digest('hex').slice(0,12));
   return {project,data:path.join(project,'Data'),cache,python:path.join(project,'.venv-build',platform==='win32'?'Scripts/python.exe':'bin/python3')};
 }
 /** A source-only Electron runtime. Never modifies /Applications or stored credentials. */
@@ -28,12 +28,12 @@ function prepareSourceRuntime(desktop,cache){
   const info=path.join(target,'Contents/Info.plist');
   // Chromium safeStorage derives its macOS keychain service from CFBundleName.
   // Keep the executable named Electron so this remains an unpackaged source runtime.
-  execFileSync('/usr/libexec/PlistBuddy',['-c','Set :CFBundleIdentifier com.followhongyun.noteford',info]);
-  execFileSync('/usr/libexec/PlistBuddy',['-c','Set :CFBundleDisplayName Noteford 开发版',info]);
-  execFileSync('/usr/libexec/PlistBuddy',['-c','Set :CFBundleName Noteford',info]);
+  execFileSync('/usr/libexec/PlistBuddy',['-c','Set :CFBundleIdentifier com.followhongyun.noteford.community',info]);
+  execFileSync('/usr/libexec/PlistBuddy',['-c','Set :CFBundleDisplayName Noteford 开源版',info]);
+  execFileSync('/usr/libexec/PlistBuddy',['-c','Set :CFBundleName Noteford Community',info]);
   fs.copyFileSync(path.join(desktop,'assets/noteford.icns'),path.join(target,'Contents/Resources/electron.icns'));
   signer.signMacApp(target,{teamId:policy.notefordMacSigningTeamId,env:{...process.env,CSC_NAME:identity}});
-  fs.writeFileSync(path.join(staging,'ready.json'),JSON.stringify({source:original,identifier:'com.followhongyun.noteford'}));
+  fs.writeFileSync(path.join(staging,'ready.json'),JSON.stringify({source:original,identifier:'com.followhongyun.noteford.community'}));
   fs.renameSync(staging,directory);return binary;
 }
 function prepareSourcePython(desktop,cache,python){
@@ -54,7 +54,7 @@ function prepareSourcePython(desktop,cache,python){
   fs.writeFileSync(path.join(staging,'pyvenv.cfg'),config);
   fs.symlinkSync(path.join(venv,'lib'),path.join(staging,'lib'),'dir');
   // Same designated identity as the released service; no copying or exporting secrets.
-  execFileSync('/usr/bin/codesign',['--force','--sign',identity,'--identifier','noteford-service','--options','runtime','--timestamp','--entitlements',path.join(desktop,'entitlements.mac.plist'),path.join(staging,'bin/python3')],{stdio:'pipe'});
+  execFileSync('/usr/bin/codesign',['--force','--sign',identity,'--identifier','noteford-community-service','--options','runtime','--timestamp','--entitlements',path.join(desktop,'entitlements.mac.plist'),path.join(staging,'bin/python3')],{stdio:'pipe'});
   execFileSync('/usr/bin/codesign',['--verify','--strict',path.join(staging,'bin/python3')],{stdio:'pipe'});
   fs.renameSync(staging,directory);return binary;
 }

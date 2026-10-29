@@ -519,16 +519,16 @@ test('full disk grant opens AllFiles and reveals Noteford without making the car
   const urls = [];
   const revealed = [];
   const result = mac.presentFullDiskGrant({
-    current: 'not_determined', execPath: '/Applications/Noteford.app/Contents/MacOS/Noteford',
-    exists: candidate => candidate === '/Applications/Noteford.app',
+    current: 'not_determined', execPath: '/Applications/Noteford 开源版.app/Contents/MacOS/Noteford',
+    exists: candidate => candidate === '/Applications/Noteford 开源版.app',
     openSettings: url => urls.push(url), revealApp: file => revealed.push(file),
   });
   assert.deepEqual(urls, [seam.SETTINGS_URLS.full_disk]);
-  assert.deepEqual(revealed, ['/Applications/Noteford.app']);
+  assert.deepEqual(revealed, ['/Applications/Noteford 开源版.app']);
   assert.equal(result.status, 'not_granted');
   assert.match(result.guidance, /点「\+」/);
   assert.match(result.guidance, /重启/);
-  assert.deepEqual(mac.revealAppArguments('/dev/Electron.app/Contents/MacOS/Electron', () => true), ['-R', '/Applications/Noteford.app']);
+  assert.deepEqual(mac.revealAppArguments('/dev/Electron.app/Contents/MacOS/Electron', () => true), ['-R', '/Applications/Noteford 开源版.app']);
   assert.equal(mac.revealAppArguments('/dev/Electron.app/Contents/MacOS/Electron', () => false), null);
   assert.equal(seam.fullDiskStatus([{ id: 'wechat_protected', result: 'ok' }, { id: 'tcc', result: 'denied' }]), 'denied');
   assert.equal(seam.fullDiskStatus([{ id: 'wechat_protected', result: 'ok' }]), 'not_determined');
@@ -652,13 +652,13 @@ test('grant surfaces Settings when the prompt does not finish, and stays quiet w
   assert.deepEqual(closed, [seam.SETTINGS_URLS.automation]);
   assert.deepEqual(focuses, [false]);
   assert.deepEqual(
-    mac.revealAppArguments(path.join('/Applications/Noteford.app/Contents/MacOS/Noteford'), () => false),
-    ['-R', path.join('/Applications/Noteford.app')],
+    mac.revealAppArguments(path.join('/Applications/Noteford 开源版.app/Contents/MacOS/Noteford'), () => false),
+    ['-R', path.join('/Applications/Noteford 开源版.app')],
   );
   assert.equal(mac.revealAppArguments('/usr/bin/node', () => false), null);
   assert.equal(
-    mac.packagedModulePath(path.join('/Applications/Noteford.app/Contents/Resources/app.asar/node_modules/koffi/index.js'), candidate => candidate.includes('app.asar.unpacked')),
-    path.join('/Applications/Noteford.app/Contents/Resources/app.asar.unpacked/node_modules/koffi/index.js'),
+    mac.packagedModulePath(path.join('/Applications/Noteford 开源版.app/Contents/Resources/app.asar/node_modules/koffi/index.js'), candidate => candidate.includes('app.asar.unpacked')),
+    path.join('/Applications/Noteford 开源版.app/Contents/Resources/app.asar.unpacked/node_modules/koffi/index.js'),
   );
   assert.equal(mac.packagedModulePath('/workspace/node_modules/koffi/index.js', () => false), '/workspace/node_modules/koffi/index.js');
 });

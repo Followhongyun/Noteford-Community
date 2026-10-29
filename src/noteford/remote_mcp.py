@@ -79,7 +79,7 @@ def _dpapi(data: bytes, protect: bool) -> bytes:
     ebuf = ctypes.create_string_buffer(entropy_raw, len(entropy_raw))
     entropy = BLOB(len(entropy_raw), ctypes.cast(ebuf, ctypes.POINTER(ctypes.c_char)))
     fn = crypt32.CryptProtectData if protect else crypt32.CryptUnprotectData
-    args = ((ctypes.byref(blob_in), "Noteford", ctypes.byref(entropy), None, None, 0x1, ctypes.byref(blob_out))
+    args = ((ctypes.byref(blob_in), "Noteford Community", ctypes.byref(entropy), None, None, 0x1, ctypes.byref(blob_out))
             if protect else
             (ctypes.byref(blob_in), None, ctypes.byref(entropy), None, None, 0x1, ctypes.byref(blob_out)))
     if not fn(*args):
@@ -113,7 +113,7 @@ class RemoteStore:
 
     def __init__(self, path: Path, key: bytes):
         self.path = path
-        from .product_workspace import WorkspaceAccess
+        from .workspace_access import WorkspaceAccess
         self.workspace_access = WorkspaceAccess(path.parent.parent)
         self._aead = AESGCM(key)
         self._mac_key = hashlib.sha256(b"noteford-mac|" + key).digest()

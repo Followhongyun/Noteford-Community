@@ -1089,7 +1089,7 @@ class MultiLibraryApi:
         return [self._enrich_library(record) for record in self._active_records()]
 
     def discover_candidates(self, wechat_root: str | None = None) -> list[dict]:
-        from .product_workspace import require_source
+        from .workspace_access import require_source
         if wechat_root:
             require_source(Path(self.root_config['project_root']), Path(wechat_root))
         if os.environ.get('NOTEFORD_SMOKE') == '1':
@@ -1107,7 +1107,7 @@ class MultiLibraryApi:
                 if wechat_root
                 else candidate_roots(self.root_config.get("wechat_roots") or [])
             )
-            from .product_workspace import source_allowed
+            from .workspace_access import source_allowed
             roots = [root for root in roots if source_allowed(Path(self.root_config['project_root']), root)]
             rows = scan_library_candidates(roots)
         with self._lock:
@@ -1152,7 +1152,7 @@ class MultiLibraryApi:
         return self._enrich_library(record)
 
     def discover_libraries(self, wechat_root: str | None = None) -> list[dict]:
-        from .product_workspace import require_source
+        from .workspace_access import require_source
         if wechat_root:
             require_source(Path(self.root_config['project_root']), Path(wechat_root))
         from .platform_seam import discover_library_candidates, library_source_kind, register_discovered_library
@@ -1333,7 +1333,7 @@ class MultiLibraryApi:
 
 
 def make_handler(api, token: str):
-    from .product_workspace import WorkspaceAccess
+    from .workspace_access import WorkspaceAccess
     root_config = getattr(api, 'root_config', getattr(api, 'config', {}))
     workspace_access = WorkspaceAccess(Path(root_config.get('project_root', '.')))
     from .mcp_sync import SyncRequests
@@ -1349,7 +1349,7 @@ def make_handler(api, token: str):
             try:
                 workspace_access.check()
             except PermissionError:
-                status, payload = HTTPStatus.UNAUTHORIZED, {'ok': False, 'error': 'product_workspace_locked'}
+                status, payload = HTTPStatus.UNAUTHORIZED, {'ok': False, 'error': 'workspace_locked'}
             body = json.dumps(payload, ensure_ascii=False, separators=(",", ":")).encode("utf-8")
             self.send_response(status)
             self.send_header("Content-Type", "application/json; charset=utf-8")
@@ -1401,19 +1401,6 @@ def make_handler(api, token: str):
                 self._json(HTTPStatus.OK, {"ok": True})
                 return
             if not self._require_auth():
-                return
-            if parsed.path == '/api/v2/nexus/outbox':
-                from .nexus_outbox import owner_scope, pending
-                scope = owner_scope(workspace_access.root / 'placeholder')
-                if not scope:
-                    self._json(403, {'ok': False, 'error': 'product_account_required'})
-                    return
-                tasks = []
-                for record in api.registry.list():
-                    tasks.extend(pending(api.registry.context(record.id).index_path, scope[1], 50 - len(tasks)))
-                    if len(tasks) >= 50:
-                        break
-                self._json(200, {'ok': True, 'tasks': tasks})
                 return
             if parsed.path == "/api/v1/mac/wechat":
                 from .mac_entry import route_status
@@ -1593,23 +1580,12 @@ def make_handler(api, token: str):
 
 
 
-            if parsed.path == '/api/v2/nexus/ack':
-                from .nexus_outbox import owner_scope, acknowledge
-                scope = owner_scope(workspace_access.root / 'placeholder')
-                task_id = payload_json.get('task_id')
-                if not scope or not isinstance(task_id, str) or len(task_id) != 36:
-                    self._json(400, {'ok': False, 'error': 'invalid_request'})
-                    return
-                for record in api.registry.list():
-                    acknowledge(api.registry.context(record.id).index_path, scope[1], task_id)
-                self._json(200, {'ok': True})
-                return
             if parsed.path in {"/api/v1/mac/wechat", "/api/v1/mac/auto-capture"}:
-                from .product_workspace import validate_capture_paths
+                from .workspace_access import validate_capture_paths
                 try:
                     validate_capture_paths(payload_json, workspace_access.root, public=True)
                 except PermissionError:
-                    self._json(HTTPStatus.FORBIDDEN, {'ok': False, 'error': 'product_workspace_paths_managed'})
+                    self._json(HTTPStatus.FORBIDDEN, {'ok': False, 'error': 'workspace_paths_managed'})
                     return
             if parsed.path == "/api/v1/mac/wechat":
                 from .mac_entry import route_action
@@ -1922,9 +1898,6 @@ def _serve(config_path: Path, port: int, token_file: Path) -> None:
 
 
 def main() -> int:
-    if len(sys.argv) > 1 and sys.argv[1] == "--uninstall-mac":
-        from .mac_uninstall import run
-        return run(sys.argv[2:])
     if len(sys.argv) > 1 and sys.argv[1] in ('--mcp-skill', '--mcp-auto'):
         from .skill_connection import run
         return run(sys.argv[2:], serve=sys.argv[1] == '--mcp-auto')

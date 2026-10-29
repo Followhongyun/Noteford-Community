@@ -74,7 +74,7 @@ def test_windows_kind_and_discovery_path_stay_put():
     assert library_source_kind("win32") == "wechat_files"
     assert library_source_kind("linux") == "wechat_files"
     assert decrypted_archive_root("win32", home=home) is None
-    assert mcp_discovery_file("win32", home=home, local_app_data=local) == local / "Noteford" / "connection.json"
+    assert mcp_discovery_file("win32", home=home, local_app_data=local) == local / "Noteford Community" / "connection.json"
     assert client_script_name("win32") == "noteford.ps1"
     assert service_command_acceptable(
         Path("C:/Program Files/Noteford/Noteford.exe"),
@@ -92,13 +92,13 @@ def test_windows_kind_and_discovery_path_stay_put():
 def test_macos_discovery_service_and_archive_root():
     home = Path("/Users/example")
     assert library_source_kind("darwin") == "decrypted_archive"
-    assert decrypted_archive_root("darwin", home=home) == home / "Noteford" / "Data" / "data" / "decrypted"
+    assert decrypted_archive_root("darwin", home=home) == home / "Noteford Community" / "Data" / "data" / "decrypted"
     assert mcp_discovery_file("darwin", home=home) == (
-        home / "Library" / "Application Support" / "Noteford" / "connection.json"
+        home / "Library" / "Application Support" / "Noteford Community" / "connection.json"
     )
     assert client_script_name("darwin") == "noteford.sh"
-    app = home / "Applications" / "Noteford.app" / "Contents" / "MacOS" / "Noteford"
-    binary = home / "Applications" / "Noteford.app" / "Contents" / "Resources" / "service" / "noteford-service"
+    app = home / "Applications" / "Noteford 开源版.app" / "Contents" / "MacOS" / "Noteford Community"
+    binary = home / "Applications" / "Noteford 开源版.app" / "Contents" / "Resources" / "service" / "noteford-service"
     assert service_command_acceptable(app, binary, platform="darwin")
     python = home / "venv" / "bin" / "python3"
     assert service_command_acceptable(app, python, platform="darwin", args=["-m", "noteford.service"])

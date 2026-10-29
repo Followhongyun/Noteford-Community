@@ -832,7 +832,7 @@ def test_restore_original_deletes_copy_and_legacy_leftovers(tmp_path: Path):
 
     official = tmp_path / "Applications" / "WeChat.app"
     _write_wechat(official, _macho())
-    state = tmp_path / "home" / "Noteford" / "Data" / "keycap"
+    state = tmp_path / "home" / "Noteford Community" / "Data" / "keycap"
     actions = FakePrepare()
     prepare_copy(official, state, actions, signature_text=OFFICIAL_SIG)
     shadow = shadow_app(state)
@@ -842,9 +842,9 @@ def test_restore_original_deletes_copy_and_legacy_leftovers(tmp_path: Path):
     disabled.mkdir()
     (disabled / "old").write_text("stale", encoding="utf-8")
     home = tmp_path / "home"
-    old_app = home / "Noteford" / "应用" / "WeChat.app"
+    old_app = home / "Noteford Community" / "应用" / "WeChat.app"
     old_app.mkdir(parents=True)
-    pipeline = home / "Noteford" / "应用" / "数据" / "mac-pipeline" / "WeChat-test.app"
+    pipeline = home / "Noteford Community" / "应用" / "数据" / "mac-pipeline" / "WeChat-test.app"
     pipeline.mkdir(parents=True)
     removed = []
     real_remove = actions.remove_tree
@@ -930,7 +930,7 @@ def test_unregister_walks_nested_apps_before_the_root(tmp_path: Path, monkeypatc
     DarwinResignActions().unregister_launch_services(AbsentMacPath("/Applications/WeChat.app"))
     assert calls == []
     home = tmp_path / "home"
-    state = home / "Noteford" / "Data" / "keycap"
+    state = home / "Noteford Community" / "Data" / "keycap"
     state.mkdir(parents=True)
     assert all(not str(path).startswith("/Applications") for path in legacy_copy_paths(state, home=home))
     from noteford.mac_resign import activate_scan_script

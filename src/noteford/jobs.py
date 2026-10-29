@@ -149,7 +149,7 @@ def enqueue_batch_job(
         },
         'botdock_compatibility': {
             'status': 'pending_task_type_support',
-            'current_p5_task_type': 'nexus.article.translation',
+            'current_p5_task_type': 'local.article.translation',
             'required_task_type': 'wechat.daily.digest',
             'reader_job_must_not_be_treated_as_translation': True,
         },

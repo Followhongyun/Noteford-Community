@@ -197,7 +197,7 @@ function prebuiltFfmpeg(root, exists, readdir) {
 }
 
 function macAppBundle(appOutDir, exists, readdir) {
-  const direct = path.join(appOutDir, 'Noteford.app');
+  const direct = path.join(appOutDir, 'Noteford 开源版.app');
   if (exists(direct)) return direct;
   let names = [];
   try {
@@ -329,7 +329,7 @@ function readFileHead(file, io) {
   return headerBuffer(io.readFile(file)).subarray(0, 16);
 }
 
-function adhocSignPlan(appPath, { identifier = 'com.followhongyun.noteford', entitlements, io = bundleIo } = {}) {
+function adhocSignPlan(appPath, { identifier = 'com.followhongyun.noteford.community', entitlements, io = bundleIo } = {}) {
   if (!appPath) throw new Error('Mac packaging did not produce a Noteford.app bundle to sign.');
   const files = walkBundleFiles(appPath, io);
   const binaries = files
@@ -377,7 +377,7 @@ function adhocSignPlan(appPath, { identifier = 'com.followhongyun.noteford', ent
 function signApp(appPath, {
   identity,
   execFileSync: run = execFileSync,
-  identifier = 'com.followhongyun.noteford',
+  identifier = 'com.followhongyun.noteford.community',
   entitlements = path.join(__dirname, '..', 'entitlements.mac.plist'),
   io = bundleIo,
 } = {}) {

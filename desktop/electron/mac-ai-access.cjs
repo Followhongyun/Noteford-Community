@@ -24,7 +24,7 @@ function createMacAiAccess({ runtimeRoot, command, argsPrefix = [], env = {}, cl
     return status();
   }
   function config() {
-    return { mcpServers: { noteford: {
+    return { mcpServers: { 'noteford-community': {
       command, args: [...argsPrefix, '--mcp-auto', '--client-name', 'MCP Client'],
       ...(Object.keys(env).length ? { env } : {}),
     } } };

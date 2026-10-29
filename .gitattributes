@@ -1,3 +1,6 @@
 # Preserve vendor notice bytes for their pinned SHA-256 checks.
 packaging/license-sources/** -text
 desktop/vendor/noteford-lazy/index.cjs -text
+
+# Preserve reviewed CA bytes on Windows as well as macOS.
+desktop/security/*.pem -text

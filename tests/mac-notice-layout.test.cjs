@@ -20,7 +20,7 @@ test('the real Mac file mapping bundles notices in ASAR and leaves no loose dire
   fs.mkdirSync(path.join(root, 'desktop'));
   fs.writeFileSync(path.join(root, 'desktop/package.json'), '{"name":"fixture","version":"1.0.0"}');
   const desktop = path.resolve(__dirname, '../desktop');
-  const app = path.join(root, 'Noteford.app');
+  const app = path.join(root, 'Noteford 开源版.app');
   const resources = path.join(app, 'Contents/Resources');
   fs.mkdirSync(resources, {recursive: true});
   // Use electron-builder's installed matcher rather than reimplementing its
@@ -67,7 +67,7 @@ test('Mac notice verification rejects missing and unpacked archive entries', asy
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'noteford-notice-failure-'));
   t.after(() => fs.rmSync(root, {recursive: true, force: true}));
   const source = path.join(root, 'source'), input = path.join(root, 'input');
-  const app = path.join(root, 'Noteford.app'), resources = path.join(app, 'Contents/Resources');
+  const app = path.join(root, 'Noteford 开源版.app'), resources = path.join(app, 'Contents/Resources');
   fs.mkdirSync(source); fs.mkdirSync(resources, {recursive: true});
   fs.mkdirSync(path.join(input, 'licenses/runtime'), {recursive: true});
   fs.writeFileSync(path.join(input, 'package.json'), '{"name":"fixture"}');

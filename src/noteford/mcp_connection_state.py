@@ -7,7 +7,7 @@ from pathlib import Path
 
 def connection_state(config: Path) -> tuple[bool, str]:
     from .libraries import load_root_config
-    from .product_workspace import require_active
+    from .workspace_access import require_active
     root = Path(load_root_config(config)['project_root'])
     require_active(root)
     try:

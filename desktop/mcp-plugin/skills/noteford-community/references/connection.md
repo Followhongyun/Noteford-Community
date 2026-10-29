@@ -2,7 +2,7 @@
 
 ## 收到一行安装命令后
 
-用户把 `npx skills add Followhongyun/noteford-skill` 发给 AI 并要求接入时，AI 负责安装及后续连接验收：
+用户把 `npx skills add Followhongyun/Noteford-Community --skill noteford-community` 发给 AI 并要求接入时，AI 负责安装及后续连接验收：
 
 1. 确认当前客户端能执行这台电脑的命令；纯云端对话不能借此访问本机。检查现有 Skill 和 Node/npm，已有安装可直接使用。需要安装时使用安装器支持的当前客户端标识，只安装 `noteford`；用户未指定项目范围时使用用户级安装，避免依赖当前工作目录。不使用 `--all`，不修改其他客户端。
 2. 读取安装器返回目录中的 `SKILL.md` 和本文件，在当前会话继续。`skills add` 只负责安装文件，不会自动执行 Skill 或证明 MCP 已连接。
@@ -16,7 +16,7 @@
 当 Codex 已获得 Noteford 授权，但当前原生工具目录缺少 `refresh_mcp` / `call_current_tool`，优先由当前 Codex 的命令执行工具直接启动安装版服务，保留可继续写入 stdin 的会话（例如持久 TTY/session）：
 
 ```sh
-exec /Applications/Noteford.app/Contents/Resources/service/noteford-service --mcp-auto --client-name Codex
+exec "/Applications/Noteford 开源版.app/Contents/Resources/service/noteford-service" --mcp-auto --client-name Codex
 ```
 
 不要在外面套 Node 客户端、Python `subprocess` 或 `scripts/noteford.py`；它们会成为不同的实际调用程序，不能凭名称同为 Codex 就复用原授权。也不要跳过任意解释器、更改凭据或要求用户重新批准来掩盖身份不匹配。`exec` 替换命令 shell，使服务能识别现有 Codex 调用方。只有实际调用方已获授权时才可复用，不保证未授权客户端自动接通。
@@ -35,7 +35,7 @@ exec /Applications/Noteford.app/Contents/Resources/service/noteford-service --mc
 
 ## 本机自动接入
 
-适用于本机、能执行命令且已安装此 Skill 的 AI 客户端。Noteford 启动完成后公布不含凭据的发现信息；Skill 脚本验证运行中的应用与服务位置。Windows 发现文件在 `%LOCALAPPDATA%\Noteford\connection.json`，macOS 在 `~/Library/Application Support/Noteford/connection.json`。开发运行和安装包都会写这份文件。云端 AI 无法因此自动访问本机，Skill 也不会自动安装到其他 AI 产品。
+适用于本机、能执行命令且已安装此 Skill 的 AI 客户端。Noteford 启动完成后公布不含凭据的发现信息；Skill 脚本验证运行中的应用与服务位置。Windows 发现文件在 `%LOCALAPPDATA%\Noteford\connection.json`，macOS 在 `~/Library/Application Support/Noteford Community/connection.json`。开发运行和安装包都会写这份文件。云端 AI 无法因此自动访问本机，Skill 也不会自动安装到其他 AI 产品。
 
 已有 MCP 工具可用时直接调用。工具缺失或 Transport closed 时，改用本 Skill 目录中的脚本（将 `<skill>` 替换为已读取 Skill 所在绝对目录，ClientName 使用真实产品名并保持稳定）：
 

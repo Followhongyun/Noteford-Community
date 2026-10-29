@@ -5,7 +5,7 @@ from pathlib import Path
 
 
 def read_grant(root: Path, client_id: str | None) -> dict:
-    from .product_workspace import require_active
+    from .workspace_access import require_active
     require_active(root)
     try:
         payload = json.loads((root / 'data' / 'mcp_access.json').read_text(encoding='utf-8-sig'))

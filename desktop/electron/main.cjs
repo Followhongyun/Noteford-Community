@@ -9,15 +9,16 @@ const fs = require('node:fs');
 const crypto = require('node:crypto');
 const { Readable } = require('node:stream');
 const { spawn } = require('node:child_process');
-const { autoUpdater } = require('electron-updater');
 const os = require('node:os');
 const { windowChrome } = require('./window-chrome.cjs');
 const seam = require('./platform-seam.cjs');
 
 const desktopRoot = path.resolve(__dirname, '..');
 const projectRoot = path.resolve(desktopRoot, '..');
-const productName = 'Noteford';
-const appUserModelId = 'com.followhongyun.noteford';
+const productName = 'Noteford 开源版';
+app.setName(productName);
+app.setPath('userData', path.join(app.getPath('appData'), 'Noteford Community'));
+const appUserModelId = 'com.followhongyun.noteford.community';
 const executableRoot = path.dirname(process.execPath);
 const singleFolderRoot = path.dirname(executableRoot);
 const portableLayout = app.isPackaged && (
@@ -40,10 +41,9 @@ const installationRoot = isLocalLive ? path.resolve(process.env.NOTEFORD_DATA_RO
   home: os.homedir(),
   exists: target => fs.existsSync(target),
 });
-const { ProductWorkspaces } = require('./product-workspace.cjs');
+const { LocalWorkspace } = require('./local-workspace.cjs');
 let workspaces;
 let runtimeRoot = null;
-let productAccount, nexusEvents;
 const workspaceChannels = new Set();
 let workspaceCleanup = [];
 let stoppingWorkspace = Promise.resolve();
@@ -67,7 +67,6 @@ function scopedIpc(scope) {
 function deactivateWorkspace() {
   const hadWorkspace = !!workspaces.active;
   workspaces.lock();
-  nexusEvents?.close(); nexusEvents = null;
   runtimeRoot = null;
   serviceRecovery.stop();
   unpublishMcpDiscovery?.(); unpublishMcpDiscovery = null;
@@ -90,7 +89,7 @@ function deactivateWorkspace() {
     if (hadWorkspace && mainWindow && !mainWindow.isDestroyed() && !quitting) {
       await mainWindow.webContents.session.clearCache();
       // Destroy queued renderer work from the previous identity before a new login.
-      if (useLiveRenderer) await mainWindow.loadURL('http://127.0.0.1:5173');
+      if (useLiveRenderer) await mainWindow.loadURL('http://127.0.0.1:5187');
       else await mainWindow.loadFile(path.join(desktopRoot, 'dist', 'index.html'));
     }
   });
@@ -123,38 +122,15 @@ const isSmoke = process.argv.includes('--smoke');
 let mainWindow = null;
 let tray = null;
 let quitting = false;
-let appUpdates = null;
 let localPairingWatch = null;
 let unpublishMcpDiscovery = null;
-let updateState = { localLive: isLocalLive, status: 'idle', version: app.getVersion(), availableVersion: null, progress: 0, error: null };
-
-function setUpdateState(patch) {
-  updateState = { ...updateState, ...patch };
-  mainWindow?.webContents.send('noteford:update-state', updateState);
-}
-
 function assertMainRenderer(event) {
   const expectedUrl = useLiveRenderer
-    ? 'http://127.0.0.1:5173/'
+    ? 'http://127.0.0.1:5187/'
     : pathToFileURL(path.join(desktopRoot, 'dist', 'index.html')).toString();
   if (!mainWindow || event.sender !== mainWindow.webContents || event.senderFrame !== event.sender.mainFrame || event.senderFrame.url !== expectedUrl) {
     throw new Error('Blocked IPC sender');
   }
-}
-
-function startAutoUpdater() {
-  const enabled = app.isPackaged && !isSmoke;
-  if (enabled && process.platform === 'darwin') {
-    require('./private-update-provider.cjs').configurePrivateUpdates(autoUpdater);
-  }
-  appUpdates = require('./app-updates.cjs').createAppUpdates({
-    updater: autoUpdater, nativeUpdater: require('electron').autoUpdater, app, enabled,
-    authorize: () => productAccount.updateHeaders(),
-    changed: setUpdateState,
-  });
-  appUpdates.setAuthorized(productAccount?.snapshot().status === 'signed-in');
-  setUpdateState(appUpdates.snapshot());
-  appUpdates.start();
 }
 
 protocol.registerSchemesAsPrivileged([
@@ -326,7 +302,6 @@ function startService() {
             settled = true;
             clearTimeout(timeout);
             resolve(serviceInfo);
-            nexusEvents?.wake(); // Reconcile durable tasks after a service crash/restart.
           }
         } catch (error) {
           if (!settled) {
@@ -859,7 +834,7 @@ function registerIpc(scope) {
     return { copied: true };
   });
   ipcMain.handle('noteford:skill-install-command', async (_event, input = {}) => {
-    const command = 'npx skills add Followhongyun/noteford-skill';
+    const command = 'npx skills add Followhongyun/Noteford-Community --skill noteford-community';
     if (input.copy === true) clipboard.writeText(command);
     return { command, copied: input.copy === true };
   });
@@ -1309,43 +1284,8 @@ async function createWindow() {
     });
     app.once('will-quit', () => corners.close());
   }
-  // App-level handlers are registered once, not again on account switches.
-  ipcMain.handle('noteford:update-status', event => { assertMainRenderer(event); return updateState; });
-  ipcMain.handle('noteford:update-check', async event => {
-    assertMainRenderer(event); await appUpdates?.check(); return updateState;
-  });
-  ipcMain.handle('noteford:update-install', event => {
-    assertMainRenderer(event);
-    if (updateState.status !== 'ready') throw Error('更新尚未准备完成');
-    setImmediate(() => appUpdates?.install());
-    return true;
-  });
-  productAccount = require('./product-account-ipc.cjs').registerProductAccount({ ipcMain, assertMainRenderer,
-    getWindow: () => mainWindow, directory: path.join(installationRoot, 'data/runtime/product-account'),
-    activate: activateWorkspace, deactivate: deactivateWorkspace,
-    changed: state => {
-      appUpdates?.setAuthorized(state.status === 'signed-in');
-      if (state.status !== 'signed-in') { nexusEvents?.close(); nexusEvents = null; return; }
-      if (process.platform !== 'darwin' || nexusEvents || isSmoke) return;
-      const scope = workspaces.assert();
-      nexusEvents = new (require('./nexus-events.cjs').NexusEvents)({
-        root: scope.root,
-        discoveryFile: path.join((app.isPackaged || isLocalLive)
-          ? seam.discoveryDirectory({platform:process.platform,localAppData:process.env.LOCALAPPDATA,home:os.homedir(),appData:app.getPath('appData')})
-          : path.join(installationRoot,'data/runtime/nexus-events'), 'nexus-events.json'),
-        identity: () => productAccount.bridgeIdentity(), apiOrigin: productAccount.apiOrigin,
-        check: () => workspaces.assert(scope),
-        request: (route, options) => workspaces.run(scope, () => apiRequest(route, options)),
-      });
-      const bridge = nexusEvents;
-      void bridge.start().catch(() => { bridge.close(); if (nexusEvents === bridge) nexusEvents = null; });
-    } });
-  powerMonitor.on('resume', () => {
-    nexusEvents?.wake();
-    void productAccount.verifySession();
-  });
-  app.on('before-quit', () => nexusEvents?.close());
-
+  await activateWorkspace();
+  ipcMain.handle('noteford:workspace-ready',event=>{assertMainRenderer(event);return {epoch:workspaces.assert().epoch};});
   const window = new BrowserWindow({
     width: 1240,
     height: 820,
@@ -1390,7 +1330,7 @@ async function createWindow() {
   if (!isSmoke && !process.argv.includes('--background')) window.once('ready-to-show', () => window.show());
 
   if (useLiveRenderer) {
-    await window.loadURL('http://127.0.0.1:5173');
+    await window.loadURL('http://127.0.0.1:5187');
   } else {
     await window.loadFile(path.join(desktopRoot, 'dist', 'index.html'));
   }
@@ -1429,8 +1369,6 @@ async function createWindow() {
     }
     const result = await window.webContents.executeJavaScript(`
       (async () => {
-        const productAccount = await window.noteford.productAccount('status');
-        if (productAccount.status !== 'signed-in') return { authRequired: true, authPageMounted: !!document.querySelector('.product-welcome'), dataVisible: !!document.querySelector('.app-shell') };
         const status = await window.noteford.status();
         const libraries = await window.noteford.libraries();
         const conversations = await window.noteford.conversations({ limit: 200 });
@@ -1658,15 +1596,13 @@ async function createWindow() {
       }
     });
     seam.bindReopen(process.platform, app, () => mainWindow);
-    startAutoUpdater();
   }
 }
 
 const ownsInstance = isSmoke || app.requestSingleInstanceLock();
 if (!ownsInstance) app.quit();
 else {
-  workspaces = new ProductWorkspaces(installationRoot,
-    (!app.isPackaged && process.env.NOTEFORD_ACCOUNTS_API_ORIGIN) || require('./product-account-config.json').apiOrigin);
+  workspaces = new LocalWorkspace(installationRoot);
   app.whenReady().then(createWindow).catch(error => {
   console.error(error);
   if (!isSmoke) {
@@ -1688,11 +1624,9 @@ if (isLocalLive) process.on('message', message => {
 
 app.on('before-quit', () => {
   quitting = true;
-  productAccount?.dispose();
   workspaces?.lock();
   serviceRecovery.stop();
   unpublishMcpDiscovery?.();
-  appUpdates?.stop();
   localPairingWatch?.();
   tray?.destroy();
   remoteMcp?.stop();

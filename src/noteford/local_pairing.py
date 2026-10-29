@@ -98,7 +98,7 @@ def _within(current: dict, snap: dict) -> bool:
 class LocalPairing:
     def __init__(self, app_root: Path, key: bytes, clock: Callable[[], float] = time.time):
         self.app_root = app_root
-        from .product_workspace import WorkspaceAccess
+        from .workspace_access import WorkspaceAccess
         self.workspace_access = WorkspaceAccess(app_root)
         self.clock = clock
         self.store = RemoteStore(app_root / "data" / "mcp_local.store", key)

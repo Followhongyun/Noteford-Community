@@ -1,4 +1,3 @@
-import {useProductAccount, ProductAccountSwitch} from './components/ProductAccount'
 import {loadVisibility, visibilityKey, type MessageVisibility} from './message-visibility'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import Avatar from './components/Avatar'
@@ -27,8 +26,7 @@ import type {
   MessagePage,
   NavSection,
   PermissionGuide as PermissionGuideModel,
-  UpdateStatus,
-} from './types'
+  } from './types'
 
 function useDebounced<T>(value: T, delay = 260) {
   const [debounced, setDebounced] = useState(value)
@@ -55,10 +53,9 @@ async function readDirectory(query = ''): Promise<Conversation[]> {
 }
 
 export default function App() {
-  const productAccount = useProductAccount()
-  const productStorageKey = `${visibilityKey}:${productAccount.account?.id}`
+  const productStorageKey = `${visibilityKey}:community`
   const [nav, setNav] = useState<NavSection>('following')
-  const [messageVisibility, setMessageVisibility] = useState(() => loadVisibility(productStorageKey, productAccount.legacyWorkspace))
+  const [messageVisibility, setMessageVisibility] = useState(() => loadVisibility(productStorageKey, false))
   const [parseStickers, setParseStickers] = useState<boolean | null>(null)
   const stickerRequest = useRef(0)
   const changeStickerParsing = useCallback((enabled: boolean) => {
@@ -128,13 +125,12 @@ export default function App() {
   const refreshMessages = useRef<() => Promise<void>>(async () => {})
   const [selectionBusyUsername, setSelectionBusyUsername] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
-  const [updateStatus, setUpdateStatus] = useState<UpdateStatus | null>(null)
   const avatarRevision = useRef('')
   const debouncedDirectorySearch = useDebounced(directorySearch)
   const currentLibrary = libraries.find(item => item.is_current) || libraries[0] || null
-  const contentViewState = useMemo(() => ({category: 'media', query: '', conversation: ''}), [productAccount.account?.id, currentLibrary?.id])
+  const contentViewState = useMemo(() => ({category: 'media', query: '', conversation: ''}), ['community', currentLibrary?.id])
   const contentSelection = followingRows.map(row => `${row.username}:${row.selection_state}`).sort().join('\n')
-  const contentCache = useMemo(() => new Map<string, ContentPage>(), [productAccount.account?.id, productAccount.workspaceEpoch, currentLibrary?.id, contentSelection])
+  const contentCache = useMemo(() => new Map<string, ContentPage>(), ['community', 'local', currentLibrary?.id, contentSelection])
   const loadStatus = useCallback(async () => {
     const epoch = accountEpoch.current
     const next = await window.noteford.status()
@@ -345,10 +341,6 @@ export default function App() {
     }
   }, [connectSnap])
 
-  useEffect(() => {
-    void window.noteford.updateStatus().then(setUpdateStatus).catch(() => {})
-    return window.noteford.onUpdateState(setUpdateStatus)
-  }, [])
 
   useEffect(() => {
     void refreshHostProfile().catch(() => {})
@@ -753,7 +745,7 @@ export default function App() {
   }, [loadLibraries, reloadLists])
 
   const history = useNavigationHistory(
-    JSON.stringify([productAccount.account?.id, productAccount.workspaceEpoch, currentLibrary?.id, libraryBusy]),
+    JSON.stringify(['community', 'local', currentLibrary?.id, libraryBusy]),
     JSON.stringify([nav, nav === 'following' ? selected?.username : null, nav === 'following' ? navigationAnchor : null]),
     {nav, selected, page, navigationAnchor},
     destination => {
@@ -781,7 +773,7 @@ export default function App() {
   const connectCard = presentConnectCard(connectSnap)
 
   useEffect(() => {
-    const accountId = productAccount.account?.id
+    const accountId = 'community'
     if (!macLayout || !accountId || followGuideChecked.current || !currentLibrary?.initialized
         || libraryBusy || showPermissionCover || status?.library_id !== currentLibrary.id) return
     followGuideChecked.current = true
@@ -789,7 +781,7 @@ export default function App() {
       if (claimFirstFollowVisit(localStorage, {
         accountId,
         libraryIds: libraries.map(library => library.id),
-        legacyWorkspace: productAccount.legacyWorkspace === true,
+        legacyWorkspace: false,
         hasPriorFollows: status.following_conversations > 0 || status.paused_conversations > 0
           || libraries.some(library => (library.following_conversations || 0) > 0),
       })) {
@@ -797,7 +789,7 @@ export default function App() {
         setNav('contacts')
       }
     } catch { /* Unavailable preference storage must not block reading. */ }
-  }, [macLayout, productAccount.account?.id, productAccount.legacyWorkspace, currentLibrary, libraries, libraryBusy, showPermissionCover, status])
+  }, [macLayout, 'community', false, currentLibrary, libraries, libraryBusy, showPermissionCover, status])
 
   useEffect(() => {
     if (followGuideLibrary && (nav !== 'contacts' || currentLibrary?.id !== followGuideLibrary)) {
@@ -889,7 +881,6 @@ export default function App() {
 
   return (
     <div className="app-frame">
-      {(showPermissionCover || libraries.length === 0) && <ProductAccountSwitch />}
       {showPermissionCover ? (
         <PermissionGuide
           guide={permissionGuide}
@@ -1011,9 +1002,6 @@ export default function App() {
           refreshing={refreshing}
           onRefresh={() => void refresh()}
           onUnlock={() => currentLibrary && void switchLibrary(currentLibrary)}
-          updateStatus={updateStatus}
-          onCheckUpdates={() => void window.noteford.checkForUpdates().then(setUpdateStatus).catch(cause => setError(String(cause)))}
-          onInstallUpdate={() => void window.noteford.installUpdate().catch(cause => setError(String(cause)))}
         />
       ) : (
         <ChatView

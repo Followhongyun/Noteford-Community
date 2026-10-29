@@ -21,7 +21,7 @@ function waitForRenderer(child, { timeoutMs = 20000, write = () => {} } = {}) {
     child.stdout.on('data', chunk => {
       write(chunk);
       stdout = (stdout + chunk.toString()).slice(-16000);
-      if (/http:\/\/127\.0\.0\.1:5173\//.test(stripVTControlCharacters(stdout)) && child.exitCode === null && !child.killed) finish();
+      if (/http:\/\/127\.0\.0\.1:5187\//.test(stripVTControlCharacters(stdout)) && child.exitCode === null && !child.killed) finish();
     });
     child.stderr.on('data', chunk => { write(chunk); stderr = (stderr + chunk.toString()).slice(-4000); });
     child.once('error', onError);

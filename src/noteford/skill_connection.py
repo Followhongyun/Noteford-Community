@@ -24,7 +24,7 @@ def discovery_path() -> Path:
 def discover(path: Path | None = None) -> dict:
     try:
         record = json.loads((path or discovery_path()).read_text(encoding='utf-8-sig'))
-        if record.get('version') != 1 or record.get('product') != 'Noteford':
+        if record.get('version') != 1 or record.get('product') != 'Noteford Community':
             raise ValueError('discovery_invalid')
         process = psutil.Process(int(record['pid']))
         if not process.is_running() or Path(process.exe()).resolve() != Path(record['appExecutable']).resolve():
@@ -176,7 +176,7 @@ def run(argv: list[str] | None = None, *, serve: bool = False) -> int:
     except Exception as exc:
         known = {'app_not_running', 'discovery_invalid', 'client_unknown', 'arguments_invalid', 'image_format_unsupported',
                  'mcp_disconnected', 'mcp_connection_changed', 'mcp_connection_invalid', 'mcp_account_changed',
-                 'product_workspace_locked', 'product_workspace_changed'}
+                 'workspace_locked', 'workspace_changed'}
         code = str(exc) if str(exc) in known else 'connection_failed'
         print(json.dumps({'ok': False, 'error': code, 'message': '请打开 Noteford 后重试。若应用已运行，请等待启动完成；不要反复修改 MCP 配置。' if code == 'app_not_running' else '连接未完成，请检查应用状态；不要绕过授权或连续重试。'}, ensure_ascii=False))
         return 2

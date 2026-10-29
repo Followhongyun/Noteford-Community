@@ -6,7 +6,7 @@ const guide = require('./permission-guide.cjs');
 const WINDOWS_INTRO = '已从微信记录的数据位置查找账号。选择账号后才建立本地只读资料库；读取昵称和头像需要对应账号正在电脑端登录。';
 const WINDOWS_EMPTY = '未找到微信资料。请确认已在电脑端登录微信，或手动选择微信数据所在目录。';
 const MAC_INTRO = '已从这台 Mac 上解密好的资料里查找账号。选择后建立本地只读资料库，并显示会话。';
-const MAC_EMPTY = '未找到已解密的微信资料。请确认账号在个人目录 Noteford/Data/data/decrypted 下，或手动选择该目录。';
+const MAC_EMPTY = '未找到已解密的微信资料。请确认账号在个人目录 Noteford Community/Data/data/decrypted 下，或手动选择该目录。';
 const MAC_PERMISSION_MESSAGE = '先允许这些权限，再选择微信账号。';
 
 function windowIconPath({ platform, packaged, resourcesPath, desktopRoot }) {
@@ -127,19 +127,19 @@ function runtimeRoot({
   exists = () => false,
 }) {
   if (platform === 'darwin' && !portableLayout) {
-    const macData = path.join(home, 'Noteford', 'Data');
+    const macData = path.join(home, 'Noteford Community', 'Data');
     return packaged ? macData : path.join(projectRoot, 'Data');
   }
   if (!packaged) return projectRoot;
   if (portableLayout) return path.dirname(executableRoot);
-  return path.join(localAppData || userData, 'Noteford');
+  return path.join(localAppData || userData, 'Noteford Community');
 }
 
 function discoveryDirectory({ platform, localAppData, home, appData }) {
   if (platform === 'darwin') {
-    return path.join(home, 'Library', 'Application Support', 'Noteford');
+    return path.join(home, 'Library', 'Application Support', 'Noteford Community');
   }
-  return path.join(localAppData || appData, 'Noteford');
+  return path.join(localAppData || appData, 'Noteford Community');
 }
 
 function shouldPublishDiscovery({ smoke }) {
@@ -151,7 +151,7 @@ function permissionMarkerPath(directory) {
 }
 
 function decryptedArchiveRoot(home) {
-  return path.join(home, 'Noteford', 'Data', 'data', 'decrypted');
+  return path.join(home, 'Noteford Community', 'Data', 'data', 'decrypted');
 }
 
 function wechatContainer(home) {

@@ -203,7 +203,7 @@ class MacAccounts:
                     def begin(account):
                         from .mac_live_sync import managed_archive
                         from .mac_capture import CaptureError
-                        from .product_workspace import require_source
+                        from .workspace_access import require_source
                         if not account or Path(account).name != account or account in {'.', '..'}:
                             raise CaptureError('invalid_account')
                         archive = managed_archive()

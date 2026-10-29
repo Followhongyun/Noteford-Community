@@ -7,7 +7,7 @@ const path = require('node:path');
 const source = fs.readFileSync(path.join(__dirname, '../electron/preload.cjs'), 'utf8');
 function bridge(platform, invoke) {
   let api;
-  vm.runInNewContext(source, {process: {platform}, require: () => ({contextBridge: {exposeInMainWorld: (_name, value) => { api = value; }}, ipcRenderer: {invoke}})});
+  vm.runInNewContext(source, {process: {platform}, require: () => ({contextBridge: {exposeInMainWorld: (_name, value) => { api = value; }}, ipcRenderer: {invoke: (channel,...args) => channel === 'noteford:workspace-ready' ? Promise.resolve({epoch:'test-local'}) : invoke(channel,...args)}})});
   return api;
 }
 const deferred = () => { let resolve; const promise = new Promise(r => { resolve = r; }); return {promise, resolve}; };

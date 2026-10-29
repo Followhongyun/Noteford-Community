@@ -10,7 +10,7 @@ const GRANT_VISIBLE_MS = 1000;
 const GRANT_PROMPT_TIMEOUT_MS = 8000;
 const GRANT_UI_TIMEOUT_MS = 2500;
 const SETTINGS_GUIDANCE = '请在系统设置里打开开关。';
-const FDA_GUIDANCE = '点「+」添加访达中的 Noteford.app，打开开关后重启。';
+const FDA_GUIDANCE = '点「+」添加访达中的 Noteford 开源版.app，打开开关后重启。';
 const OPEN_WECHAT_GUIDANCE = '请先打开微信，再点一次「授权」。';
 const DIALOG_GUIDANCE = '请在系统对话框里允许 Noteford 控制「系统事件」和「微信」。未出现对话框时，在已打开的自动化设置中检查开关；列表没有 Noteford 时返回重试。';
 

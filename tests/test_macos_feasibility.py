@@ -75,8 +75,8 @@ def test_platform_seam_names_and_import():
     assert secret_backend("win32") == "dpapi"
     assert secret_backend("darwin") == "keychain"
     home = Path("/Users/example")
-    assert default_data_root("darwin", home=home) == home / "Library" / "Application Support" / "Noteford"
-    assert default_data_root("win32", home=home, local_app_data=Path("C:/Users/example/AppData/Local")).name == "Noteford"
+    assert default_data_root("darwin", home=home) == home / "Library" / "Application Support" / "Noteford Community"
+    assert default_data_root("win32", home=home, local_app_data=Path("C:/Users/example/AppData/Local")).name == "Noteford Community"
     roots = wechat_search_roots("darwin", home=home)
     assert roots[0] == home / "Library/Containers/com.tencent.xinWeChat/Data/Documents/app_data/xwechat_files"
     assert any(part == "xwechat_files" for root in roots for part in root.parts)
@@ -89,7 +89,7 @@ def test_platform_seam_names_and_import():
     assert isolated.returncode == 0, isolated.stderr
     with pytest.raises(NotImplementedError):
         MacMemoryKeySource().candidate_keys()
-    assert MacKeychainSecretProtector.service == "com.followhongyun.noteford"
+    assert MacKeychainSecretProtector.service == "com.followhongyun.noteford.community"
     assert MacKeychainSecretProtector.account == "noteford-data-key"
     assert MacKeychainSecretProtector.accessible == "kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly"
     if sys.platform != "darwin":

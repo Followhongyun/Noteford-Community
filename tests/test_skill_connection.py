@@ -11,8 +11,8 @@ from noteford import skill_connection as skill
 @pytest.mark.parametrize('signature_ok,caller', [(True, 'codex'), (False, 'noteford-service')])
 def test_moved_signed_bridge_preserves_real_caller(monkeypatch, signature_ok, caller):
     from types import SimpleNamespace
-    old = '/backup/replaced-Noteford.app/Contents/Resources/service/noteford-service'
-    own = '/Applications/Noteford.app/Contents/Resources/service/noteford-service'
+    old = '/backup/replaced-Noteford 开源版.app/Contents/Resources/service/noteford-service'
+    own = '/Applications/Noteford 开源版.app/Contents/Resources/service/noteford-service'
     bridge = SimpleNamespace(pid=123, exe=lambda: old, create_time=lambda: 1, is_running=lambda: True)
     codex = SimpleNamespace(exe=lambda: '/Applications/Codex.app/Contents/Resources/codex')
     monkeypatch.setattr(skill.sys, 'platform', 'darwin')
@@ -35,7 +35,7 @@ def test_interpreters_and_other_names_are_not_skipped(monkeypatch, name):
     from types import SimpleNamespace
     monkeypatch.setattr(skill.sys, 'platform', 'darwin')
     monkeypatch.setattr(skill.sys, 'frozen', True, raising=False)
-    monkeypatch.setattr(skill.sys, 'executable', '/Applications/Noteford.app/service/noteford-service')
+    monkeypatch.setattr(skill.sys, 'executable', '/Applications/Noteford 开源版.app/service/noteford-service')
     monkeypatch.setattr(skill.psutil, 'Process', lambda: SimpleNamespace(parents=lambda: [SimpleNamespace(exe=lambda: '/tmp/' + name)]))
     monkeypatch.setattr(skill.subprocess, 'run', lambda *a, **k: pytest.fail('must not validate arbitrary programs'))
     assert skill.client_program() == str(Path('/tmp', name).resolve())
@@ -100,14 +100,14 @@ def test_discovery_rejects_stopped_or_replaced_application(tmp_path, monkeypatch
     accepts = platform_seam.service_command_acceptable
     monkeypatch.setattr(platform_seam, 'service_command_acceptable',
                         lambda app, command, **kwargs: accepts(app, command, platform=platform, **kwargs))
-    app = tmp_path / ('Noteford.app/Contents/MacOS/Noteford' if platform == 'darwin' else 'Noteford.exe')
-    service = tmp_path / ('Noteford.app/Contents/Resources/service/noteford-service' if platform == 'darwin' else 'resources/service/noteford-service.exe')
+    app = tmp_path / ('Noteford 开源版.app/Contents/MacOS/Noteford' if platform == 'darwin' else 'Noteford.exe')
+    service = tmp_path / ('Noteford 开源版.app/Contents/Resources/service/noteford-service' if platform == 'darwin' else 'resources/service/noteford-service.exe')
     service.parent.mkdir(parents=True)
     service.touch()
     config = tmp_path / 'config.local.json'
     config.write_text('{}')
     manifest = tmp_path / 'connection.json'
-    record = dict(version=1, product='Noteford', pid=123, appExecutable=str(app), command=str(service), config=str(config))
+    record = dict(version=1, product='Noteford Community', pid=123, appExecutable=str(app), command=str(service), config=str(config))
     manifest.write_text(json.dumps(record))
     class Process:
         def is_running(self): return True
@@ -124,7 +124,7 @@ def test_discovery_rejects_stopped_or_replaced_application(tmp_path, monkeypatch
 
 
 def test_discovery_accepts_python_module_and_rejects_a_bare_interpreter(tmp_path, monkeypatch):
-    app = tmp_path / 'Noteford.app' / 'Contents' / 'MacOS' / 'Noteford'
+    app = tmp_path / 'Noteford 开源版.app' / 'Contents' / 'MacOS' / 'Noteford Community'
     app.parent.mkdir(parents=True)
     app.write_bytes(b'')
     python = tmp_path / 'python3'
@@ -134,7 +134,7 @@ def test_discovery_accepts_python_module_and_rejects_a_bare_interpreter(tmp_path
     manifest = tmp_path / 'connection.json'
     record = {
         'version': 1,
-        'product': 'Noteford',
+        'product': 'Noteford Community',
         'pid': 7,
         'appExecutable': str(app),
         'command': str(python),

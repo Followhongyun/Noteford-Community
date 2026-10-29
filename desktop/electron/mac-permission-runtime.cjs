@@ -49,7 +49,7 @@ function parseSignature(output = '') {
 }
 
 function signatureGuidance(signature, previous = {}) {
-  if (!signature || signature.identifier !== 'com.followhongyun.noteford') {
+  if (!signature || signature.identifier !== 'com.followhongyun.noteford.community') {
     return '无法确认当前 Noteford 的签名。请使用「应用程序」中的安装版重新授权。';
   }
   if (!signature.adhoc) return '';

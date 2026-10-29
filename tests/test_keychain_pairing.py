@@ -158,7 +158,7 @@ def test_macos_remote_store_reopens_without_dpapi(tmp_path):
 
 def test_add_command_passes_hex_to_security_not_a_shell():
     secret = bytes(range(32))
-    command = add_command("com.followhongyun.noteford", "noteford-data-key", secret)
+    command = add_command("com.followhongyun.noteford.community", "noteford-data-key", secret)
     assert command[:2] == ["/usr/bin/security", "add-generic-password"]
     assert "sh" not in command and "bash" not in command
     assert secret.hex() in command

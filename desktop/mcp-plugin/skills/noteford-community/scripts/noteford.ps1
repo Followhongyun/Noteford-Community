@@ -6,7 +6,7 @@
   [string]$ImageDirectory
 )
 $ErrorActionPreference = 'Stop'
-$manifest = Join-Path $env:LOCALAPPDATA 'Noteford\connection.json'
+$manifest = Join-Path $env:LOCALAPPDATA 'Noteford Community\connection.json'
 # The running app repairs stale discovery records. Wait briefly for startup/repair;
 # never substitute a PID, launch an unverified command, or alter authorization.
 $connectionDeadline = [DateTime]::UtcNow.AddSeconds(7)
@@ -14,7 +14,7 @@ $appProcess = $null
 while ([DateTime]::UtcNow -lt $connectionDeadline) {
   try {
     $record = Get-Content -LiteralPath $manifest -Raw -Encoding UTF8 -ErrorAction Stop | ConvertFrom-Json
-    if ($record.product -ne 'Noteford' -or $record.version -ne 1) { throw 'invalid discovery' }
+    if ($record.product -ne 'Noteford Community' -or $record.version -ne 1) { throw 'invalid discovery' }
     $candidateProcess = Get-Process -Id $record.pid -ErrorAction SilentlyContinue
     if ($candidateProcess -and $candidateProcess.Path -eq $record.appExecutable) { $appProcess = $candidateProcess; break }
   } catch {

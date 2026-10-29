@@ -26,7 +26,7 @@ HELP
   *) printf '%s\n' '{"ok":false,"error":"unknown_action"}' >&2; exit 2 ;;
 esac
 
-app_path=${NOTEFORD_APP_PATH:-/Applications/Noteford.app}
+app_path=${NOTEFORD_APP_PATH:-/Applications/Noteford 开源版.app}
 service="$app_path/Contents/Resources/service/noteford-service"
 if [ ! -x "$service" ]; then
   printf '%s\n' '{"ok":false,"error":"app_missing","message":"请安装 Noteford，或用 NOTEFORD_APP_PATH 指定应用位置。"}' >&2

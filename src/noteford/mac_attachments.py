@@ -187,6 +187,6 @@ def present(config, parent):
             'url':url if url.startswith(('https://','http://'))else None,'card':None,'quote':None,'status':None,'media':media})
     if len(result)>=300:
         result.append({'uid':parent['uid']+':record:limit','type':{'kind':'text','msg_type':1,'sub_type':0},
-            'timestamp':parent['timestamp'],'time':None,'sender':{'name':'Noteford','username':None,'from_me':False},
+            'timestamp':parent['timestamp'],'time':None,'sender':{'name':'Noteford Community','username':None,'from_me':False},
             'title':None,'text':'这份记录较长，当前最多展开 300 项。','url':None,'card':None,'quote':None,'status':None,'media':None})
     return result

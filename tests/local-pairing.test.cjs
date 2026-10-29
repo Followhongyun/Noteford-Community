@@ -38,7 +38,7 @@ test('exported config carries only a one-time pairing token and the admin CLI wo
     assert.match(await pairing.issue(), /^nfp_/); // unbound token for 复制提示词
     const folder = manager.exportPlugin(grant.id, root, token);
     const exported = fs.readFileSync(path.join(folder, '.mcp.json'), 'utf8');
-    const args = JSON.parse(exported).mcpServers.noteford.args;
+    const args = JSON.parse(exported).mcpServers['noteford-community'].args;
     assert.deepEqual(args.slice(-2), ['--pair', token]);
     assert.ok(!args.includes('--client') && !exported.includes(grant.id));
     assert.deepEqual(await pairing.bindings(), []);

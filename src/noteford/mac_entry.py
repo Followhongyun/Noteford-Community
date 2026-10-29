@@ -84,7 +84,7 @@ def route_status(
 
 
 def route_action(payload: dict, *, platform: str | None = None) -> dict:
-    from .product_workspace import validate_capture_paths
+    from .workspace_access import validate_capture_paths
     validate_capture_paths(payload)
     platform = platform or sys.platform
     if platform == "win32":
@@ -298,7 +298,7 @@ def route_auto_capture_snapshot(*, platform: str | None = None, job: AutoCapture
 
 
 def route_auto_capture_start(payload: dict | None = None, *, platform: str | None = None, job: AutoCaptureJob | None = None) -> dict:
-    from .product_workspace import validate_capture_paths
+    from .workspace_access import validate_capture_paths
     validate_capture_paths(payload or {})
     platform = platform or sys.platform
     if platform == "win32":

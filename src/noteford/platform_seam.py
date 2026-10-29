@@ -86,9 +86,9 @@ def default_data_root(
     home = home or Path.home()
     if platform == "win32":
         base = local_app_data or (home / "AppData" / "Local")
-        return base / "Noteford"
+        return base / "Noteford Community"
     if platform == "darwin":
-        return home / "Library" / "Application Support" / "Noteford"
+        return home / "Library" / "Application Support" / "Noteford Community"
     raise NotImplementedError(f"no data root for {platform}")
 
 
@@ -368,13 +368,13 @@ class SecretProtector(Protocol):
 class MacKeychainSecretProtector:
     """One login-keychain item. The data directory keeps a marker, not key bytes.
 
-    Service ``com.followhongyun.noteford``, account ``noteford-data-key``,
+    Service ``com.followhongyun.noteford.community``, account ``noteford-data-key``,
     accessibility ``kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly``.
     Pass ``runner`` only from tests. Production uses the Security framework and
     never retries denied access through another process identity.
     """
 
-    service = "com.followhongyun.noteford"
+    service = "com.followhongyun.noteford.community"
     account = "noteford-data-key"
     accessible = "kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly"
 
@@ -475,14 +475,14 @@ def library_source_kind(platform: str | None = None) -> str:
 
 
 def macos_noteford_data_root(home: Path | None = None) -> Path:
-    """Mac data tree already used by key capture: ``~/Noteford/Data``."""
+    """Mac data tree already used by key capture: ``~/Noteford Community/Data``."""
 
     if home is None:
-        from .product_workspace import process_root
+        from .workspace_access import process_root
         root = process_root()
         if root is not None:
             return root
-    return (home or Path.home()) / "Noteford" / "Data"
+    return (home or Path.home()) / "Noteford Community" / "Data"
 
 
 def decrypted_archive_root(platform: str | None = None, *, home: Path | None = None) -> Path | None:
@@ -505,11 +505,11 @@ def mcp_discovery_directory(
 
     platform = platform or sys.platform
     if platform == "darwin":
-        return (home or Path.home()) / "Library" / "Application Support" / "Noteford"
+        return (home or Path.home()) / "Library" / "Application Support" / "Noteford Community"
     base = local_app_data or Path(
         os.environ.get("LOCALAPPDATA", str((home or Path.home()) / "AppData" / "Local"))
     )
-    return Path(base) / "Noteford"
+    return Path(base) / "Noteford Community"
 
 
 def mcp_discovery_file(
@@ -612,7 +612,7 @@ def discover_library_candidates(
     else:
         archive = decrypted_archive_root(platform, home=home)
         roots = [archive] if archive is not None else []
-    from .product_workspace import process_root, source_allowed
+    from .workspace_access import process_root, source_allowed
     managed = process_root()
     if managed is not None:
         roots = [root for root in roots if source_allowed(managed, root)]

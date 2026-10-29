@@ -117,8 +117,6 @@ def _connect_index(path: Path) -> sqlite3.Connection:
         con.execute('ALTER TABLE messages ADD COLUMN packed_info_data BLOB')
     if 'wcdb_ct' not in existing:
         con.execute('ALTER TABLE messages ADD COLUMN wcdb_ct INTEGER')
-    from .nexus_outbox import ensure_outbox
-    ensure_outbox(con)
     con.commit()
     from .mcp_changes import ensure_change_journal
     ensure_change_journal(con)
@@ -170,13 +168,6 @@ def index_messages(
     source.row_factory = sqlite3.Row
     index = _connect_index(index_path)
     stats = IndexStats()
-    from .nexus_outbox import owner_scope, enqueue_message, notify_committed
-    try:
-        delivery_scope = owner_scope(index_path)
-    except BaseException:
-        source.close()
-        index.close()
-        raise
     source_name = source_db_path.name
 
     column_specs = [
@@ -300,8 +291,6 @@ def index_messages(
                                 row_hash, now,
                             ),
                         )
-                        enqueue_message(index, delivery_scope, account, table,
-                            {**dict(row), 'uid': uid})
                         if state == 'inserted':
                             stats.inserted += 1
                         else:
@@ -331,9 +320,6 @@ def index_messages(
                     (account, source_name, table, max_local, max_time, now),
                 )
 
-            if delivery_scope:
-                from .product_workspace import require_active
-                require_active(delivery_scope[0], delivery_scope[2])
             finished = datetime.now(timezone.utc).isoformat()
             index.execute(
                 '''
@@ -346,8 +332,6 @@ def index_messages(
     finally:
         source.close()
         index.close()
-    if delivery_scope:
-        notify_committed(delivery_scope)
     return stats
 
 

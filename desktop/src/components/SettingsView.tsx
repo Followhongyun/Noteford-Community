@@ -1,11 +1,10 @@
-import {ProductAccountSettings, useProductAccount} from './ProductAccount'
 import OpenSourceCredits from './OpenSourceCredits'
 import type {MessageVisibility} from '../message-visibility'
 import Avatar from './Avatar'
 import McpConnections from './McpConnections'
 import { useEffect, useState, type ReactNode } from 'react'
 
-import type { AppStatus, LibrarySummary, UpdateStatus } from '../types'
+import type { AppStatus, LibrarySummary } from '../types'
 
 interface SettingsViewProps {
   parseStickers: boolean | null
@@ -19,9 +18,6 @@ interface SettingsViewProps {
   onRefresh: () => void
   onUnlock: () => void
   onManageAccounts: () => void
-  updateStatus: UpdateStatus | null
-  onCheckUpdates: () => void
-  onInstallUpdate: () => void
 }
 
 function SettingRow({ title, description, children }: { title: string; description?: string; children: ReactNode }) {
@@ -40,15 +36,7 @@ function formatTime(value: string | null | undefined) {
   return value ? new Date(value).toLocaleString('zh-CN') : '—'
 }
 
-function macUpdateError(error: string | null | undefined) {
-  if (error === 'update_feed_unpublished') return '更新服务尚未开放。'
-  if (error === 'update_access_denied') return '暂时无法验证更新权限，请稍后重试。'
-  if (error === 'update_network_unavailable') return '无法连接更新服务，请检查网络后重试。'
-  return '暂时无法检查更新，请稍后重试。'
-}
-
 export default function SettingsView(props: SettingsViewProps) {
-  const signedIn = useProductAccount().status === 'signed-in'
   const mac = window.noteford.platform === 'darwin'
   const [syncMinutes, setSyncMinutes] = useState('')
   const [syncTenSeconds, setSyncTenSeconds] = useState(false)
@@ -125,19 +113,13 @@ export default function SettingsView(props: SettingsViewProps) {
     catch { setMediaNotice('保存失败，请重试') }
     finally { setMediaSaving(false) }
   }
-  const { status, library, updateStatus } = props
+  const { status, library } = props
   const sync = status?.sync
   const name = status?.library_display_name || library?.display_name || '微信资料库'
   const login = status?.library_id === library?.id ? status?.wechat_login : undefined
   const loginStale = !!login?.checked_at && now - Date.parse(login.checked_at) > 45000
   const loginLabel = !library ? '尚未添加账号' : !login ? '检测中…' : loginStale ? '检测结果已过期' : login.state === 'active' ? '已登录' : login.state === 'not_running' ? '微信未运行' : '无法确认登录'
-  const updateMessage = !signedIn ? '登录 Followhongyun 账号后启用自动更新。' : updateStatus?.status === 'ready' ? mac ? `版本 ${updateStatus.availableVersion} 已就绪，退出应用时自动更新。` : `版本 ${updateStatus.availableVersion} 已下载，可以安装。`
-    : updateStatus?.status === 'preparing' ? '正在校验并准备更新…'
-    : updateStatus?.status === 'downloading' ? `正在下载版本 ${updateStatus.availableVersion}：${updateStatus.progress}%`
-      : updateStatus?.status === 'checking' ? '正在检查更新…'
-        : updateStatus?.status === 'current' ? '已是最新版本。'
-          : updateStatus?.status === 'error' ? mac ? macUpdateError(updateStatus.error) : `更新检查失败：${updateStatus.error}`
-            : mac ? '后台下载更新，退出应用时自动安装。' : ''
+
 
   return (
     <main className="settings-workspace" aria-labelledby={mac ? 'workspace-page-title' : undefined}>
@@ -252,17 +234,8 @@ export default function SettingsView(props: SettingsViewProps) {
         <McpConnections key={library?.id || 'none'} library={library} />
 
         <section className="settings-group" aria-labelledby="settings-updates-title">
-          <h2 id="settings-updates-title">{mac ? '关于 Noteford' : 'Noteford'}</h2>
-          <SettingRow title={mac ? `Noteford ${updateStatus?.version || '—'}` : '当前版本'} description={mac ? updateMessage || undefined : undefined}>
-            {!mac && <div className="settings-version">
-              <span>{updateStatus?.version || '—'}{updateStatus?.localLive ? ' · 本机热更新' : ''}</span>
-              {updateMessage ? <span className={updateStatus?.status === 'error' ? 'settings-error' : 'settings-muted'} role={updateStatus?.status === 'error' ? 'alert' : 'status'}>{updateMessage}</span> : null}
-            </div>}
-            {updateStatus?.localLive ? <span className="settings-muted">改动自动生效</span> : updateStatus?.status === 'ready' ? <button className="settings-button" onClick={props.onInstallUpdate}>{mac ? '退出并更新' : '重启并安装更新'}</button>
-              : <button className="settings-button" disabled={!signedIn || !updateStatus || ['checking', 'downloading', 'preparing', 'unavailable'].includes(updateStatus.status)} onClick={props.onCheckUpdates}>{updateStatus?.status === 'checking' ? '正在检查…' : '检查更新'}</button>}
-          </SettingRow>
-          {mac && <OpenSourceCredits compact/>}
-          <ProductAccountSettings embedded />
+          <h2 id="settings-updates-title">关于 Noteford 开源版</h2>
+          <p className="preference-description">后续更新请加入洪云会员群获取。</p>
         </section>
         {!mac && <OpenSourceCredits />}
       </div>

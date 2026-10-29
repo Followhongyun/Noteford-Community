@@ -22,9 +22,9 @@ def discovery_file(platform: str | None = None, home: Path | None = None, local_
     platform = platform or sys.platform
     home = home or Path.home()
     if platform == "darwin":
-        return home / "Library" / "Application Support" / "Noteford" / "connection.json"
+        return home / "Library" / "Application Support" / "Noteford Community" / "connection.json"
     base = Path(local_app_data) if local_app_data else Path(os.environ.get("LOCALAPPDATA", str(home / "AppData" / "Local")))
-    return base / "Noteford" / "connection.json"
+    return base / "Noteford Community" / "connection.json"
 
 
 def _python_command(command: Path) -> bool:
@@ -61,7 +61,7 @@ def load_record(path: Path, deadline_seconds: float = 7.0) -> dict:
     while True:
         try:
             record = json.loads(path.read_text(encoding="utf-8-sig"))
-            if record.get("product") != "Noteford" or record.get("version") != 1:
+            if record.get("product") != "Noteford Community" or record.get("version") != 1:
                 raise ValueError("discovery_invalid")
             if not command_acceptable(record):
                 raise ValueError("discovery_invalid")

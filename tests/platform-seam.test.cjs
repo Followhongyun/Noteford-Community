@@ -22,14 +22,14 @@ test('Windows icons, service, data root and discovery stay on the existing paths
   assert.equal(seam.runtimeRoot({
     packaged: true, portableLayout: false, executableRoot: 'C:/app', localAppData: 'C:/Users/a/AppData/Local',
     userData: 'C:/Users/a/AppData/Roaming/Noteford', projectRoot: 'C:/src', platform: 'win32', home: 'C:/Users/a',
-  }), path.join('C:/Users/a/AppData/Local', 'Noteford'));
+  }), path.join('C:/Users/a/AppData/Local', 'Noteford Community'));
   assert.equal(seam.runtimeRoot({
     packaged: false, portableLayout: false, executableRoot: '', localAppData: '', userData: '',
     projectRoot: 'C:/src', platform: 'win32', home: 'C:/Users/a', exists: () => true,
   }), 'C:/src');
   assert.equal(seam.discoveryDirectory({
     platform: 'win32', localAppData: 'C:/Users/a/AppData/Local', home: 'C:/Users/a', appData: 'C:/Users/a/AppData/Roaming',
-  }), path.join('C:/Users/a/AppData/Local', 'Noteford'));
+  }), path.join('C:/Users/a/AppData/Local', 'Noteford Community'));
   const profile = seam.hostProfile({platform: 'win32'});
   assert.equal(profile.onboarding.intro, seam.WINDOWS_INTRO);
   assert.equal(profile.onboarding.empty, seam.WINDOWS_EMPTY);
@@ -41,7 +41,7 @@ test('Windows icons, service, data root and discovery stay on the existing paths
 
 test('macOS icon, python service, discovery and one-time permissions', () => {
   const home = '/Users/example';
-  const resources = '/Applications/Noteford.app/Contents/Resources';
+  const resources = '/Applications/Noteford 开源版.app/Contents/Resources';
   assert.equal(seam.trayIconPath({
     platform: 'darwin', packaged: false, resourcesPath: resources, desktopRoot: desktop,
   }), path.join(desktop, 'assets', 'notefordTemplate.png'));
@@ -84,8 +84,8 @@ test('macOS icon, python service, discovery and one-time permissions', () => {
   assert.equal(seam.runtimeRoot({
     packaged: true, portableLayout: false, executableRoot: '', localAppData: '', userData: '',
     projectRoot: '/src', platform: 'darwin', home, exists: () => false,
-  }), path.join(home, 'Noteford', 'Data'));
-  assert.equal(seam.discoveryDirectory({platform: 'darwin', localAppData: '', home, appData: ''}), path.join(home, 'Library', 'Application Support', 'Noteford'));
+  }), path.join(home, 'Noteford Community', 'Data'));
+  assert.equal(seam.discoveryDirectory({platform: 'darwin', localAppData: '', home, appData: ''}), path.join(home, 'Library', 'Application Support', 'Noteford Community'));
   assert.equal(seam.shouldPublishDiscovery({smoke: false}), true);
   assert.equal(seam.shouldPublishDiscovery({smoke: true}), false);
   const pending = seam.hostProfile({platform: 'darwin', permissionsPending: true});
@@ -124,15 +124,15 @@ test('packaging keeps the Windows nsis target and adds an arm64 Mac app', async 
   assert.equal(pkg.build.nsis.oneClick, false);
   assert.equal(pkg.build.extraResources.some(item => item.from === 'assets/noteford.ico' || item.to === 'noteford-book-v1.ico'), false);
   assert.equal(pkg.build.extraResources.find(item => item.to === 'service').from, '../build/service/noteford-service');
-  const sharedSkill = pkg.build.extraResources.find(item => item.to === 'skills/noteford');
+  const sharedSkill = pkg.build.extraResources.find(item => item.to === 'skills/noteford-community');
   assert.ok(sharedSkill.filter.includes('!scripts/noteford.ps1'));
   assert.deepEqual(
     pkg.build.win.extraResources.find(item => item.to === 'noteford-book-v1.ico'),
     {from: 'assets/noteford.ico', to: 'noteford-book-v1.ico'},
   );
   assert.equal(
-    pkg.build.win.extraResources.find(item => item.to === 'skills/noteford/scripts/noteford.ps1').from,
-    'mcp-plugin/skills/noteford/scripts/noteford.ps1',
+    pkg.build.win.extraResources.find(item => item.to === 'skills/noteford-community/scripts/noteford.ps1').from,
+    'mcp-plugin/skills/noteford-community/scripts/noteford.ps1',
   );
   assert.ok(pkg.build.files.indexOf('assets/**/*') < pkg.build.files.indexOf('!**/*.ico'));
   assert.ok(pkg.build.files.indexOf('mcp-plugin/**/*') < pkg.build.files.indexOf('!**/*.ps1'));
@@ -162,7 +162,7 @@ test('packaging keeps the Windows nsis target and adds an arm64 Mac app', async 
     const {getMainFileMatchers, getFileMatchers, copyFiles} = require(path.join(desktop, 'node_modules/app-builder-lib/out/fileMatcher.js'));
     const {computeFileSets} = require(path.join(desktop, 'node_modules/app-builder-lib/out/util/appFileCopier.js'));
     const {expandMacro} = require(path.join(desktop, 'node_modules/app-builder-lib/out/util/macroExpander.js'));
-    const appInfo = {sanitizedProductName: 'Noteford', productName: 'Noteford', channel: 'latest'};
+    const appInfo = {sanitizedProductName: 'Noteford Community', productName: 'Noteford Community', channel: 'latest'};
     const macro = (pattern) => expandMacro(pattern, 'arm64', appInfo, {os: 'mac', '/*': '{,/**/*}'}, true);
     (async () => {
       const config = await getConfig(desktop);
@@ -198,26 +198,26 @@ test('packaging keeps the Windows nsis target and adds an arm64 Mac app', async 
       const has = (root, relative) => fs.existsSync(path.join(root, relative));
       const lines = [
         ['mac-ico', has(mac, 'noteford-book-v1.ico')],
-        ['mac-ps1', has(mac, 'skills/noteford/scripts/noteford.ps1')],
-        ['mac-sh', has(mac, 'skills/noteford/scripts/noteford.sh')],
-        ['mac-py', has(mac, 'skills/noteford/scripts/noteford.py')],
-        ['mac-skill', has(mac, 'skills/noteford/SKILL.md')],
+        ['mac-ps1', has(mac, 'skills/noteford-community/scripts/noteford.ps1')],
+        ['mac-sh', has(mac, 'skills/noteford-community/scripts/noteford.sh')],
+        ['mac-py', has(mac, 'skills/noteford-community/scripts/noteford.py')],
+        ['mac-skill', has(mac, 'skills/noteford-community/SKILL.md')],
         ['mac-winmem', has(mac, 'noteford-src/noteford/winmem.py')],
         ['mac-seam', has(mac, 'noteford-src/noteford/platform_seam.py')],
         ['mac-png', has(mac, 'noteford-mac.png')],
         ['win-ico', has(win, 'noteford-book-v1.ico')],
-        ['win-ps1', has(win, 'skills/noteford/scripts/noteford.ps1')],
-        ['win-sh', has(win, 'skills/noteford/scripts/noteford.sh')],
-        ['win-py', has(win, 'skills/noteford/scripts/noteford.py')],
+        ['win-ps1', has(win, 'skills/noteford-community/scripts/noteford.ps1')],
+        ['win-sh', has(win, 'skills/noteford-community/scripts/noteford.sh')],
+        ['win-py', has(win, 'skills/noteford-community/scripts/noteford.py')],
         ['win-winmem', has(win, 'noteford-src/noteford/winmem.py')],
         ['mac-asar-ico', ending(macAsar, '.ico')],
         ['mac-asar-ps1', ending(macAsar, '.ps1')],
-        ['mac-asar-sh', macAsar.has('mcp-plugin/skills/noteford/scripts/noteford.sh')],
-        ['mac-asar-py', macAsar.has('mcp-plugin/skills/noteford/scripts/noteford.py')],
+        ['mac-asar-sh', macAsar.has('mcp-plugin/skills/noteford-community/scripts/noteford.sh')],
+        ['mac-asar-py', macAsar.has('mcp-plugin/skills/noteford-community/scripts/noteford.py')],
         ['mac-asar-png', macAsar.has('assets/noteford-mac.png')],
         ['win-asar-ico', ending(winAsar, '.ico')],
         ['win-asar-ps1', ending(winAsar, '.ps1')],
-        ['win-asar-sh', winAsar.has('mcp-plugin/skills/noteford/scripts/noteford.sh')],
+        ['win-asar-sh', winAsar.has('mcp-plugin/skills/noteford-community/scripts/noteford.sh')],
         ['win-asar-png', winAsar.has('assets/noteford-mac.png')],
       ];
       fs.rmSync(mac, {recursive: true, force: true});
@@ -252,7 +252,7 @@ test('packaging keeps the Windows nsis target and adds an arm64 Mac app', async 
   assert.equal(stagedFiles['mac-asar-py'], true);
   assert.equal(stagedFiles['mac-asar-ico'], '');
   assert.equal(stagedFiles['mac-asar-png'], true);
-  assert.equal(stagedFiles['win-asar-ps1'], 'mcp-plugin/skills/noteford/scripts/noteford.ps1');
+  assert.equal(stagedFiles['win-asar-ps1'], 'mcp-plugin/skills/noteford-community/scripts/noteford.ps1');
   assert.equal(stagedFiles['win-asar-sh'], true);
   assert.equal(stagedFiles['win-asar-png'], true);
   assert.equal(stagedFiles['win-asar-ico'], 'assets/noteford.ico,assets/wechat-local.ico');

@@ -13,7 +13,7 @@ test('Mac direct access is opt-in, account-bound, revocable and copies credentia
   assert.throws(() => access.configure({ enabled: true, library_id: 'a' }, { id: 'b', initialized: true }));
   assert.throws(() => access.configure({ enabled: true, library_id: 'a' }, { id: 'a', initialized: false }));
   assert.deepEqual(access.configure({ enabled: true, library_id: 'a' }, { id: 'a', initialized: true }), { enabled: true, library_id: 'a', scope: 'all_indexed', allow_sync: true });
-  assert.deepEqual(access.config(), { mcpServers: { noteford: { command: '/App/service', args: ['--mcp-auto', '--client-name', 'MCP Client'] } } });
+  assert.deepEqual(access.config(), { mcpServers: { 'noteford-community': { command: '/App/service', args: ['--mcp-auto', '--client-name', 'MCP Client'] } } });
   assert.match(access.cliInstructions(), /--tool list_libraries/);
   assert.equal(access.configure({ enabled: false }, null).enabled, false);
   fs.writeFileSync(path.join(root, 'data/mac_ai_access.json'), 'null');

@@ -13,8 +13,8 @@ MAX_INPUT = 1024 * 1024
 
 
 ERRORS = {
-    'product_workspace_locked': '当前产品账号已退出或工作区不可用，请恢复原账号后重试。',
-    'product_workspace_changed': '产品账号工作区已变化，请仅重连此 MCP 服务，不会自动转移授权。',
+    'workspace_locked': '本地工作区已关闭或不可用，请重新打开开源版后重试。',
+    'workspace_changed': '本地工作区已变化，请仅重连此 MCP 服务，不会自动转移授权。',
     'app_not_running': 'Noteford 尚未启动或正在更新，请打开应用并等待恢复后重试。',
     'discovery_invalid': 'Noteford 服务发现记录无效，请检查应用启动状态。',
     'mcp_disconnected': 'Noteford MCP 已断开，请在应用中重新连接。',
@@ -208,7 +208,7 @@ def create_server(bridge: Bridge):
             return CallToolResult(is_error=True, content=[TextContent(type='text', text=error_message(exc))])
 
     from .mcp_instructions import INSTRUCTIONS
-    return RefreshServer('Noteford', instructions=INSTRUCTIONS, on_list_tools=list_tools,
+    return RefreshServer('Noteford Community', instructions=INSTRUCTIONS, on_list_tools=list_tools,
                          on_call_tool=call_tool, lifespan=bridge.refresh.lifespan,
                          on_subscriptions_listen=bridge.refresh.listen)
 

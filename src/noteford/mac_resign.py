@@ -28,14 +28,14 @@ LSREGISTER = (
 
 
 def default_state_dir(home: Path | None = None) -> Path:
-    """Noteford Mac layout: data lives under ~/Noteford/Data."""
+    """Noteford Mac layout: data lives under ~/Noteford Community/Data."""
 
     if home is None:
-        from .product_workspace import process_root
+        from .workspace_access import process_root
         root = process_root()
         if root is not None:
             return root / 'keycap'
-    return (home or Path.home()) / "Noteford" / "Data" / "keycap"
+    return (home or Path.home()) / "Noteford Community" / "Data" / "keycap"
 
 
 def ensure_state_dir(state_dir: Path) -> Path:
@@ -94,7 +94,7 @@ def legacy_copy_paths(state_dir: Path, *, home: Path | None = None) -> list[Path
     """Historical ad-hoc copies from earlier experiments. Never the official app."""
 
     root = home or Path.home()
-    noteford = root / "Noteford"
+    noteford = root / "Noteford Community"
     candidates = [
         disabled_app(state_dir),
         noteford / "应用" / "WeChat.app",

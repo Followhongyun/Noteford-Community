@@ -1,4 +1,4 @@
-"""Active desktop product-account boundary shared by HTTP, MCP and Mac sources.
+"""Active local desktop lifecycle boundary shared by HTTP, MCP and Mac sources.
 
 Unmanaged CLI/test roots retain their existing behavior. Desktop-managed roots
 carry a marker and must match the current, live desktop lease on every use.
@@ -12,7 +12,7 @@ import psutil
 
 
 def _marker(root: Path) -> dict | None:
-    file = root.resolve() / '.product-workspace.json'
+    file = root.resolve() / '.community-workspace.json'
     if not file.exists():
         return None
     try:
@@ -21,7 +21,7 @@ def _marker(root: Path) -> dict | None:
             raise ValueError()
         return value
     except (OSError, ValueError, KeyError, TypeError) as exc:
-        raise PermissionError('product_workspace_locked') from exc
+        raise PermissionError('workspace_locked') from exc
 
 
 def require_active(root: Path, epoch: str | None = None) -> str | None:
@@ -31,7 +31,7 @@ def require_active(root: Path, epoch: str | None = None) -> str | None:
         return None
     try:
         installation = Path(marker['installation']).resolve()
-        lease = json.loads((installation / 'data/runtime/product-account/active-workspace.json').read_text(encoding='utf-8'))
+        lease = json.loads((installation / 'data/runtime/community/active-workspace.json').read_text(encoding='utf-8'))
         if (lease['version'] != 1 or lease.get('active') is not True
                 or Path(lease['root']).resolve() != root or lease['workspace'] != marker['workspace']
                 or not isinstance(lease['epoch'], str) or not lease['epoch']
@@ -46,7 +46,7 @@ def require_active(root: Path, epoch: str | None = None) -> str | None:
             raise ValueError()
         return lease['epoch']
     except (OSError, ValueError, KeyError, TypeError, psutil.Error) as exc:
-        raise PermissionError('product_workspace_locked') from exc
+        raise PermissionError('workspace_locked') from exc
 
 
 class WorkspaceAccess:
@@ -58,7 +58,7 @@ class WorkspaceAccess:
         current = require_active(self.root, self.epoch)
         # A previously unmanaged reader cannot adopt a newly protected workspace.
         if current != self.epoch:
-            raise PermissionError('product_workspace_changed')
+            raise PermissionError('workspace_changed')
 
 
 def process_root() -> Path | None:
@@ -79,9 +79,6 @@ def source_allowed(root: Path, source: Path) -> bool:
     source = source.expanduser().resolve()
     own = root.resolve()
     installation = Path(marker['installation']).resolve()
-    profiles = installation / 'product-accounts'
-    if source.is_relative_to(profiles) and not source.is_relative_to(own if own != installation else installation / '__no_profile__'):
-        return False
     for ancestor in (source, *source.parents):
         other = _marker(ancestor)
         if other is not None:
@@ -92,7 +89,7 @@ def source_allowed(root: Path, source: Path) -> bool:
 
 def require_source(root: Path, source: Path):
     if not source_allowed(root, source):
-        raise PermissionError('product_workspace_source_denied')
+        raise PermissionError('workspace_source_denied')
 
 
 def validate_capture_paths(payload: dict, root: Path | None = None, *, public=False):
@@ -102,9 +99,9 @@ def validate_capture_paths(payload: dict, root: Path | None = None, *, public=Fa
     require_active(root)
     fields = {'state_dir', 'project_root', 'db_root', 'app', 'hook'}
     if public and fields.intersection(payload):
-        raise PermissionError('product_workspace_paths_managed')
+        raise PermissionError('workspace_paths_managed')
     for field, expected in (('state_dir', root / 'keycap'), ('project_root', root), ('app', Path('/Applications/WeChat.app'))):
         if payload.get(field) and Path(str(payload[field])).expanduser().resolve() != expected.resolve():
-            raise PermissionError('product_workspace_paths_managed')
+            raise PermissionError('workspace_paths_managed')
     if payload.get('db_root'):
         require_source(root, Path(str(payload['db_root'])))

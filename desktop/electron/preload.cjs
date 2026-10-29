@@ -2,14 +2,12 @@
 
 const { contextBridge, ipcRenderer } = require('electron');
 
-let workspaceEpoch = null;
-const acceptAccount = state => { workspaceEpoch = state?.status === 'signed-in' ? state.workspaceEpoch : null; return state; };
-const invokeScoped = (channel, ...args) => ipcRenderer.invoke(channel, { workspaceEpoch }, ...args);
+let workspaceReady;
+const invokeScoped = async (channel,...args) => {
+  const scope=await (workspaceReady ||= ipcRenderer.invoke('noteford:workspace-ready'));
+  return ipcRenderer.invoke(channel,{workspaceEpoch:scope.epoch},...args);
+};
 const api = {
-  productAccount: action => ipcRenderer.invoke('noteford:product-account-'+action).then(acceptAccount),
-  submitProductAccount: input => ipcRenderer.invoke('noteford:product-account-submit',input).then(acceptAccount),
-  sendProductCode: (email,purpose) => ipcRenderer.invoke('noteford:product-account-code',{email,purpose}),
-  onProductAccount: callback => {const listener=(_event,state)=>callback(acceptAccount(state));ipcRenderer.on('noteford:product-account-state',listener);return ()=>ipcRenderer.removeListener('noteford:product-account-state',listener);},
   platform: process.platform,
   ...(process.platform === 'darwin' ? {nativeCorners: input => ipcRenderer.invoke('noteford:native-corners', input)} : {}),
   hostProfile: () => invokeScoped('noteford:host-profile'),
@@ -80,14 +78,7 @@ const api = {
   pause: input => invokeScoped('noteford:pause', input),
   refresh: () => invokeScoped('noteford:refresh'),
   macWechat: input => invokeScoped('noteford:mac-wechat', input || {}),
-  updateStatus: () => ipcRenderer.invoke('noteford:update-status'),
-  checkForUpdates: () => ipcRenderer.invoke('noteford:update-check'),
-  installUpdate: () => ipcRenderer.invoke('noteford:update-install'),
-  onUpdateState: callback => {
-    const listener = (_event, state) => callback(state);
-    ipcRenderer.on('noteford:update-state', listener);
-    return () => ipcRenderer.removeListener('noteford:update-state', listener);
-  },
+
 };
 
 // A sandboxed preload cannot require local files. Keep this bridge self-contained.

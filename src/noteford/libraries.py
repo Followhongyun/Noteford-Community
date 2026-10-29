@@ -182,7 +182,7 @@ class LibraryContext:
 class LibraryRegistry:
     def __init__(self, app_root: Path, root_config: dict[str, Any]):
         self.app_root = app_root.resolve()
-        from .product_workspace import WorkspaceAccess
+        from .workspace_access import WorkspaceAccess
         self.workspace_access = WorkspaceAccess(self.app_root)
         self.root_config = root_config
         registry_value = root_config.get('library_registry_path')
@@ -278,7 +278,7 @@ class LibraryRegistry:
         return record
 
     def discover(self, wechat_root: Path) -> list[LibraryRecord]:
-        from .product_workspace import require_source
+        from .workspace_access import require_source
         require_source(self.app_root, wechat_root)
         root, accounts = discover_account_directories(wechat_root)
         existing = {record.id: record for record in self._records()}
@@ -318,7 +318,7 @@ class LibraryRegistry:
         return self._records()
 
     def register_account(self, wechat_root: Path, account: str) -> LibraryRecord:
-        from .product_workspace import require_source
+        from .workspace_access import require_source
         require_source(self.app_root, wechat_root)
         root, accounts = discover_account_directories(wechat_root)
         if account not in accounts:
@@ -351,7 +351,7 @@ class LibraryRegistry:
         return record
 
     def register_archive_account(self, archive_root: Path, account: str) -> LibraryRecord:
-        from .product_workspace import require_source
+        from .workspace_access import require_source
         require_source(self.app_root, archive_root)
         """Register one already-decrypted macOS account directory.
 
@@ -499,7 +499,7 @@ def load_root_config(path: Path) -> dict[str, Any]:
         value = Path(value).expanduser()
         return (value if value.is_absolute() else path.parent / value).resolve()
     app_root = relative_to_config(payload.get('project_root') or path.parent)
-    from .product_workspace import require_active
+    from .workspace_access import require_active
     require_active(app_root)
     roots = payload.get('wechat_roots')
     if not roots:

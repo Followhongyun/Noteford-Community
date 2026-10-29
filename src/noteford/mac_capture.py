@@ -28,7 +28,7 @@ AES_ALGORITHM = 0
 MAC_SALT_XOR = 0x3A
 DB_KEY_ACCOUNT = "noteford-wechat-db-keys"
 IMAGE_KEY_ACCOUNT = "noteford-wechat-image-aes"
-KEYCHAIN_SERVICE = "com.followhongyun.noteford"
+KEYCHAIN_SERVICE = "com.followhongyun.noteford.community"
 
 ENTITLEMENTS = """<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
@@ -419,14 +419,14 @@ class SecurityKeychainStore:
 
     def __init__(self, runner: Callable[..., subprocess.CompletedProcess] | None = None):
         self._run = runner
-        from .product_workspace import process_root, WorkspaceAccess
+        from .workspace_access import process_root, WorkspaceAccess
         self._root = process_root()
         self._access = WorkspaceAccess(self._root) if self._root else None
 
     def _account(self, account: str) -> str:
         if self._access:
             self._access.check()
-            marker = json.loads((self._root / '.product-workspace.json').read_text())
+            marker = json.loads((self._root / '.community-workspace.json').read_text())
             if marker['workspace'] != 'legacy':
                 return account + ':' + marker['workspace']
         return account

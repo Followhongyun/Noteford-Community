@@ -2,7 +2,7 @@ const test = require('node:test');
 const assert = require('node:assert/strict');
 const {buildConnectPrompt} = require('../desktop/electron/mcp-prompt.cjs');
 test('Skill install prompt contains no credentials and requires user consent plus read verification', () => {
- const skillPath = 'C:/Program Files/Noteford/resources/skills/noteford';
+ const skillPath = 'C:/Program Files/Noteford/resources/skills/noteford-community';
  const text = buildConnectPrompt({skillPath, args: ['--pair', 'secret-token']});
  assert(text.includes(JSON.stringify(skillPath)));
  assert(!text.includes('secret-token'));

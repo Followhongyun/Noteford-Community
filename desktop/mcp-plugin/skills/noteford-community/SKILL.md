@@ -1,5 +1,5 @@
 ---
-name: noteford
+name: noteford-community
 description: 通过 Noteford 读取本人授权的微信聊天、检索原消息与上下文、整理素材、查看图片及分析历史和新增消息，并按用户要求刷新现有同步范围。用户询问自己的微信资料、要求连接 Noteford，或说“更新mcp”“刷新MCP”时使用。
 ---
 
@@ -18,7 +18,7 @@ description: 通过 Noteford 读取本人授权的微信聊天、检索原消息
 
 ## 连接与范围
 
-用户请求安装或连接 Noteford（包括把 `npx skills add Followhongyun/noteford-skill` 交给当前 AI 执行）时，按 [连接与验收](references/connection.md) 的首次接入流程继续到实际可读验证；安装成功不等于连接成功。当前会话直接读取已安装的 Skill 并继续，无须仅为加载说明而要求用户重开对话。
+用户请求安装或连接 Noteford（包括把 `npx skills add Followhongyun/Noteford-Community --skill noteford-community` 交给当前 AI 执行）时，按 [连接与验收](references/connection.md) 的首次接入流程继续到实际可读验证；安装成功不等于连接成功。当前会话直接读取已安装的 Skill 并继续，无须仅为加载说明而要求用户重开对话。
 
 优先使用已连接的 Noteford MCP。**macOS Codex 已有授权、但原生目录缺少新版控制工具时，优先按 [连接与验收](references/connection.md#macos-codex-保留既有授权的持久入口) 由 Codex 命令工具直接 `exec` 安装版服务，保留 stdio 会话；不要用 Node/Python 包装程序替代调用方。** 其他客户端工具缺失或 `Transport closed` 时，使用本 Skill 的 `scripts/noteford.ps1`（Windows）或 `scripts/noteford.sh` / `scripts/noteford.py`（macOS）发现运行中的应用并建立新 MCP 会话。首次接入、重连、授权或诊断时阅读 [连接与验收](references/connection.md)。不要让用户手工复制令牌；不要寻找或直接打开数据库、归档、密钥、凭据或其他账号。
 

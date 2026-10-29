@@ -13,7 +13,7 @@ pytestmark = pytest.mark.skipif(os.name == "nt", reason="macOS POSIX launcher")
 
 @pytest.fixture
 def app(tmp_path):
-    bundle = tmp_path / "带 空格的 Noteford.app"
+    bundle = tmp_path / "带 空格的 Noteford 开源版.app"
     service = bundle / "Contents/Resources/service/noteford-service"
     service.parent.mkdir(parents=True)
     service.write_text('#!/bin/sh\nprintf "%s\\n" "$@"\ncat\n', encoding="utf-8")

@@ -22,43 +22,19 @@ function writeMachO(file) {
   fs.writeFileSync(file, buf);
 }
 
-test('a directory-only Mac build can initialize the real updater download cache', async () => {
-  const {ensureMacUpdateConfig} = require('../desktop/scripts/verify-third-party-licenses.cjs');
-  const {AppUpdater} = require('../desktop/node_modules/electron-updater/out/AppUpdater');
-  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'noteford-update-config-'));
-  try {
-    const app = path.join(root, 'Noteford.app');
-    const resources = path.join(app, 'Contents', 'Resources');
-    fs.mkdirSync(resources, {recursive: true});
-    ensureMacUpdateConfig(app);
-    const config = path.join(resources, 'app-update.yml');
-    const updater = new AppUpdater(undefined, {
-      version: '0.1.0', name: 'Noteford', isPackaged: true,
-      appUpdateConfigPath: config, baseCachePath: path.join(root, 'cache'),
-    });
-    updater.logger = null;
-    assert.equal((await updater.getOrCreateDownloadHelper()).cacheDir,
-      path.join(root, 'cache', 'noteford-desktop-updater'));
-    assert.equal((await updater.configOnDisk.value).url, 'https://followhongyun.com/updates/noteford/macos/');
-    fs.writeFileSync(config, 'provider: generic\nurl: https://example.test/existing-builder-config\n');
-    ensureMacUpdateConfig(app);
-    assert.match(fs.readFileSync(config, 'utf8'), /existing-builder-config/);
-  } finally { fs.rmSync(root, {recursive: true, force: true}); }
-});
-
 test('ad-hoc sign uses the Noteford identifier and automation entitlements', () => {
   // afterPack owns the complete inside-out Developer ID signing pass. Prevent
   // builder from overwriting only some seals with a different identity.
   const config = require('../desktop/package.json');
   assert.equal(config.build.mac.identity, null);
   const entitlements = path.join('desktop', 'entitlements.mac.plist');
-  const target = path.join('/Applications/Noteford.app/Contents/MacOS/Noteford');
+  const target = path.join('/Applications/Noteford 开源版.app/Contents/MacOS/Noteford');
   const args = pack.adhocSignArguments(target, {
-    identifier: 'com.followhongyun.noteford',
+    identifier: 'com.followhongyun.noteford.community',
     entitlements,
   });
   assert.deepEqual(args, [
-    '--force', '--sign', '-', '--identifier', 'com.followhongyun.noteford',
+    '--force', '--sign', '-', '--identifier', 'com.followhongyun.noteford.community',
     '--entitlements', entitlements, '--options', 'runtime', target,
   ]);
   assert.equal(args.includes('--deep'), false);
@@ -74,9 +50,9 @@ test('ad-hoc sign uses the Noteford identifier and automation entitlements', () 
 test('ad-hoc sign walks inside-out and fails when the deep signature check fails', () => {
   const entitlements = path.join('desktop', 'entitlements.mac.plist');
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'noteford-sign-'));
-  const app = path.join(root, 'Noteford.app');
+  const app = path.join(root, 'Noteford 开源版.app');
   const framework = path.join(app, 'Contents', 'Frameworks', 'Electron Framework.framework');
-  writeMachO(path.join(app, 'Contents', 'MacOS', 'Noteford'));
+  writeMachO(path.join(app, 'Contents', 'MacOS', 'Noteford Community'));
   writeMachO(path.join(framework, 'Versions', 'A', 'Electron Framework'));
   writeMachO(path.join(framework, 'Versions', 'A', 'Libraries', 'libffmpeg.dylib'));
   writeMachO(path.join(framework, 'Versions', 'A', 'Helpers', 'chrome_crashpad_handler'));
@@ -108,7 +84,7 @@ test('ad-hoc sign walks inside-out and fails when the deep signature check fails
   assert.ok(at('Electron Framework.framework') < at('Noteford Helper.app'));
   assert.ok(at('Noteford Helper.app') < at(app));
   assert.equal(targets.at(-1), app);
-  assert.equal(targets.some(item => item.endsWith(path.join('Contents', 'MacOS', 'Noteford'))), false);
+  assert.equal(targets.some(item => item.endsWith(path.join('Contents', 'MacOS', 'Noteford Community'))), false);
   assert.equal(targets.some(item => item.endsWith('Current')), false);
   assert.equal(targets.includes(path.join(app, 'Contents', 'Info.plist')), false);
   const dylib = signCalls.find(call => call[1].at(-1).endsWith('libffmpeg.dylib'))[1];
@@ -120,13 +96,13 @@ test('ad-hoc sign walks inside-out and fails when the deep signature check fails
   assert.equal(helper.includes('--identifier'), false);
   assert.equal(helper[helper.indexOf('--entitlements') + 1], entitlements);
   const outer = signCalls.find(call => call[1].at(-1) === app)[1];
-  assert.equal(outer[outer.indexOf('--identifier') + 1], 'com.followhongyun.noteford');
+  assert.equal(outer[outer.indexOf('--identifier') + 1], 'com.followhongyun.noteford.community');
   assert.equal(outer[outer.indexOf('--entitlements') + 1], entitlements);
   assert.equal(outer.includes('Electron'), false);
   const checked = calls.filter(call => call[1][0] === '--verify');
   assert.equal(checked.length, 1);
   assert.deepEqual(checked[0][1], ['--verify', '--deep', '--strict', app]);
-  assert.equal(signed.identifier, 'com.followhongyun.noteford');
+  assert.equal(signed.identifier, 'com.followhongyun.noteford.community');
   assert.throws(() => pack.resignAdhocApp(app, {
     entitlements,
     execFileSync: (command, argv) => {
@@ -145,7 +121,7 @@ test('Mac codesign fixture has the Noteford identity and Apple Events entitlemen
 }, t => {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'noteford-sign-fixture-'));
   t.after(() => fs.rmSync(root, { recursive: true, force: true }));
-  const app = path.join(root, 'Noteford.app');
+  const app = path.join(root, 'Noteford 开源版.app');
   const helper = path.join(app, 'Contents', 'Frameworks', 'Fixture Helper.app');
   for (const bundle of [app, helper]) {
     const macos = path.join(bundle, 'Contents', 'MacOS');
@@ -156,7 +132,7 @@ test('Mac codesign fixture has the Noteford identity and Apple Events entitlemen
     fs.writeFileSync(path.join(bundle, 'Contents', 'Info.plist'), `<?xml version="1.0" encoding="UTF-8"?>
 <plist version="1.0"><dict>
 <key>CFBundleExecutable</key><string>fixture</string>
-<key>CFBundleIdentifier</key><string>com.followhongyun.noteford${bundle === helper ? '.helper' : ''}</string>
+<key>CFBundleIdentifier</key><string>com.followhongyun.noteford.community${bundle === helper ? '.helper' : ''}</string>
 <key>CFBundlePackageType</key><string>APPL</string>
 </dict></plist>`);
   }
@@ -181,23 +157,22 @@ test('afterPack verifies original bytes before signing and propagates either fai
   const calls = [];
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'noteford-after-pack-'));
   t.after(() => fs.rmSync(root, { recursive: true, force: true }));
-  const app = path.join(root, 'Noteford.app');
+  const app = path.join(root, 'Noteford 开源版.app');
   fs.mkdirSync(path.join(app, 'Contents/Resources'), { recursive: true });
   t.mock.method(pack, 'macAppBundle', () => app);
   const dependenciesPath = require.resolve('../desktop/scripts/verify-runtime-dependencies.cjs');
   require(dependenciesPath);
   t.mock.method(require.cache[dependenciesPath], 'exports', () => { calls.push('dependencies'); });
-  t.mock.method(require('../desktop/scripts/mac-uninstaller.cjs'), 'build', () => { calls.push('uninstaller'); });
   t.mock.method(pack, 'verifyMacPack', () => { calls.push('hash'); return { sha256: 'before-signing' }; });
   t.mock.method(pack, 'signMacApp', (_app, options) => {
     calls.push('sign');
-    assert.ok(fs.existsSync(path.join(_app, 'Contents/Resources/app-update.yml')));
+    assert.ok(!fs.existsSync(path.join(_app, 'Contents/Resources/app-update.yml')));
     assert.match(options.entitlements, /entitlements\.mac\.plist$/);
     assert.equal(options.teamId, 'QD3H9VHB23');
   });
   const context = { electronPlatformName: 'darwin', appOutDir: root };
   assert.deepEqual(await hook(context), { sha256: 'before-signing' });
-  assert.deepEqual(calls, ['dependencies', 'hash', 'uninstaller', 'sign']);
+  assert.deepEqual(calls, ['dependencies', 'hash', 'sign']);
   pack.signMacApp.mock.mockImplementation(() => { throw new Error('signature invalid'); });
   await assert.rejects(hook(context), /signature invalid/);
   calls.length = 0;
@@ -220,7 +195,7 @@ test('release signing selects only the configured Developer ID team and never fa
   assert.throws(() => pack.resolveDeveloperIdentity({ ...options, env: { CSC_NAME: '-' } }), /Ad-hoc fallback is disabled/);
   listing = '';
   assert.throws(() => pack.resolveDeveloperIdentity(options), /Ad-hoc fallback is disabled/);
-  const args = pack.codeSignArguments('/fixture.app', { identity: first, identifier: 'com.followhongyun.noteford' });
+  const args = pack.codeSignArguments('/fixture.app', { identity: first, identifier: 'com.followhongyun.noteford.community' });
   assert.ok(args.includes('--timestamp=http://timestamp.apple.com/ts01'));
   assert.ok(!args.includes('--requirements'));
   assert.ok(!args.includes('--deep'));
@@ -232,14 +207,14 @@ test('Developer ID survives changed resources with the same certificate-bound re
   const { execFileSync } = require('node:child_process');
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'noteford-developer-id-'));
   t.after(() => fs.rmSync(root, { recursive: true, force: true }));
-  const app = path.join(root, 'Noteford.app');
+  const app = path.join(root, 'Noteford 开源版.app');
   fs.mkdirSync(path.join(app, 'Contents', 'MacOS'), { recursive: true });
   fs.mkdirSync(path.join(app, 'Contents', 'Resources'));
   fs.copyFileSync('/usr/bin/true', path.join(app, 'Contents', 'MacOS', 'fixture'));
   fs.chmodSync(path.join(app, 'Contents', 'MacOS', 'fixture'), 0o755);
   fs.writeFileSync(path.join(app, 'Contents', 'Info.plist'), `<?xml version="1.0" encoding="UTF-8"?>
 <plist version="1.0"><dict><key>CFBundleExecutable</key><string>fixture</string>
-<key>CFBundleIdentifier</key><string>com.followhongyun.noteford</string>
+<key>CFBundleIdentifier</key><string>com.followhongyun.noteford.community</string>
 <key>CFBundlePackageType</key><string>APPL</string></dict></plist>`);
   const requirements = [];
   const hashes = [];
@@ -425,7 +400,7 @@ test('Mac beforePack freezes an arm64 service and refuses a python3 launcher', (
 
 test('Mac afterPack rejects a packaged python launcher', () => {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'noteford-mac-app-'));
-  const binary = path.join(root, 'Noteford.app', 'Contents', 'Resources', 'service', 'noteford-service');
+  const binary = path.join(root, 'Noteford 开源版.app', 'Contents', 'Resources', 'service', 'noteford-service');
   fs.mkdirSync(path.join(path.dirname(binary), '_internal'), {recursive: true});
   fs.writeFileSync(binary, '#!/bin/sh\nexec python3 -m noteford.service "$@"\n', {mode: 0o755});
   const io = {
@@ -451,7 +426,7 @@ test('Mac afterPack rejects a packaged python launcher', () => {
 
 test('Mac ffmpeg check compares the packaged dylib with Electron’s prebuilt copy', () => {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'noteford-ffmpeg-'));
-  const app = path.join(root, 'out', 'Noteford.app', ...pack.FFMPEG_TAIL);
+  const app = path.join(root, 'out', 'Noteford 开源版.app', ...pack.FFMPEG_TAIL);
   const electron = path.join(root, 'electron', 'Electron.app', ...pack.FFMPEG_TAIL);
   fs.mkdirSync(path.dirname(app), {recursive: true});
   fs.mkdirSync(path.dirname(electron), {recursive: true});

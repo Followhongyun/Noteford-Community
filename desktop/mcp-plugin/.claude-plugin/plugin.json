@@ -1,1 +1,1 @@
-{"name":"noteford","version":"0.1.0","description":"Noteford 官方只读 MCP：授权会话、消息、搜索和增量更新。","author":{"name":"Followhongyun"}}
+{"name": "noteford-community", "version": "0.1.0", "description": "Noteford 开源版只读 MCP", "author": {"name": "Followhongyun"}}

@@ -1,7 +1,7 @@
 [project]
 license = "AGPL-3.0-only"
 name = "noteford"
-version = "0.1.5"
+version = "0.1.5+community.1"
 description = "Read-only Windows WeChat 4.x database snapshot and offline decryption toolkit."
 requires-python = ">=3.11"
 dependencies = [

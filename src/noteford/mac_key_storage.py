@@ -59,7 +59,7 @@ def _decode(raw):
 
 def _guard_path(path):
     # Check the workspace before creating locks or accessing any legacy file.
-    from .product_workspace import process_root, require_source
+    from .workspace_access import process_root, require_source
     root = process_root()
     if root is not None:
         require_source(root, path)

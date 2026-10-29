@@ -1,6 +1,6 @@
 # 开发与验证
 
-需要 Node.js 24（至少 22.19）、Python 3.11；Mac 原生构建另需 Xcode Command Line Tools。先在独立目录安装依赖，不使用已有会员版资料。
+需要 Node.js 24（至少 22.19）、Python 3.11；Mac 原生构建另需 Xcode Command Line Tools。先在独立目录安装依赖，不使用已有其他版本资料。
 
 ```sh
 python3 -m venv .venv-build
@@ -25,6 +25,6 @@ pytest 为测试依赖，需要在独立环境安装。自动测试使用合成�
 
 ## 运行限制
 
-Mac `dev:mac` 历史入口会准备独立签名运行器并使用钥匙串身份。公开源码没有维护者的 Developer ID 证书，因此不承诺新电脑直接执行该入口即可运行。独立构建需配置自己的签名、应用标识、私有资料根及更新通道；相关实现位于 `desktop/scripts/`、`desktop/electron/`。Windows 开发入口保留于 Scripts/start-dev.ps1，本次未做 Windows 验收。
+Mac `dev:mac` 入口会准备独立签名运行器并使用钥匙串身份。公开源码没有维护者的 Developer ID 证书，因此不承诺新电脑直接执行该入口即可运行。独立构建需配置自己的签名、应用标识、私有资料根及更新通道；相关实现位于 `desktop/scripts/`、`desktop/electron/`。Windows 开发入口保留于 Scripts/start-dev.ps1，本次未做 Windows 验收。
 
 不要为通过启动检查删除现有钥匙串、重置用户授权或复用其他版本的数据。真实数据与系统权限测试必须单独授权。更多边界见 OPERATIONS、DATA-AND-SECURITY。

@@ -1,14 +1,4 @@
 export type NavSection = 'following' | 'contacts' | 'content' | 'settings'
-export interface UpdateStatus {
-  localLive?: boolean
-  status: 'idle' | 'checking' | 'downloading' | 'preparing' | 'ready' | 'current' | 'error' | 'unavailable'
-  version: string
-  availableVersion: string | null
-  progress: number
-  error: string | null
-}
-export type SelectionState = 'unselected' | 'following' | 'paused'
-
 export interface LibrarySummary {
   id: string
   display_name: string
@@ -282,10 +272,6 @@ export interface MacAccountsSnapshot {
 declare global {
   interface Window {
     noteford: {
-      productAccount(action:'status'|'restore'|'cancel'|'logout'|'local'):Promise<ProductAccountState>
-      submitProductAccount(input:ProductAccountInput):Promise<ProductAccountState>
-      sendProductCode(email:string,purpose?:'register'|'recover'):Promise<{registrationId?:string;recoveryId?:string;resendAfterSeconds?:number;error?:string}>
-      onProductAccount(callback:(state:ProductAccountState)=>void):()=>void
       platform: string
       nativeCorners?(input: {width: number; height: number; radius: number; scale: number; stroke: number; corners: number}): Promise<{outer: string; stroke: string | null; renderer: 'macos-continuous'} | null>
       hostProfile(): Promise<{
@@ -373,10 +359,6 @@ declare global {
       }>
       pause(input: { username: string }): Promise<SelectionStatus>
       refresh(): Promise<{ result: unknown; status: AppStatus }>
-      updateStatus(): Promise<UpdateStatus>
-      checkForUpdates(): Promise<UpdateStatus>
-      installUpdate(): Promise<boolean>
-      onUpdateState(callback: (state: UpdateStatus) => void): () => void
     }
   }
 }
@@ -386,8 +368,3 @@ export {}
 export interface ContentSource {is_group?: boolean; sender_username?: string | null; message_uid:string; conversation_id:string; conversation_name:string; sender:string; timestamp:number}
 export interface ContentItem {id:string; category:string; title:string; text:string; url:string|null; availability:string; sources:ContentSource[]}
 export interface ContentPage {items:ContentItem[];total:number;counts:Record<string,number>;next_offset:number|null}
-
-export type ProductAccountState={status:"restoring"|"signed-out"|"waiting"|"signed-in"|"error"|"local";account:{id:string;email:string;displayName:string|null}|null;error:string|null;canUseLocal:boolean;workspaceEpoch?:string;legacyWorkspace?:boolean}
-
-
-export type ProductAccountInput={mode:"register"|"login"|"recover";email:string;password:string;inviteCode?:string;displayName?:string;code?:string;registrationId?:string}

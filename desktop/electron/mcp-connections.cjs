@@ -41,7 +41,7 @@ function createMcpConnections({ runtimeRoot, command, argsPrefix = [], env = {},
   function config(id, pairToken) {
     if (typeof pairToken !== 'string' || !pairToken.startsWith('nfp_')) throw new Error('缺少配对令牌');
     if (!Object.hasOwn(read().clients, id) || read().clients[id].enabled !== true) throw new Error('连接不存在或已撤销');
-    return { mcpServers: { noteford: {
+    return { mcpServers: { 'noteford-community': {
       command, args: [...argsPrefix, '--mcp', '--config', path.join(runtimeRoot, 'config.local.json'), '--pair', pairToken],
       env: { ...env, PYTHONUTF8: '1', PYTHONDONTWRITEBYTECODE: '1' },
     } } };

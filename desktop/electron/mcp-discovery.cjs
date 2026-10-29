@@ -19,7 +19,7 @@ function isAlive(pid, executable) {
 function publishDiscovery({ directory, command, config, appExecutable, pid, skillPath, args, alive = isAlive, interval = 5000 }) {
   const file = path.join(directory, 'connection.json');
   const instance = crypto.randomUUID();
-  const record = { version: 1, product: 'Noteford', instance, pid, appExecutable, command, config, skillPath };
+  const record = { version: 1, product: 'Noteford Community', instance, pid, appExecutable, command, config, skillPath };
   if (Array.isArray(args) && args.length && args.every(item => typeof item === 'string')) record.args = args;
   let stopped = false;
   function refresh() {

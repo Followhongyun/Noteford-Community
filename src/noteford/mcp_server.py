@@ -59,7 +59,7 @@ def _recheck_scope(reader, library_id: str, initial: dict,
 class LocalIndexReader:
     def __init__(self, config_path: Path, client_id: str | None = None):
         self.config_path = config_path.resolve()
-        from .product_workspace import WorkspaceAccess
+        from .workspace_access import WorkspaceAccess
         self.workspace_access = WorkspaceAccess(Path(load_root_config(self.config_path)["project_root"]))
         self.client_id = client_id
 
@@ -141,7 +141,7 @@ def create_server(config_path: Path, client_id: str | None = None, *,
     # server_options carries auth settings for the remote (streamable HTTP) transport.
     reader = reader or LocalIndexReader(config_path, client_id)
     server = MCPServer(
-        "Noteford",
+        "Noteford Community",
         **server_options,
         instructions=INSTRUCTIONS,
     )

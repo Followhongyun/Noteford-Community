@@ -1,17 +1,17 @@
 {
-  "name": "noteford-desktop",
-  "version": "0.1.5",
+  "name": "noteford-community",
+  "version": "0.1.5-community.1",
   "private": true,
   "engines": {
     "node": ">=22.19.0"
   },
   "author": "Followhongyun",
-  "description": "Noteford desktop application",
+  "description": "Noteford Community local desktop application",
   "notefordMacSigningTeamId": "QD3H9VHB23",
   "main": "electron/main.cjs",
   "scripts": {
     "dev:mac": "node scripts/local-live.cjs",
-    "dev": "concurrently -k \"vite --host 127.0.0.1 --strictPort\" \"wait-on http://127.0.0.1:5173 && electron . --dev\"",
+    "dev": "concurrently -k \"vite --host 127.0.0.1 --strictPort\" \"wait-on http://127.0.0.1:5187 && electron . --dev\"",
     "build:renderer": "vite build",
     "build": "npm run typecheck && npm run build:renderer",
     "package:win": "node --require ./scripts/node-trust.cjs node_modules/electron-builder/cli.js --win nsis --x64 --publish never",
@@ -22,15 +22,14 @@
     "icon:check": "node scripts/check-icons.cjs"
   },
   "dependencies": {
-    "electron-updater": "6.8.9",
     "lucide-react": "^1.48.0",
     "react": "^19.3.0",
     "react-dom": "^19.3.0",
     "lazy-val": "file:vendor/noteford-lazy-1.0.6.tgz"
   },
   "build": {
-    "appId": "com.followhongyun.noteford",
-    "productName": "Noteford",
+    "appId": "com.followhongyun.noteford.community",
+    "productName": "Noteford 开源版",
     "directories": {
       "output": "../build/release"
     },
@@ -58,8 +57,8 @@
         "to": "privacy.md"
       },
       {
-        "from": "mcp-plugin/skills/noteford",
-        "to": "skills/noteford",
+        "from": "mcp-plugin/skills/noteford-community",
+        "to": "skills/noteford-community",
         "filter": [
           "**/*",
           "!scripts/noteford.ps1"
@@ -88,8 +87,8 @@
           "to": "noteford-book-v1.ico"
         },
         {
-          "from": "mcp-plugin/skills/noteford/scripts/noteford.ps1",
-          "to": "skills/noteford/scripts/noteford.ps1"
+          "from": "mcp-plugin/skills/noteford-community/scripts/noteford.ps1",
+          "to": "skills/noteford-community/scripts/noteford.ps1"
         }
       ]
     },
@@ -103,11 +102,6 @@
           ]
         }
       ],
-      "publish": {
-        "provider": "generic",
-        "url": "https://followhongyun.com/updates/noteford/macos/",
-        "useMultipleRangeRequest": false
-      },
       "identity": null,
       "target": [
         {
@@ -173,12 +167,6 @@
       "allowElevation": false,
       "perMachine": false,
       "packElevateHelper": false
-    },
-    "publish": {
-      "provider": "github",
-      "owner": "Followhongyun",
-      "repo": "WeChatLocal-Updates",
-      "releaseType": "release"
     },
     "afterPack": "scripts/verify-third-party-licenses.cjs",
     "beforePack": "scripts/collect-third-party-licenses.cjs"

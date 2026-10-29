@@ -107,7 +107,7 @@ async function run() {
       }));
     }
     status('starting');
-    vite=spawn(process.execPath,[path.join(desktop,'node_modules/vite/bin/vite.js'),'--host','127.0.0.1','--port','5173','--strictPort'],{cwd:desktop,env,windowsHide:true,stdio:['ignore','pipe','pipe']});
+    vite=spawn(process.execPath,[path.join(desktop,'node_modules/vite/bin/vite.js'),'--host','127.0.0.1','--port','5187','--strictPort'],{cwd:desktop,env,windowsHide:true,stdio:['ignore','pipe','pipe']});
     vite.once('exit',(code,signal)=>{if(app&&!stopping){log(`Renderer stopped (code ${code}, signal ${signal})`);void shutdown(1);}});
     await waitForRenderer(vite, {write:chunk=>fs.writeSync(output,chunk)});
     launch();

@@ -10,7 +10,7 @@ const {
   executePermissionGrant, FDA_GUIDANCE,
 } = require('./permission-guide.cjs');
 
-const BUNDLE_ID = 'com.followhongyun.noteford';
+const BUNDLE_ID = 'com.followhongyun.noteford.community';
 const MISSING_TARGET = new Set([-600, -10814]);
 
 function appBundlePath(execPath = '') {
@@ -97,11 +97,11 @@ function readAutomationStatus(options) { return controller.read(options); }
 
 function revealAppArguments(execPath, exists = fs.existsSync) {
   const bundle = appBundlePath(execPath);
-  const installed = '/Applications/Noteford.app';
+  const installed = '/Applications/Noteford 开源版.app';
   if (exists(installed)) return ['-R', installed];
   // Reveal the running Noteford copy, including a nonstandard install location.
   // A dev Electron executable must never be offered as Noteford for FDA.
-  if (bundle && path.basename(bundle) === 'Noteford.app') return ['-R', bundle];
+  if (bundle && path.basename(bundle) === 'Noteford 开源版.app') return ['-R', bundle];
   return null;
 }
 

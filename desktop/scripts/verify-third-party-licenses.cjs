@@ -5,18 +5,6 @@ const crypto = require('node:crypto');
 function hash(file) {
   return crypto.createHash('sha256').update(fs.readFileSync(file)).digest('hex');
 }
-function ensureMacUpdateConfig(app) {
-  const file = path.join(app, 'Contents', 'Resources', 'app-update.yml');
-  // electron-builder omits this file for --dir, but electron-updater still
-  // reads it to create its download cache even with a custom feed provider.
-  if (!fs.existsSync(file)) {
-    const config = require('../package.json');
-    fs.writeFileSync(file, JSON.stringify({
-      ...config.build.mac.publish,
-      updaterCacheDirName: `${config.name}-updater`,
-    }, null, 2) + '\n');
-  }
-}
 function checkedPath(root, relative) {
   const file = path.resolve(root, relative);
   if (!file.startsWith(path.resolve(root) + path.sep)) throw Error('Invalid license manifest path');
@@ -70,8 +58,6 @@ module.exports = async context => {
     require('./verify-runtime-dependencies.cjs')(path.join(app, 'Contents', 'Resources', 'app.asar'));
     // Signing changes Mach-O bytes, including libffmpeg's signature region.
     const verified = pack.verifyMacPack(context);
-    require('./mac-uninstaller.cjs').build(app);
-    ensureMacUpdateConfig(app);
     pack.signMacApp(app, {
       teamId: require('../package.json').notefordMacSigningTeamId,
       entitlements: path.join(__dirname, '..', 'entitlements.mac.plist'),
@@ -96,7 +82,7 @@ module.exports = async context => {
   return verify(context.appOutDir);
 };
 module.exports.verify = verify;
-module.exports.ensureMacUpdateConfig = ensureMacUpdateConfig;
+
 if (require.main === module) {
   const folder = process.argv[2];
   if (!folder) throw Error('Usage: node verify-third-party-licenses.cjs <unpacked-app> [--inventory-only]');

@@ -158,18 +158,18 @@ test('closed WeChat gets guidance before any prompt or settings launch', async (
 });
 
 test('ad-hoc signature changes are explained without assuming a duplicate TCC row exists', async () => {
-  const signature = runtime.parseSignature('Identifier=com.followhongyun.noteford\nSignature=adhoc\nCDHash=abcd1234\n# designated => cdhash H"abcd1234"');
+  const signature = runtime.parseSignature('Identifier=com.followhongyun.noteford.community\nSignature=adhoc\nCDHash=abcd1234\n# designated => cdhash H"abcd1234"');
   assert.equal(signature.hashRequirement, true);
   assert.match(runtime.signatureGuidance(signature, { cdhash: 'eeee' }), /签名已变化/);
   assert.match(runtime.signatureGuidance(signature), /若出现多条/);
   assert.equal(runtime.signatureGuidance({ ...signature, adhoc: false }), '');
   assert.match(runtime.signatureGuidance({ identifier: 'com.github.Electron' }), /无法确认/);
   const writes = [];
-  const notice = await runtime.readSignatureNotice({ bundle: '/fixture/Noteford.app', marker: '/fixture/marker.json',
+  const notice = await runtime.readSignatureNotice({ bundle: '/fixture/Noteford 开源版.app', marker: '/fixture/marker.json',
     run: async (command, args) => {
       assert.equal(command, '/usr/bin/codesign');
-      assert.equal(args.at(-1), '/fixture/Noteford.app');
-      return { stdout: '', stderr: 'Identifier=com.followhongyun.noteford\nSignature=adhoc\nCDHash=abcd1234' };
+      assert.equal(args.at(-1), '/fixture/Noteford 开源版.app');
+      return { stdout: '', stderr: 'Identifier=com.followhongyun.noteford.community\nSignature=adhoc\nCDHash=abcd1234' };
     },
     io: { readFileSync: () => '{"cdhash":"eeee"}', mkdirSync() {}, writeFileSync: (_file, value) => writes.push(JSON.parse(value)) },
   });
@@ -194,7 +194,7 @@ test('native SDK and Koffi agree on AEDesc/AEAddressDesc ABI without sending eve
   });
   assert.equal(compiled.status, 0, compiled.stderr);
   const core = require('../electron/automation-check.cjs').loadCore();
-  assert.equal(core.resolvePid('com.followhongyun.noteford.nonexistent-test-target'), 0);
+  assert.equal(core.resolvePid('com.followhongyun.noteford.community.nonexistent-test-target'), 0);
   const desc = { descriptorType: 0, dataHandle: null };
   const data = new Int32Array([process.pid]);
   assert.equal(core.create(0x6b706964, data, 4, desc), 0);

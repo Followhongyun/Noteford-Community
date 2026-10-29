@@ -17,8 +17,8 @@ test('official plugin export keeps client scope and revocation', t => {
   const folder = manager.exportPlugin(grant.id, root, 'nfp_test');
   const configBytes = fs.readFileSync(path.join(folder, '.mcp.json'));
   const config = JSON.parse(configBytes);
-  assert.equal(config.mcpServers['noteford'].command, 'C:\\Program Files\\Noteford\\service.exe');
-  assert.deepEqual(config.mcpServers['noteford'].args, ['--mcp', '--config', path.join(root,'config.local.json'), '--pair', 'nfp_test']);
+  assert.equal(config.mcpServers['noteford-community'].command, 'C:\\Program Files\\Noteford\\service.exe');
+  assert.deepEqual(config.mcpServers['noteford-community'].args, ['--mcp', '--config', path.join(root,'config.local.json'), '--pair', 'nfp_test']);
   assert.throws(() => manager.config(grant.id));
   const templateEntries = fs.readdirSync(pluginTemplate, { recursive: true }).sort();
   assert.deepEqual(fs.readdirSync(folder, { recursive: true }).sort(), [...templateEntries, '.mcp.json'].sort());

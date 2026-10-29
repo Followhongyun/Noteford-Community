@@ -105,7 +105,7 @@ def test_real_stdio_same_transport_with_fresh_production_workers(direct, tmp_pat
     from mcp.client.stdio import StdioServerParameters
     config, library, index, policy = direct
     discovery = tmp_path/'connection.json'
-    record = dict(version=1, product='Noteford', pid=os.getpid(),
+    record = dict(version=1, product='Noteford Community', pid=os.getpid(),
                   appExecutable=psutil.Process().exe(), command=sys.executable,
                   args=['-m', 'noteford.service'], config=str(config), instance='first')
     discovery.write_text(json.dumps(record))
