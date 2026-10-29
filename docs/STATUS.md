@@ -10,9 +10,13 @@
 
 本次是人工编号迁移，不是自动降级：退出旧开源版、备份程序与资料后替换为正式 0.1.1，保留原账号、关注、折叠偏好、同步间隔和 AI 授权。真实启动同步成功，无失败会话；会话内容和折叠信息正常加载。当前 Codex 原生连接在应用退出时返回 app_not_running，重新打开后 refresh_mcp、list_libraries、get_status 成功，read_only=true，无重复授权。设置页更新按钮已统一样式，GitHub 检查显示“已是最新版本”。
 
-Python 回归 663 通过、2 跳过；Node 回归 116 通过、6 跳过；类型检查、前端构建和源码 CI 通过。更新器安装逻辑沿用此前 community.2 的真实升级验收；本轮不将低版本号人工换包描述为自动升级。同号修订不触发自动更新，历史 Release 与 tag 保留原字节。
+Python 回归 663 通过、2 跳过；Node 回归 116 通过、6 跳过；类型检查、前端构建和源码 CI 通过。更新器安装逻辑沿用此前 community.2 的真实升级验收；本轮不将低版本号人工换包描述为自动升级。同号修订不触发自动更新；历史 Release 在本次发布时保留，后续下架情况见下节。
 
 DMG：`Noteford-0.1.1-macOS.dmg`，203960125 字节，SHA-256 `49d8c956688624f165f44a0171f511a0bc147255ee92d11ece74bd43bb0b6f9e`。更新 ZIP SHA-256 `11f468e856895288f7adaf7849861e738ad8b9c31ca1ffa453c0c11323210680`。外部电脑与 Intel Mac 未实测；用户安装和历史版本迁移步骤见 [安装说明](INSTALL.md)。
+
+## 过期发布清理（2026-10-30）
+
+按维护者要求，下架已被 0.1.1 替代的 `v0.1.5-community.1` 与 `v0.1.5-community.2` Release、附属资产和远程标签。当前唯一公开 Release 和版本标签为 `v0.1.1`，其四个安装与更新资产保持不变。旧发布元数据留在维护者本机，源码提交历史及下方验收事实保留；下方旧版本描述仅供历史追溯，不是当前下载说明。
 
 ## 早期验收记录
 
@@ -36,7 +40,7 @@ DMG：`Noteford-0.1.1-macOS.dmg`，203960125 字节，SHA-256 `49d8c956688624f16
 
 最终 DMG：`Noteford-0.1.5-community.1-macOS.dmg`，203318805 字节，SHA-256 `4cdd896c4b159c4794db4fd242e5a4afd8eae4bd6c5379f0799780c3bab82b74`。源码标签 `v0.1.5-community.1` 对应 1e4ac0e；后续状态文档不改变该不可变安装包。回退时先备份新增资料，再恢复此前本机程序归档；撤回下载不会自动降级已安装应用。
 
-Release 已公开：[v0.1.5-community.1](https://github.com/Followhongyun/Noteford-Community/releases/tag/v0.1.5-community.1)。安装包与 SHA256SUMS.txt 已上传，从 GitHub 完整回下载后 SHA-256 校验通过。此为手动下载安装渠道，不提供自动更新。
+当时公开的 Release 为 `v0.1.5-community.1`（已于 2026-10-30 下架）。安装包与 SHA256SUMS.txt 已上传，从 GitHub 完整回下载后 SHA-256 校验通过。此为手动下载安装渠道，不提供自动更新。
 
 2026-10-29 Skill 接入补全：新增 Codex MCP 注册脚本，使用官方 CLI、独立服务名和安装版直接入口；同配置幂等，不覆盖冲突或停用条目，核对其他服务器配置保留。4 项注册回归测试通过；维护者本机实际注册及重复运行通过。Codex 自身 UI 被电脑操作工具限制，当前会话未加载新原生工具，故未宣称设置可见或原生调用验收通过。此变更通过最新 Skill 分发，不修改已发布 DMG。
 
@@ -52,4 +56,4 @@ Release 已公开：[v0.1.5-community.1](https://github.com/Followhongyun/Notefo
 
 验收包括本机数据叉接收副本的 Finder App 图标、安装卷图标和 Applications 入口，以及交付 DMG 文件图标；不是外部机器实测。Python 663 通过、2 跳过；Node 原有及更新测试 115 通过、6 跳过；构建、生产依赖审计和源码 CI 通过。
 
-发布资产为 DMG、arm64 更新 ZIP、latest-mac.yml、SHA256SUMS.txt。DMG SHA-256：`d47f557f8262ab525d22f2ac2bec22acb4144b394c278d9eff00fc282cd7ab65`。旧版 Release 字节保持不变；撤回及后续发布规则见 [运行说明](OPERATIONS.md)。
+发布资产为 DMG、arm64 更新 ZIP、latest-mac.yml、SHA256SUMS.txt。DMG SHA-256：`d47f557f8262ab525d22f2ac2bec22acb4144b394c278d9eff00fc282cd7ab65`。该历史 Release 已于 2026-10-30 下架；撤回及后续发布规则见 [运行说明](OPERATIONS.md)。

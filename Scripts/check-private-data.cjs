@@ -4,7 +4,7 @@ const {execFileSync} = require('node:child_process');
 const fs = require('node:fs');
 const git = (...args) => execFileSync('git', args, {encoding:'utf8'});
 const privatePath = name => /^(data|archive|secrets|product-accounts|build|out|dist|node_modules|work|tmp)(\/|$)|^config\.local\.json$|(^|\/)\.env($|\.)/i.test(name);
-const sourceRoots = new Set([".cursor", ".gitattributes", ".githooks", ".github", ".gitignore", ".npmignore", "AGENTS.md", "CHANGELOG.md", "CONTRIBUTING.md", "LICENSE", "NOTICE.md", "README.md", "SECURITY.md", "Scripts", "config.example.json", "desktop", "distribution", "docs", "native", "packaging", "pyproject.toml", "requirements-build-mac.txt", "requirements-build.txt", "scripts", "src", "tests"]);
+const sourceRoots = new Set([".cursor", ".gitattributes", ".githooks", ".github", ".gitignore", ".npmignore", "AGENTS.md", "CHANGELOG.md", "CONTRIBUTING.md", "LICENSE", "NOTICE.md", "README.md", "README.en.md", "SECURITY.md", "Scripts", "config.example.json", "desktop", "distribution", "docs", "native", "packaging", "pyproject.toml", "requirements-build-mac.txt", "requirements-build.txt", "scripts", "src", "tests"]);
 const localRoots = new Set([...sourceRoots, '.git', '.DS_Store', 'Data', 'node_modules', '.venv', '.venv-build', '.pytest_cache', '.pytest-tmp', 'build', '源码', '应用']);
 function checkLayout() {
   for (const file of git('ls-files','-z').split('\0').filter(Boolean)) {

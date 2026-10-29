@@ -1,32 +1,61 @@
 # Noteford Community
 
-Noteford 是一款本地微信资料阅读应用：在授权后读取本机资料，浏览会话、搜索消息、查看媒体，并通过 MCP 向 AI 客户端提供受权限控制的读取接口。
+**简体中文** · [English](README.en.md)
 
-本仓库公开 **Mac 0.1.5（2026-10-25）的发布源码快照**，不包含随后加入的「发现」首页。后续会员版在独立私有仓库迭代；本仓库不承诺同步后续功能。当前代码包含社区版独立运行改造。
+把本机微信资料整理成可阅读、可搜索、可交给 AI 使用的本地资料库。
 
-## 开源版
+[下载 Mac 版 0.1.1](https://github.com/Followhongyun/Noteford-Community/releases/latest) · [安装与 AI 接入](docs/INSTALL.md) · [更新记录](CHANGELOG.md)
 
-基于发现页之前的 Mac 0.1.5，已移除 Followhongyun 产品账号、登录注册、原会员更新渠道和依赖产品账号的 Nexus 联动。设置底部显示「后续更新请联系洪云」。本地微信账号连接、同步、阅读、搜索、媒体和 MCP 授权保留。
+## 能做什么
 
-应用显示为「Noteford 开源版」，Bundle ID 为 `com.followhongyun.noteford.community`；Mac 资料存放在 `~/Noteford Community/Data`，应用缓存、MCP 发现目录及钥匙串服务独立。可与会员开发版并存，不导入或接管其账号、资料或授权。
+- **阅读与搜索**：浏览关注会话，搜索消息，定位原消息和上下文。
+- **资料同步**：手动、定时或由已授权 AI 触发同步；每次有效触发重新计算下次同步时间。
+- **媒体与素材**：查看缓存图片、视频和附件，筛选聊天中的素材；部分原件可能已过期或不可获取。
+- **折叠聊天提示**：将单独表情、动图、撤回提示和拍一拍合并为可展开的计数提示。
+- **Skill 与 MCP**：让支持本机工具调用的 AI 在授权范围内检索微信资料，并引用原消息依据。
+- **GitHub 更新**：检查并下载后续更高正式版本，正常退出应用时安装。
 
-## 下载安装
+开源版不包含「发现」首页，不需要注册洪云产品账号。它与会员版独立维护，不承诺同步会员版后续功能。
 
-在 [GitHub Releases](https://github.com/Followhongyun/Noteford-Community/releases/latest) 下载 `Noteford-0.1.1-macOS.dmg`，打开后将「Noteford 开源版」拖入 Applications，再从 Applications 启动。
+## 下载并开始使用
 
-支持 Apple 芯片 Mac（M1 及后续），最低 macOS 13；此安装包不支持 Intel Mac。首次连接微信时按应用提示授权并扫码。安装包自带运行时，使用应用不需要安装 Node.js 或 Python；AI Skill 需在支持本机命令的客户端中安装并完成首次授权。
+| 项目 | 当前支持 |
+| --- | --- |
+| 版本 | **0.1.1** |
+| 电脑 | Apple 芯片 Mac（M1 及后续） |
+| 系统 | macOS 13 或更新版本 |
+| 安装包 | `Noteford-0.1.1-macOS.dmg`，已签名并通过 Apple 公证 |
+| Intel / Windows | 当前不提供已验收的安装包 |
 
-```sh
-npx skills add Followhongyun/Noteford-Community --skill noteford-community
-```
+1. 从 [最新 Release](https://github.com/Followhongyun/Noteford-Community/releases/latest) 下载 DMG，打开后将「Noteford 开源版」拖入 **Applications**。
+2. 从 Applications 启动，按提示连接本人微信并确认系统权限。
+3. 选择关注会话，首次同步完成后开始阅读、搜索和查看素材。
 
-将上述命令交给本机 AI 并明确要求“安装并连接”。最新版 Skill 会指导 Codex 注册独立的 `noteford-community` MCP，再验证授权读取；仅在终端运行安装命令只安装 Skill 文件。已经安装 Skill 的用户重新运行上述命令更新即可，无需重装 Mac 应用。其他客户端按自身官方 MCP 配置方式接入。
+应用自带运行时，无需另外安装 Node.js 或 Python。资料位于 `~/Noteford Community/Data`；开源版可与会员开发版并存，账号、资料和授权独立。
 
-从本版起支持 GitHub 自动更新：启动后检查并下载，正常退出后安装。历史 community 版本须手动安装本次 0.1.1。详细步骤、运行环境和首次授权见 [安装与 AI 接入说明](docs/INSTALL.md)。
+**已有早期 community 版本？** 先正常退出，再手动安装 0.1.1 替换应用，保留资料目录。旧预推广下载已下架；这次是编号整理，功能没有退回早期版本，也不会自动降级。
 
-## 开发与构建
+## 连接你的 AI
 
-Node.js 24（最低 22.19）和 Python 3.11：
+保持 Noteford 开源版运行，把下面这段话交给支持本机命令的 AI：
+
+> 请安装并连接 Noteford 开源版：`npx skills add Followhongyun/Noteford-Community --skill noteford-community`。按照 Skill 完成当前客户端 MCP 注册、首次授权，并实际调用 list_libraries 和 get_status 验证连接。
+
+安装 Skill 需要 Node.js/npm；Codex 注册脚本还需要 Python 3。仅执行安装命令不会自动授予聊天访问权限，首次读取须由你在 Noteford 中亲自确认。
+
+Codex 中的 MCP 名称为 `noteford-community`。配置后若当前对话没有加载工具，使用新对话；其他客户端按其官方 MCP 配置方式接入。本机 stdio 接口不适用于纯云端客户端。详见 [完整接入步骤与排障](docs/INSTALL.md)。
+
+## 更新与联系
+
+设置页「应用更新」可检查 GitHub 更新。发现更高正式版本后自动下载，正常退出时安装；不会跨到会员版渠道。
+
+目前版本固定为 **0.1.1**，解除冻结需维护者明确确认；同版本修订不会触发自动升级。[版本规则](docs/DEVELOPMENT.md#版本号规范2026-10-29-起)
+
+后续更新请联系洪云：在应用设置页底部，将鼠标移到二维码图标上即可查看微信名片。
+
+## 从源码构建
+
+需要 Node.js 24（最低 22.19）、Python 3.11，以及 Mac 构建工具：
 
 ```sh
 node desktop/scripts/install-dependencies.cjs
@@ -34,16 +63,12 @@ npm --prefix desktop run build
 npm --prefix desktop run package:mac -- --dir
 ```
 
-Mac 打包入口准备独立 Python 环境，冻结服务并收集许可材料。分发签名使用配置的 Developer ID；第三方自行构建时须配置自己的签名身份。源码启动入口和详细测试说明见 [开发说明](docs/DEVELOPMENT.md)。
+第三方自行构建需配置自己的签名身份；维护者证书不随源码提供。开发入口、测试与构建限制见 [开发说明](docs/DEVELOPMENT.md)。
 
-## 文档
+## 文档与许可
 
-[产品能力](docs/PRODUCT.md) · [架构](docs/ARCHITECTURE.md) · [模块](docs/MODULES.md) · [接口](docs/CONTRACTS.md) · [数据与权限](docs/DATA-AND-SECURITY.md) · [版本状态](docs/STATUS.md) · [第三方声明](NOTICE.md)
+[产品能力](docs/PRODUCT.md) · [架构](docs/ARCHITECTURE.md) · [数据与权限](docs/DATA-AND-SECURITY.md) · [验收记录](docs/STATUS.md) · [贡献指南](CONTRIBUTING.md) · [安全问题](SECURITY.md)
 
-## 许可
+原创源码采用 [AGPL-3.0-only](LICENSE)，第三方组件保留各自许可及 [声明](NOTICE.md)。商业使用与再分发按适用许可证进行，会员服务不额外限制开源许可证授予的权利。
 
-原创程序源码采用 [AGPL-3.0-only](LICENSE)。第三方组件保留各自许可证和声明。商业使用与再分发按适用许可证进行；会员服务不构成对开源许可证权利的额外限制。
-
-Noteford 与腾讯没有官方关联。只能处理本人有权访问的资料；应用不向微信发送消息。历史实验路径及兼容性限制见相应文档，不保证所有微信版本、媒体格式或云端历史资源可用。
-
-开源版在维护者确认发布第一篇 X 推广前固定为 0.1.1；同号修订不触发自动更新。之后的更高正式版本继续通过 GitHub 自动更新。
+Noteford 与腾讯没有官方关联。仅处理本人有权访问的资料，不向微信发送消息；微信版本、媒体格式与历史资源的可用性存在差异。
