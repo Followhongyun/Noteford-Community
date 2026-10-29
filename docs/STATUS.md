@@ -25,3 +25,5 @@
 Release 已公开：[v0.1.5-community.1](https://github.com/Followhongyun/Noteford-Community/releases/tag/v0.1.5-community.1)。安装包与 SHA256SUMS.txt 已上传，从 GitHub 完整回下载后 SHA-256 校验通过。此为手动下载安装渠道，不提供自动更新。
 
 2026-10-29 Skill 接入补全：新增 Codex MCP 注册脚本，使用官方 CLI、独立服务名和安装版直接入口；同配置幂等，不覆盖冲突或停用条目，核对其他服务器配置保留。4 项注册回归测试通过；维护者本机实际注册及重复运行通过。Codex 自身 UI 被电脑操作工具限制，当前会话未加载新原生工具，故未宣称设置可见或原生调用验收通过。此变更通过最新 Skill 分发，不修改已发布 DMG。
+
+2026-10-29 原生 MCP 验收补充：用户已在 Codex 设置中确认 noteford-community 可见；经用户授权的新建验收对话实际加载 17 个原生工具，原生 list_libraries、get_status（read_only=true）、search_messages、get_message、get_message_context、refresh_mcp 均成功，刷新后再次列表及状态读取成功。已核对宿主工具调用记录，非脚本直连或独立协议进程替代；未触发同步、配对或更改权限。此结果覆盖本机已安装并授权环境的新对话，不代表外部电脑首次配对或所有 AI 客户端兼容。旧对话未热加载时需使用已加载配置的新对话，不能仅凭注册成功宣称当前对话原生可用。
