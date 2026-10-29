@@ -21,3 +21,5 @@
 2026-10-29 首个 Mac 分发包：0.1.5-community.1，arm64，最低 macOS 13。应用与 DMG 均通过 Developer ID 签名、Apple 公证、附票和 Gatekeeper 检查；数据叉接收副本完成 App 全内容一致性及 Finder 图标、卷名、Applications 入口验收。本机安装保留原账号、关注、资料与 AI 授权，启动同步成功。云端 Checks 在 1e4ac0e 上通过；修复了一项依赖固定短 sleep 的同步测试，改为等待实际事件。安装包不含自动更新，GitHub Release 提供手动下载。Intel Mac 及外部机器未实测。
 
 最终 DMG：`Noteford-0.1.5-community.1-macOS.dmg`，203318805 字节，SHA-256 `4cdd896c4b159c4794db4fd242e5a4afd8eae4bd6c5379f0799780c3bab82b74`。源码标签 `v0.1.5-community.1` 对应 1e4ac0e；后续状态文档不改变该不可变安装包。回退时先备份新增资料，再恢复此前本机程序归档；撤回下载不会自动降级已安装应用。
+
+Release 已公开：[v0.1.5-community.1](https://github.com/Followhongyun/Noteford-Community/releases/tag/v0.1.5-community.1)。安装包与 SHA256SUMS.txt 已上传，从 GitHub 完整回下载后 SHA-256 校验通过。此为手动下载安装渠道，不提供自动更新。
