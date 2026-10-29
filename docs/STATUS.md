@@ -1,6 +1,6 @@
 # 开源版验收
 
-基于 2026-10-25 的 Mac 0.1.5 发布快照，已移除产品账号、官方更新及 Nexus 投递，使用独立本地身份。当前版本 0.1.5-community.1。
+基于 2026-10-25 的 Mac 0.1.5 发布快照，已移除产品账号、原会员更新渠道及 Nexus 投递，使用独立本地身份。当前版本 0.1.5-community.2，采用公开 GitHub Release 更新。
 
 2026-10-29 已完成独立 macOS 应用构建、Developer ID 签名校验及本机安装。实测发现并修复桌面进程启动时间推算偏差导致的启动失败，改为读取操作系统记录的启动时间，保留进程生命周期校验。
 
@@ -27,3 +27,15 @@ Release 已公开：[v0.1.5-community.1](https://github.com/Followhongyun/Notefo
 2026-10-29 Skill 接入补全：新增 Codex MCP 注册脚本，使用官方 CLI、独立服务名和安装版直接入口；同配置幂等，不覆盖冲突或停用条目，核对其他服务器配置保留。4 项注册回归测试通过；维护者本机实际注册及重复运行通过。Codex 自身 UI 被电脑操作工具限制，当前会话未加载新原生工具，故未宣称设置可见或原生调用验收通过。此变更通过最新 Skill 分发，不修改已发布 DMG。
 
 2026-10-29 原生 MCP 验收补充：用户已在 Codex 设置中确认 noteford-community 可见；经用户授权的新建验收对话实际加载 17 个原生工具，原生 list_libraries、get_status（read_only=true）、search_messages、get_message、get_message_context、refresh_mcp 均成功，刷新后再次列表及状态读取成功。已核对宿主工具调用记录，非脚本直连或独立协议进程替代；未触发同步、配对或更改权限。此结果覆盖本机已安装并授权环境的新对话，不代表外部电脑首次配对或所有 AI 客户端兼容。旧对话未热加载时需使用已加载配置的新对话，不能仅凭注册成功宣称当前对话原生可用。
+
+## 0.1.5-community.2 正式发布（2026-10-29）
+
+已发布为 GitHub Latest，源码基线为 `7dfcc43912558f2e8cf3c410a112b785da9efe83`。支持 Apple Silicon arm64、macOS 13+。App 与 DMG 均使用既定 Developer ID 签名，通过 Apple 公证并附票。安装包内置最新 Skill、Codex 注册脚本及安装说明；详细流程见 [安装与 AI 接入](INSTALL.md)。
+
+本机受控升级验证：用新加入更新器的 community.1 基线，通过 GitHub HTTPS 下载本次最终 ZIP，SHA-256 与 Release 资产一致；原生更新器验证并准备完成，正常退出后实际安装为 community.2。重新启动后原账号、关注、折叠偏好和同步间隔保留，真实启动同步成功且无失败会话，安装版服务的 MCP list_libraries/get_status 继续使用既有授权成功读取。原公开 community.1 没有更新器，必须手动安装本次 DMG 一次，不能将上述受控测试描述为旧首版可自动迁移。
+
+正式通道开放后，已安装 community.2 的设置页实测“检查更新”显示“已是最新版本”。以后启动自动检查并下载，正常退出后安装；不会自动获取预发布版本或降级。会员版未改动。
+
+验收包括本机数据叉接收副本的 Finder App 图标、安装卷图标和 Applications 入口，以及交付 DMG 文件图标；不是外部机器实测。Python 663 通过、2 跳过；Node 原有及更新测试 115 通过、6 跳过；构建、生产依赖审计和源码 CI 通过。
+
+发布资产为 DMG、arm64 更新 ZIP、latest-mac.yml、SHA256SUMS.txt。DMG SHA-256：`d47f557f8262ab525d22f2ac2bec22acb4144b394c278d9eff00fc282cd7ab65`。旧版 Release 字节保持不变；撤回及后续发布规则见 [运行说明](OPERATIONS.md)。
