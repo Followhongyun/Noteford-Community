@@ -26,7 +26,6 @@ export default function MacAiConnections({ library }: { library: LibrarySummary 
     finally { setBusy(false) }
   }
   return <div>
-    <p className="preference-description">把下面这行命令发给支持本机操作的 AI，安装 Skill 后即可连接 Noteford。首次访问按应用提示确认授权。</p>
     <div className="skill-install-command">
       <code>{command || '正在读取安装命令…'}</code>
       <button type="button" className="settings-button" aria-label={copied ? '已复制' : '复制安装命令'} title={copied ? '已复制' : '复制安装命令'} disabled={busy || !command || !library?.initialized} onClick={() => void copyCommand()}>

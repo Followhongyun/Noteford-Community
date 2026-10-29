@@ -35,10 +35,6 @@ export default function McpConnections({ library }: { library: LibrarySummary | 
         </div>
       </div>
       <p className="settings-group-note">连接随 Noteford 运行，退出应用后不可用。重新打开后，Skill 会在下次调用时连接当前服务。</p>
-      <details className="skill-mcp-help">
-        <summary>连接遇到问题</summary>
-        <p className="settings-group-note">新版连接无需重启 AI 客户端。旧版连接首次迁移时，请在客户端断开并重连 Noteford MCP 一次。同步请求中断后先检查同步状态。</p>
-      </details>
       {message && <p className="settings-group-note" role="status">{message}</p>}
     </div>
   </section>

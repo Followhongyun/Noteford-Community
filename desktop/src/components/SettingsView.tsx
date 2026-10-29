@@ -238,7 +238,7 @@ export default function SettingsView(props: SettingsViewProps) {
         <section className="settings-group community-about" aria-labelledby="settings-updates-title">
           <div>
             <h2 id="settings-updates-title">关于 Noteford 开源版</h2>
-            <p className="preference-description">后续更新请加入洪云会员群获取。</p>
+            <p className="preference-description">后续更新请联系洪云</p>
           </div>
           <CommunityContact />
         </section>
