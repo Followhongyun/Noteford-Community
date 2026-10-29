@@ -192,7 +192,7 @@ def test_windows_refresh_still_delegates_to_catalog(monkeypatch):
 
 
 def test_client_script_paths_match_the_seam():
-    script = ROOT / "desktop" / "mcp-plugin" / "skills" / "noteford" / "scripts" / "noteford.py"
+    script = ROOT / "desktop" / "mcp-plugin" / "skills" / "noteford-community" / "scripts" / "noteford.py"
     spec = importlib.util.spec_from_file_location("noteford_client_script", script)
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)

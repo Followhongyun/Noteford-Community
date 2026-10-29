@@ -1,3 +1,5 @@
+import { QrCode } from 'lucide-react'
+import wechatCard from '../assets/hongyun-wechat-card.jpg'
 import OpenSourceCredits from './OpenSourceCredits'
 import type {MessageVisibility} from '../message-visibility'
 import Avatar from './Avatar'
@@ -233,9 +235,12 @@ export default function SettingsView(props: SettingsViewProps) {
 
         <McpConnections key={library?.id || 'none'} library={library} />
 
-        <section className="settings-group" aria-labelledby="settings-updates-title">
-          <h2 id="settings-updates-title">关于 Noteford 开源版</h2>
-          <p className="preference-description">后续更新请加入洪云会员群获取。</p>
+        <section className="settings-group community-about" aria-labelledby="settings-updates-title">
+          <div>
+            <h2 id="settings-updates-title">关于 Noteford 开源版</h2>
+            <p className="preference-description">后续更新请加入洪云会员群获取。</p>
+          </div>
+          <CommunityContact />
         </section>
         {!mac && <OpenSourceCredits />}
       </div>
@@ -243,4 +248,19 @@ export default function SettingsView(props: SettingsViewProps) {
 
     </main>
   )
+}
+
+function CommunityContact() {
+  const [open, setOpen] = useState(false)
+  return <div className="community-contact" onMouseEnter={() => setOpen(true)} onMouseLeave={() => setOpen(false)}
+    onBlur={event => { if (!event.currentTarget.contains(event.relatedTarget)) setOpen(false) }}
+    onKeyDown={event => { if (event.key === 'Escape') { setOpen(false); event.stopPropagation() } }}>
+    <button className="settings-button community-contact-button" aria-label="查看洪云微信名片" aria-expanded={open}
+      aria-controls="community-wechat-card" onFocus={() => setOpen(true)} onClick={() => setOpen(true)}>
+      <QrCode size={20} strokeWidth={1.8} aria-hidden="true" />
+    </button>
+    <div id="community-wechat-card" className="community-contact-preview" hidden={!open}>
+      <img src={wechatCard} alt="洪云YUN 微信名片，扫码添加好友" width="1036" height="1320" />
+    </div>
+  </div>
 }

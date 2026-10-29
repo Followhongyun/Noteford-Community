@@ -1,3 +1,4 @@
+export type SelectionState = 'unselected' | 'following' | 'paused'
 export type NavSection = 'following' | 'contacts' | 'content' | 'settings'
 export interface LibrarySummary {
   id: string
