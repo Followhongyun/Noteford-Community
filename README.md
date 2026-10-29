@@ -20,6 +20,8 @@ Noteford 是一款本地微信资料阅读应用：在授权后读取本机资�
 npx skills add Followhongyun/Noteford-Community --skill noteford-community
 ```
 
+将上述命令交给本机 AI 并明确要求“安装并连接”。最新版 Skill 会指导 Codex 注册独立的 `noteford-community` MCP，再验证授权读取；仅在终端运行安装命令只安装 Skill 文件。已经安装 Skill 的用户重新运行上述命令更新即可，无需重装 Mac 应用。其他客户端按自身官方 MCP 配置方式接入。
+
 ## 开发与构建
 
 Node.js 24（最低 22.19）和 Python 3.11：

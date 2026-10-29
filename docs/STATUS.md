@@ -23,3 +23,5 @@
 最终 DMG：`Noteford-0.1.5-community.1-macOS.dmg`，203318805 字节，SHA-256 `4cdd896c4b159c4794db4fd242e5a4afd8eae4bd6c5379f0799780c3bab82b74`。源码标签 `v0.1.5-community.1` 对应 1e4ac0e；后续状态文档不改变该不可变安装包。回退时先备份新增资料，再恢复此前本机程序归档；撤回下载不会自动降级已安装应用。
 
 Release 已公开：[v0.1.5-community.1](https://github.com/Followhongyun/Noteford-Community/releases/tag/v0.1.5-community.1)。安装包与 SHA256SUMS.txt 已上传，从 GitHub 完整回下载后 SHA-256 校验通过。此为手动下载安装渠道，不提供自动更新。
+
+2026-10-29 Skill 接入补全：新增 Codex MCP 注册脚本，使用官方 CLI、独立服务名和安装版直接入口；同配置幂等，不覆盖冲突或停用条目，核对其他服务器配置保留。4 项注册回归测试通过；维护者本机实际注册及重复运行通过。Codex 自身 UI 被电脑操作工具限制，当前会话未加载新原生工具，故未宣称设置可见或原生调用验收通过。此变更通过最新 Skill 分发，不修改已发布 DMG。
