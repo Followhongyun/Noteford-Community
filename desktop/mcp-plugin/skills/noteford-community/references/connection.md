@@ -4,7 +4,7 @@
 
 用户把 `npx skills add Followhongyun/Noteford-Community --skill noteford-community` 发给 AI 并要求接入时，AI 负责安装及后续连接验收：
 
-1. 确认当前客户端能执行这台电脑的命令；纯云端对话不能借此访问本机。检查现有 Skill 和 Node/npm，已有安装可直接使用。需要安装时使用安装器支持的当前客户端标识，只安装 `noteford`；用户未指定项目范围时使用用户级安装，避免依赖当前工作目录。不使用 `--all`，不修改其他客户端。
+1. 确认当前客户端能执行这台电脑的命令；纯云端对话不能借此访问本机。检查现有 Skill 和 Node/npm，已有安装可直接使用。需要安装时使用安装器支持的当前客户端标识，只安装 `noteford-community`；用户未指定项目范围时使用用户级安装，避免依赖当前工作目录。不使用 `--all`，不修改其他客户端。
 2. 读取安装器返回目录中的 `SKILL.md` 和本文件，在当前会话继续。`skills add` 只负责安装文件，不会自动执行 Skill 或证明 MCP 已连接。
 3. 已有可用 MCP 时复用当前连接；macOS Codex 已获授权但缺少新版控制工具时，使用下文保留身份的持久入口。其他首次接入使用 Skill 脚本的 `connect`、`tools` 和 `call`，自动发现正在运行的 Noteford；不要求用户寻找端口、复制令牌或填写 MCP JSON。未运行、未登录或资料库未就绪时报告具体缺项；需要用户确认授权时等待确认，不代替用户批准。
 4. 实际调用 `list_libraries` 和授权资料库的 `get_status`，确认 `read_only=true` 后才报告连接可用。只停留在安装完成或 `paired: true` 不算接入完成。
@@ -35,7 +35,7 @@ exec "/Applications/Noteford 开源版.app/Contents/Resources/service/noteford-s
 
 ## 本机自动接入
 
-适用于本机、能执行命令且已安装此 Skill 的 AI 客户端。Noteford 启动完成后公布不含凭据的发现信息；Skill 脚本验证运行中的应用与服务位置。Windows 发现文件在 `%LOCALAPPDATA%\Noteford\connection.json`，macOS 在 `~/Library/Application Support/Noteford Community/connection.json`。开发运行和安装包都会写这份文件。云端 AI 无法因此自动访问本机，Skill 也不会自动安装到其他 AI 产品。
+适用于本机、能执行命令且已安装此 Skill 的 AI 客户端。Noteford 启动完成后公布不含凭据的发现信息；Skill 脚本验证运行中的应用与服务位置。Windows 发现文件在 `%LOCALAPPDATA%\Noteford Community\connection.json`，macOS 在 `~/Library/Application Support/Noteford Community/connection.json`。开发运行和安装包都会写这份文件。云端 AI 无法因此自动访问本机，Skill 也不会自动安装到其他 AI 产品。
 
 已有 MCP 工具可用时直接调用。工具缺失或 Transport closed 时，改用本 Skill 目录中的脚本（将 `<skill>` 替换为已读取 Skill 所在绝对目录，ClientName 使用真实产品名并保持稳定）：
 

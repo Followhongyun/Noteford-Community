@@ -1,4 +1,4 @@
 interface:
-  display_name: "Noteford"
+  display_name: "Noteford 开源版"
   short_description: "检索本人授权的微信聊天、原文和素材，分析完整历史及新增消息"
-  default_prompt: "使用 $noteford 检查我已授权的微信资料，并基于原消息证据回答。"
+  default_prompt: "使用 $noteford-community 检查我已授权的微信资料，并基于原消息证据回答。"
