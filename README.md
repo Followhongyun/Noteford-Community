@@ -6,9 +6,19 @@ Noteford 是一款本地微信资料阅读应用：在授权后读取本机资�
 
 ## 开源版
 
-基于发现页之前的 Mac 0.1.5，已移除 Followhongyun 产品账号、登录注册、官方自动更新和依赖产品账号的 Nexus 联动。设置底部显示「后续更新请加入洪云会员群获取。」本地微信账号连接、同步、阅读、搜索、媒体和 MCP 授权保留。
+基于发现页之前的 Mac 0.1.5，已移除 Followhongyun 产品账号、登录注册、官方自动更新和依赖产品账号的 Nexus 联动。设置底部显示「后续更新请联系洪云」本地微信账号连接、同步、阅读、搜索、媒体和 MCP 授权保留。
 
 应用显示为「Noteford 开源版」，Bundle ID 为 `com.followhongyun.noteford.community`；Mac 资料存放在 `~/Noteford Community/Data`，应用缓存、MCP 发现目录及钥匙串服务独立。可与会员开发版并存，不导入或接管其账号、资料或授权。
+
+## 下载安装
+
+在 [GitHub Releases](https://github.com/Followhongyun/Noteford-Community/releases/latest) 下载 `Noteford-0.1.5-community.1-macOS.dmg`，打开后将「Noteford 开源版」拖入 Applications，再从 Applications 启动。
+
+支持 Apple 芯片 Mac（M1 及后续），最低 macOS 13；此安装包不支持 Intel Mac。首次连接微信时按应用提示授权并扫码。安装包自带运行时，使用应用不需要安装 Node.js 或 Python；AI Skill 需在支持本机命令的客户端中安装并完成首次授权。
+
+```sh
+npx skills add Followhongyun/Noteford-Community --skill noteford-community
+```
 
 ## 开发与构建
 

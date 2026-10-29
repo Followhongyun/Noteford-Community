@@ -176,6 +176,7 @@ def test_login_gated_sync_waits_for_login_then_syncs_then_schedules():
     state = {"logged_in": False}
     synced = {"n": 0}
     first = threading.Event()
+    second = threading.Event()
 
     def login_check():
         return {"state": "active", "account": "wxid_abc"} if state["logged_in"] else {
@@ -184,6 +185,8 @@ def test_login_gated_sync_waits_for_login_then_syncs_then_schedules():
     def sync_once():
         synced["n"] += 1
         first.set()
+        if synced["n"] >= 2:
+            second.set()
 
     # tiny interval + poll so the test runs fast
     sched = LoginGatedSync(login_check, sync_once, 0.05, poll_seconds=0.01)
@@ -196,8 +199,10 @@ def test_login_gated_sync_waits_for_login_then_syncs_then_schedules():
     # now log in -> it syncs, records account + next_run_at, keeps cycling
     state["logged_in"] = True
     assert first.wait(2.0)
-    time.sleep(0.12)  # let at least one more interval tick happen
-    sched.stop()
+    try:
+        assert second.wait(2.0)  # wait for the scheduled run, not CI wall-clock speed
+    finally:
+        sched.stop()
     assert synced["n"] >= 2  # anchored cadence after first sync
     snap = sched.snapshot()
     assert snap["last_account"] == "wxid_abc"
