@@ -4,7 +4,7 @@ import UnifiedChatSearch from './UnifiedChatSearch'
 import ChatResults from './ChatResults'
 import MacMediaMessage from './MacMediaMessage'
 import {QuotePreview, QuoteDialog} from './QuotePreview'
-import {defaultVisibility, isMessageHidden, type MessageVisibility} from '../message-visibility'
+import {defaultVisibility, type MessageVisibility} from '../message-visibility'
 import { createPortal } from 'react-dom'
 import { useContext, useEffect, useId, useLayoutEffect, useRef, useState, type CSSProperties } from 'react'
 import Avatar from './Avatar'
@@ -1064,7 +1064,7 @@ export default function ChatView({
     return <main className="chat-main chat-content-only" />
   }
 
-  const messages = (shownPage?.messages || []).filter(message => message.uid === highlightUid || !isMessageHidden(message, messageVisibility))
+  const messages = shownPage?.messages || []
 
   function clearFilters() {
     setCategory('all'); setSelectedMembers([]); setFromTime(undefined); setToTime(undefined); setToNow(false)
@@ -1120,14 +1120,14 @@ export default function ChatView({
         {categoryResults ? <ChatResults messages={messages} category={category} locating={contextBusy}
           onLocate={message => { quoteOriginUid.current = message.uid; void jumpToMessage(message) }}
           renderMedia={message => <MediaMessage message={message} libraryId={libraryId} onPreview={setPreviewUrl} onVideoPreview={setVideoPreviewUrl} />}
-        /> : groupMessages(messages, !activeFilter, foldTime).map((group, index, groups) => {
+        /> : groupMessages(messages, !activeFilter || !!jumpPage, foldTime, {foldStickers: !parseStickers, visibility: messageVisibility, revealUid: highlightUid}).map((group, index, groups) => {
           const message = group.messages[0]
           const previous = index > 0 ? groups[index - 1].messages.at(-1) : undefined
           if (group.label) return (
             <div className="message-row-block" key={`${libraryId}:${page.conversation.username}:${message.uid}:fold`}>
               <details className="message-fold">
                 <summary title="点击展开或收起"><span className="message-fold-label">{group.label}<Icon name="chevron" size={14} /></span></summary>
-                <div className="message-fold-content">{group.messages.map((item, itemIndex) => <MessageRow key={item.uid} message={item} isGroup={page.conversation.is_group} showTime={shouldShowTime(itemIndex > 0 ? group.messages[itemIndex - 1] : previous, item)} onPreview={setPreviewUrl} libraryId={libraryId} onQuote={message => void openQuote(message)} highlighted={item.uid === highlightUid} />)}</div>
+                <StickerParsingContext value={true}><div className="message-fold-content">{group.messages.map((item, itemIndex) => <MessageRow key={item.uid} message={item} isGroup={page.conversation.is_group} showTime={shouldShowTime(itemIndex > 0 ? group.messages[itemIndex - 1] : previous, item)} onPreview={setPreviewUrl} libraryId={libraryId} onQuote={message => void openQuote(message)} highlighted={item.uid === highlightUid} />)}</div></StickerParsingContext>
               </details>
             </div>
           )

@@ -1,3 +1,4 @@
+import { isMessageHidden, defaultVisibility, type MessageVisibility } from './message-visibility'
 import type { Message } from './types'
 
 export interface MessageGroup {
@@ -38,19 +39,33 @@ function foldKind(message: Message, now: number): string | undefined {
 
 // Count consecutive eligible messages together, independent of their kinds.
 // Only presentation changes; source records and search results remain intact.
-export function groupMessages(messages: Message[], enabled = true, now = Date.now() / 1000): MessageGroup[] {
+export interface FoldPreferences {
+  foldStickers?: boolean
+  visibility?: MessageVisibility
+  revealUid?: string | null
+}
+
+export function groupMessages(messages: Message[], enabled = true, now = Date.now() / 1000, preferences: FoldPreferences = {}): MessageGroup[] {
   const groups: MessageGroup[] = []
   let pending: Message[] = []
   const counts = new Map<string, number>()
+  let forced = false
   const flush = () => {
-    if (pending.length >= 3 || (counts.get('条群通知') || 0) >= 2) groups.push({messages: pending, label: '已折叠：' + [...counts].map(([kind, count]) => `${count} ${kind}`).join(' · ')})
+    if (forced || pending.length >= 3 || (counts.get('条群通知') || 0) >= 2) groups.push({messages: pending, label: '已折叠：' + [...counts].map(([kind, count]) => `${count} ${kind}`).join(' · ')})
     else groups.push(...pending.map(message => ({messages: [message]})))
     pending = []
     counts.clear()
+    forced = false
   }
   for (const message of messages) {
-    const kind = enabled ? foldKind(message, now) : undefined
+    const visibility = preferences.visibility || defaultVisibility
+    const hiddenSystem = isMessageHidden(message, visibility)
+    const requestedKind = preferences.foldStickers && isEmojiOnly(message) ? '个表情'
+      : hiddenSystem ? (message.type.kind === 'revoke' || /撤回了?一条消息/.test(message.text) ? '条撤回提示' : '条拍一拍') : undefined
+    const revealed = message.uid === preferences.revealUid
+    const kind = enabled && !revealed ? requestedKind || foldKind(message, now) : undefined
     if (kind) {
+      forced ||= !!requestedKind
       pending.push(message)
       counts.set(kind, (counts.get(kind) || 0) + 1)
     } else {

@@ -199,9 +199,9 @@ export default function SettingsView(props: SettingsViewProps) {
             </select>
           </SettingRow>
           {mediaNotice ? <p className="settings-group-note settings-error" role="alert">{mediaNotice}</p> : null}
-          <SettingRow title="隐藏表情" description="开启后，单独发送的表情图片和动图显示为 [表情]，不影响文字中的表情。">
+          <SettingRow title="折叠表情" description="开启后，单独发送的表情和动图合并显示折叠数量，点击可展开；不影响正文中的表情。">
             <label className="settings-switch-control">
-              <input type="checkbox" role="switch" aria-label="隐藏表情" checked={props.parseStickers === false}
+              <input type="checkbox" role="switch" aria-label="折叠表情" checked={props.parseStickers === false}
                 disabled={autoMedia === null || props.parseStickers === null || stickerSaving} onChange={event => void saveStickerParsing(!event.target.checked)} />
               <span className="settings-switch-track" />
             </label>
@@ -219,15 +219,15 @@ export default function SettingsView(props: SettingsViewProps) {
 
         <section className="settings-group" aria-labelledby="settings-message-title">
           <h2 id="settings-message-title">聊天显示</h2>
-          <SettingRow title="隐藏撤回提示">
+          <SettingRow title="折叠撤回提示" description="合并显示撤回提示数量，点击可展开原提示。">
             <label className="settings-switch-control">
-              <input type="checkbox" role="switch" aria-label="隐藏撤回提示" checked={props.messageVisibility.hideRevoke} onChange={event => props.onMessageVisibilityChange({...props.messageVisibility, hideRevoke: event.target.checked})} />
+              <input type="checkbox" role="switch" aria-label="折叠撤回提示" checked={props.messageVisibility.hideRevoke} onChange={event => props.onMessageVisibilityChange({...props.messageVisibility, hideRevoke: event.target.checked})} />
               <span className="settings-switch-track" />
             </label>
           </SettingRow>
-          <SettingRow title="隐藏拍一拍">
+          <SettingRow title="折叠拍一拍" description="合并显示拍一拍数量，点击可展开原提示。">
             <label className="settings-switch-control">
-              <input type="checkbox" role="switch" aria-label="隐藏拍一拍" checked={props.messageVisibility.hidePat} onChange={event => props.onMessageVisibilityChange({...props.messageVisibility, hidePat: event.target.checked})} />
+              <input type="checkbox" role="switch" aria-label="折叠拍一拍" checked={props.messageVisibility.hidePat} onChange={event => props.onMessageVisibilityChange({...props.messageVisibility, hidePat: event.target.checked})} />
               <span className="settings-switch-track" />
             </label>
           </SettingRow>
